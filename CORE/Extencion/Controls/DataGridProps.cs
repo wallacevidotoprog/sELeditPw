@@ -1,5 +1,4 @@
 ﻿using sELedit.CORE.BASE;
-using sELedit.CORE.BASE.CONTROLLERS;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -8,92 +7,114 @@ namespace sELedit.CORE.Extencion.Controls
 {
 	public partial class DataGridProps : UserControl
 	{
+		public event EventHandler<EventDataChanged> DataChanged;
+
 		private bool EnableSelectionItem { get; set; } = true;
 
 		private int listSelectedIndex = -1;
 		private DataGridView dataGridView_elems = null;
+		private Dictionary<string, List<(int Index, object[] Values, string[] Fields)>> keyValuePairs;
+		private Dictionary<string, bool> tabStatus;
+		public string TabSelect = string.Empty;
 
-		public DataGridProps(int listSelectedIndex, DataGridView dataGridView_elems)
+		public DataGridProps(int listSelectedIndex, DataGridView dataGridView_elems, Dictionary<string, List<(int Index, object[] Values, string[] Fields)>> keyValuePairs)
 		{
 			InitializeComponent();
 			this.listSelectedIndex = listSelectedIndex;
 			this.dataGridView_elems = dataGridView_elems;
-			change_item();
+			this.keyValuePairs = keyValuePairs;
+			StartTabs();
+			SetPropsGrid("default");
 		}
 
+		private void StartTabs()
+		{
+			tabStatus = new Dictionary<string, bool>();
 
-		private void change_item()
+			foreach (var item in keyValuePairs)
+			{
+				tabStatus.Add(item.Key, item.Key == "default" ? true : false);
+			}
+		}
+
+		public void SetPropsGrid(string tab)
+		{
+			TabSelect = tab;
+			try
+			{
+				if (EnableSelectionItem)
+				{
+					int indexDG = 0;
+					dataGridView_itemProps.Rows.Clear();
+					foreach (var tb in keyValuePairs[tab.ToLower()])
+					{
+						dataGridView_itemProps.Rows.Add(new string[] {
+						sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields[tb.Index].Replace("_"," ").ToUpper(),
+						sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementTypes[tb.Index],
+						sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, tb.Index) });
+						dataGridView_itemProps.Rows[indexDG].HeaderCell.Value = tb.Index.ToString();
+						indexDG++;
+					}
+					dataGridView_itemProps.PerformLayout();
+					dataGridView_itemProps.ResumeLayout();
+				}
+			}
+			catch (Exception ex)
+			{
+				ex.ErrorGet();
+			}
+
+		}
+
+		public void SetID(int value)
 		{
 
-			if (EnableSelectionItem)
+			int indexID = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields, x => x.ToUpper() == "ID");
+			if (indexID != -1)
 			{
-				int l = listSelectedIndex;
-				if (dataGridView_elems.CurrentCell == null) { return; }
-				int e = dataGridView_elems.CurrentCell.RowIndex;
-				int scroll = dataGridView_itemProps.FirstDisplayedScrollingRowIndex;
-				dataGridView_itemProps.SuspendLayout();
-				dataGridView_itemProps.Rows.Clear();
-				//proctypeLocation = 0;
-				//proctypeLocationvak = 0;
-				try
-				{
-					if (l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
-					{
-						if (e > -1)
-						{
-							dataGridView_itemProps.Enabled = false;
-
-
-
-							var x = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues[e];
-							var x1 = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[e];
-							var x21 = sELeditCache.Instance.sELeditDatas.eLC.Lists[l];
-
-
-							CategoryControlManager generator = new CategoryControlManager();
-							var groupedValues = generator.GroupElementValuesByCategory(sELeditCache.Instance.sELeditDatas.eLC.Lists[l]);
-							var controls = generator.CreateControlsFromGroupedValues(groupedValues);
-
-
-
-
-							for (int f = 0; f < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues[e].Length; f++)
-							{
-								dataGridView_itemProps.Rows.Add(new string[] { sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[f], sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementTypes[f], sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, f) });
-								dataGridView_itemProps.Rows[f].HeaderCell.Value = f.ToString();
-							}
-							dataGridView_itemProps.Enabled = true;
-							dataGridView_itemProps.PerformLayout();
-							dataGridView_itemProps.ResumeLayout();
-						}
-					}
-					else
-					{
-						//if (e > -1)
-						//{
-						//	dataGridView_item.Rows.Add(new string[] { "id_talk", "int32", conversationList.talk_procs[e].id_talk.ToString() });
-						//	dataGridView_item.Rows.Add(new string[] { "text", "wstring:128", conversationList.talk_procs[e].GetText() });
-						//	for (int q = 0; q < conversationList.talk_procs[e].num_window; q++)
-						//	{
-						//		dataGridView_item.Rows.Add(new string[] { "window_" + q + "_id", "int32", conversationList.talk_procs[e].windows[q].id.ToString() });
-						//		dataGridView_item.Rows.Add(new string[] { "window_" + q + "_id_parent", "int32", conversationList.talk_procs[e].windows[q].id_parent.ToString() });
-						//		dataGridView_item.Rows.Add(new string[] { "window_" + q + "_talk_text", "wstring:" + conversationList.talk_procs[e].windows[q].talk_text_len, conversationList.talk_procs[e].windows[q].GetText() });
-						//		for (int c = 0; c < conversationList.talk_procs[e].windows[q].num_option; c++)
-						//		{
-						//			dataGridView_item.Rows.Add(new string[] { "window_" + q + "_option_" + c + "_param", "int32", conversationList.talk_procs[e].windows[q].options[c].param.ToString() });
-						//			dataGridView_item.Rows.Add(new string[] { "window_" + q + "_option_" + c + "_text", "wstring:128", conversationList.talk_procs[e].windows[q].options[c].GetText() });
-						//			dataGridView_item.Rows.Add(new string[] { "window_" + q + "_option_" + c + "_id", "int32", conversationList.talk_procs[e].windows[q].options[c].id.ToString() });
-						//		}
-						//	}
-						//}
-					}
-					if (scroll > -1)
-					{
-						dataGridView_itemProps.FirstDisplayedScrollingRowIndex = scroll;
-					}
-				}
-				catch { }
+				sELeditCache.Instance.sELeditDatas.eLC.SetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, indexID, value.ToString());
+				RefreshGrid(Change.ID, value.ToString());
 			}
+		}
+		public void SetName(string value)
+		{
+			int indexName = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields, x => x.ToUpper() == "NAME");
+			var tt = sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, indexName, indexName);
+			if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, indexName, indexName) == value)
+			{
+				return;
+			}
+			if (indexName != -1)
+			{
+				sELeditCache.Instance.sELeditDatas.eLC.SetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, indexName, value);
+				RefreshGrid(Change.NAME, value);
+			}
+		}
+
+		public void SetIco(string value)
+		{
+			int indexIco = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields, x => x.ToUpper().StartsWith("FILE_ICON"));
+			if (indexIco != -1)
+			{
+				sELeditCache.Instance.sELeditDatas.eLC.SetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, indexIco, value);
+				RefreshGrid(Change.ICO, value);
+			}
+		}
+
+		private void RefreshGrid(Change change, string value)
+		{
+			EnableSelectionItem = false;
+
+			foreach (DataGridViewRow item in dataGridView_itemProps.Rows)
+			{
+				if (item.Cells[0].Value.ToString().ToUpper() == change.ToString())
+				{
+					item.Cells[2].Value = value; break;
+				}
+			}
+			EnableSelectionItem = true;
+
+			//SetPropsGrid(TabSelect);
 		}
 
 		private void change_value(object sender, DataGridViewCellEventArgs ea)
@@ -119,18 +140,24 @@ namespace sELedit.CORE.Extencion.Controls
 					}
 
 
-					if (true)
-					{
-
-					}
 					if (l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 					{
 						EnableSelectionItem = false;
 						int[] selIndices = gridSelectedIndices(dataGridView_elems);
 						for (int e = 0; e < selIndices.Length; e++)
 						{
+
 							sELeditCache.Instance.sELeditDatas.eLC.SetValue(l, selIndices[e], f, _set);//-------------------------------------------------------set value
 
+
+							DataChanged?.Invoke(this, new EventDataChanged
+							{
+								ListIndex = l,
+								ElementIndex = selIndices[e],
+								FieldIndex = f,
+								Value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, selIndices[e], f),
+								FieldName = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[f],
+							});
 
 							for (int a = 0; a < selIndices.Length; a++)
 							{
@@ -265,5 +292,82 @@ namespace sELedit.CORE.Extencion.Controls
 			int[] arr = inx.ToArray();
 			return arr;
 		}
+
+		private void button_SetValue_Click(object sender, EventArgs e)
+		{
+
+
+			string value = textBox_SetValue.Visible == true ? textBox_SetValue.Text : numericUpDown_SetValue.Visible == true ? numericUpDown_SetValue.Value.ToString() : null;
+
+			if (string.IsNullOrEmpty(value)) return;
+
+			int ind = Convert.ToInt32(dataGridView_itemProps.Rows[dataGridView_itemProps.CurrentCell.RowIndex].HeaderCell.Value);
+			sELeditCache.Instance.sELeditDatas.eLC.SetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, ind, value);
+			dataGridView_itemProps.Rows[dataGridView_itemProps.CurrentCell.RowIndex].Cells[2].Value = value;
+
+
+			DataChanged?.Invoke(this, new EventDataChanged
+			{
+				ListIndex = listSelectedIndex,
+				ElementIndex = dataGridView_elems.CurrentCell.RowIndex,
+				FieldIndex = ind,
+				Value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, ind),
+				FieldName = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields[ind],
+			});
+		}
+
+		private void dataGridView_itemProps_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+		{
+
+			string type = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementTypes[Convert.ToInt32(dataGridView_itemProps.Rows[e.RowIndex].HeaderCell.Value)];
+
+
+			switch (type)
+			{
+				case "int16":
+				case "int32":
+				case "int64":
+					textBox_SetValue.Visible = false;
+					numericUpDown_SetValue.Visible = true;
+					numericUpDown_SetValue.SetDecimalPlaces = 0;
+					numericUpDown_SetValue.SetThousandsSeparator = false;
+					numericUpDown_SetValue.MaximalValue = Int32.MaxValue;
+					numericUpDown_SetValue.MinimalValue = 0;
+					numericUpDown_SetValue.Increment = 1;
+					numericUpDown_SetValue.Value = Convert.ToDecimal(dataGridView_itemProps.Rows[e.RowIndex].Cells[2].Value);
+
+					panel_action.Visible = true;
+					break;
+				case "float":
+				case "double":
+					textBox_SetValue.Visible = false;
+					numericUpDown_SetValue.Visible = true;
+					numericUpDown_SetValue.SetDecimalPlaces = 6;
+					numericUpDown_SetValue.SetThousandsSeparator = true;
+					numericUpDown_SetValue.MaximalValue = decimal.Parse("1,000000");
+					numericUpDown_SetValue.MinimalValue = decimal.Parse("0,000000");
+					numericUpDown_SetValue.Increment = 0.25M;
+					numericUpDown_SetValue.Value = Convert.ToDecimal(dataGridView_itemProps.Rows[e.RowIndex].Cells[2].Value);
+
+					panel_action.Visible = true;
+					break;
+				case "wstring:64":
+				case "string:32":
+				case "string:128":
+				case "string:":
+					numericUpDown_SetValue.Visible = false;
+					textBox_SetValue.Visible = true;
+					textBox_SetValue.Text = (string)dataGridView_itemProps.Rows[e.RowIndex].Cells[2].Value;
+
+					panel_action.Visible = true;
+					break;
+
+			}
+		}
+	}
+
+	enum Change
+	{
+		NONE, ID, NAME, ICO
 	}
 }

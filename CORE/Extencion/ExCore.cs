@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Drawing;
 using System.Linq;
 
 namespace sELedit.CORE.Extencion
@@ -27,7 +28,11 @@ namespace sELedit.CORE.Extencion
 			return cb;
 		}
 
-
+		public static string ColorCod(Color color)
+		{
+			Convert.ToString((object)new int[3] { (int)color.R, (int)color.G, (int)color.B });
+			return string.Format("^{0:x2}{1:x2}{2:x2}", (object)color.R, (object)color.G, (object)color.B).ToUpper();
+		}
 
 
 	}

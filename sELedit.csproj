@@ -142,6 +142,8 @@
     <Compile Include="CORE\Extencion\Controls\DataGridProps.Designer.cs">
       <DependentUpon>DataGridProps.cs</DependentUpon>
     </Compile>
+    <Compile Include="CORE\Extencion\EventDataChanged.cs" />
+    <Compile Include="CORE\Extencion\ExceptionError.cs" />
     <Compile Include="CORE\Extencion\ExCore.cs" />
     <Compile Include="CORE\IO\ReadFile.cs" />
     <Compile Include="CORE\LOGSYSTEM\LogSistem.cs" />
@@ -819,6 +821,7 @@
     <None Include="Resources\tab_on.png" />
     <None Include="Resources\tab_off.png" />
     <None Include="Resources\边框.png" />
+    <None Include="Resources\color-palette.png" />
     <Content Include="Updates.txt" />
     <None Include="Resources\location.png" />
     <None Include="Resources\recipe.png" />

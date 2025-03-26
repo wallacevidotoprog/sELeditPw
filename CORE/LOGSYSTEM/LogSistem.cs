@@ -9,14 +9,14 @@ namespace sELedit.CORE.LOGSYSTEM
 	public static class LogSistem
 	{
 		public static string dir = System.AppDomain.CurrentDomain.BaseDirectory.ToString() + "LOG";
-		public static string fileLog = Path.Combine(dir, "LOGSISTEM.log");
+		public static string fileLog = Path.Combine(dir, $"LOGSISTEM {DateTime.Now.ToString("dd-MM-yyyy")}.log");
 		public static void InitLogger()
 		{
 			if (!Directory.Exists(dir))
 			{
 				Directory.CreateDirectory(dir);
 			}
-			LogWrite($"# => LOG ETERPHARMAPRO  {DateTime.Now} ");
+			LogWrite($"# => LOG EDITOR <= # {DateTime.Now} #\n");
 
 		}
 
@@ -39,14 +39,12 @@ namespace sELedit.CORE.LOGSYSTEM
 
 			InitLogger();
 
-			string msg = string.Empty;
-			//= $"=>\t{string.PadRight(typeLog.ToString(), 7)}" +
-			//$"\t\t" +
-			//$"{ExtensionsDefault.PadRight(title.ToUpper(), title.Length > 15 ? title.Length : 15)}" +
-			//$"\t\t" +
-			//$"{msgErr}" +
-			//$"\n" +
-			//$"{dataErro.ToString().Trim()}\n\n";
+			string msg =
+			$"=> {DateTime.Now} - {typeLog.ToString().PadRight(10)}" +
+			$"{title.ToUpper().PadRight(title.Length > 15 ? title.Length : 15)}\n" +
+			$"=> {msgErr}" +
+			$"\n" +
+			$"=> {dataErro.ToString().Trim()}\n\n";
 			LogWrite(msg);
 		}
 
@@ -72,6 +70,13 @@ namespace sELedit.CORE.LOGSYSTEM
 
 			return tempLog;
 		}
+
+
+
+
+
+
+
 	}
 
 	public enum TypeLog
