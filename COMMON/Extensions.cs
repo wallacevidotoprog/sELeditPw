@@ -1287,8 +1287,8 @@ namespace sELedit
                         break;
                     }
                 }
-
-                if (!(MainWindow.database.Tasks is null))
+                
+                if (MainWindow.database != null &&!(MainWindow.database.Tasks is null))
                 {
                     int _limited = 0;
                     string tilte = "\n\n^ECEC00" + Extensions.GetLocalization(8000) + "\n";

@@ -2,6 +2,6 @@
 {
 	public class sELeditModel
 	{
-		public static eListCollection eLC { get; set; }
+		public eListCollection eLC { get; set; }
 	}
 }

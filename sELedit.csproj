@@ -80,6 +80,10 @@
     <Reference Include="DevILNet">
       <HintPath>..\..\GShopEditorByLuka-master\GShopEditorByLuka\DevILNet.dll</HintPath>
     </Reference>
+    <Reference Include="DropDownControls, Version=1.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\DropDownControls.dll</HintPath>
+    </Reference>
     <Reference Include="HelixToolkit, Version=2.20.2.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
       <HintPath>..\packages\HelixToolkit.2.20.2\lib\netstandard1.1\HelixToolkit.dll</HintPath>
     </Reference>
@@ -129,8 +133,16 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="configs\CheckComboBox.cs" />
+    <Compile Include="CORE\BASE\CONTROLLERS\CategoryControlManager.cs" />
     <Compile Include="CORE\BASE\EventGlobal.cs" />
     <Compile Include="CORE\BASE\sELeditCache.cs" />
+    <Compile Include="CORE\Extencion\Controls\DataGridProps.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CORE\Extencion\Controls\DataGridProps.Designer.cs">
+      <DependentUpon>DataGridProps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CORE\Extencion\ExCore.cs" />
     <Compile Include="CORE\IO\ReadFile.cs" />
     <Compile Include="CORE\LOGSYSTEM\LogSistem.cs" />
     <Compile Include="CORE\MODEL\sELeditModel.cs" />
@@ -248,18 +260,6 @@
     <Compile Include="DDSReader\DDSImage.cs" />
     <Compile Include="DDSReader\Decompressor.cs" />
     <Compile Include="DDSReader\Utils.cs" />
-    <Compile Include="OUTROS\FieldCompare.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OUTROS\FieldCompare.Designer.cs">
-      <DependentUpon>FieldCompare.cs</DependentUpon>
-    </Compile>
-    <Compile Include="OUTROS\FieldReplaceWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OUTROS\FieldReplaceWindow.Designer.cs">
-      <DependentUpon>FieldReplaceWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="gShop\shopPw.cs" />
     <Compile Include="OUTROS\loads.cs">
       <SubType>Form</SubType>
@@ -634,12 +634,6 @@
       <DependentUpon>ReplaceWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="OUTROS\CLASSES\RuleConfig.cs" />
-    <Compile Include="OUTROS\RulesWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OUTROS\RulesWindow.Designer.cs">
-      <DependentUpon>RulesWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="TOOLTIPS\ToolTip.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -665,6 +659,9 @@
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
     <Compile Include="Previews\Models\Vertex.cs" />
+    <EmbeddedResource Include="CORE\Extencion\Controls\DataGridProps.resx">
+      <DependentUpon>DataGridProps.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainWindow .resx">
       <DependentUpon>MainWindow .cs</DependentUpon>
     </EmbeddedResource>
@@ -682,12 +679,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OUTROS\ConfigWindow.resx">
       <DependentUpon>ConfigWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OUTROS\FieldCompare.resx">
-      <DependentUpon>FieldCompare.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OUTROS\FieldReplaceWindow.resx">
-      <DependentUpon>FieldReplaceWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OUTROS\loads.resx">
       <DependentUpon>loads.cs</DependentUpon>
@@ -765,9 +756,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OUTROS\ReplaceWindow.resx">
       <DependentUpon>ReplaceWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OUTROS\RulesWindow.resx">
-      <DependentUpon>RulesWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TOOLTIPS\ToolTip.resx">
       <DependentUpon>ToolTip.cs</DependentUpon>

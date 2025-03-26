@@ -10,6 +10,9 @@ namespace sELedit.CORE.IO
 	{
 		private static string FileData = Path.Combine(Directory.GetCurrentDirectory(), "DataConfig");
 
+		private static string FileSettings = Path.Combine(FileData, "Settings.xml");
+
+
 
 		public static bool ReadWriteSettings(IOAction action)
 		{
@@ -18,14 +21,15 @@ namespace sELedit.CORE.IO
 				switch (action)
 				{
 					case IOAction.Read:
-						if (!File.Exists(FileData)) return false;
+						if (!File.Exists(FileSettings)) return false;
 
 						XmlSerializer deserializer = new XmlSerializer(typeof(Settings));
-						using (StreamReader reader = new StreamReader(Path.Combine(FileData, "Settings.xml")))
+						using (StreamReader reader = new StreamReader(FileSettings))
 						{
 							var obj = deserializer.Deserialize(reader);
 							sELeditCache.Instance.Settings = (Settings)obj;
 						}
+						return true;
 						break;
 					case IOAction.Write:
 						if (!File.Exists(FileData))

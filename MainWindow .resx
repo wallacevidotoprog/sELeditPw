@@ -160,7 +160,7 @@
   <data name="saveElementedataToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vwAADr8BOAVTJAAAAoNJREFUOE+Nkl1IU2EYx89FRNFFUCsUuvem6CLooqsGCaLdhBdRdwZBUEFe2ZZ9
+        vAAADrwBlbxySQAAAoNJREFUOE+Nkl1IU2EYx89FRNFFUCsUuvem6CLooqsGCaLdhBdRdwZBUEFe2ZZ9
         2EUWRRclJZruw6igiDB0N96EIWipfTg3peS4Nbfp5na2ec7Ox/bveZ5GeCHUC/+9z/b8fs97OO+Uuq5Q
         p6srhN03RrCrcwQ7/xFmmGWHXWUfFdMZYDzp4H8Xs+ywq+y5NYqvmQqUO4vSjCY0SgERynw8j3Ash8gv
         DfOceE4YZtlhVwZMpKtQ3O3S9Ho88Hq9CASC8Pl8WMro6OjooO8B+H2DwijuK+LIgL1doxiLO9jW1g/T
@@ -177,7 +177,7 @@
   <data name="saveGshop12ToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vwAADr8BOAVTJAAAAoNJREFUOE+Nkl1IU2EYx89FRNFFUCsUuvem6CLooqsGCaLdhBdRdwZBUEFe2ZZ9
+        vAAADrwBlbxySQAAAoNJREFUOE+Nkl1IU2EYx89FRNFFUCsUuvem6CLooqsGCaLdhBdRdwZBUEFe2ZZ9
         2EUWRRclJZruw6igiDB0N96EIWipfTg3peS4Nbfp5na2ec7Ox/bveZ5GeCHUC/+9z/b8fs97OO+Uuq5Q
         p6srhN03RrCrcwQ7/xFmmGWHXWUfFdMZYDzp4H8Xs+ywq+y5NYqvmQqUO4vSjCY0SgERynw8j3Ash8gv
         DfOceE4YZtlhVwZMpKtQ3O3S9Ho88Hq9CASC8Pl8WMro6OjooO8B+H2DwijuK+LIgL1doxiLO9jW1g/T
@@ -194,7 +194,7 @@
   <data name="saveTasksToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vwAADr8BOAVTJAAAAoNJREFUOE+Nkl1IU2EYx89FRNFFUCsUuvem6CLooqsGCaLdhBdRdwZBUEFe2ZZ9
+        vAAADrwBlbxySQAAAoNJREFUOE+Nkl1IU2EYx89FRNFFUCsUuvem6CLooqsGCaLdhBdRdwZBUEFe2ZZ9
         2EUWRRclJZruw6igiDB0N96EIWipfTg3peS4Nbfp5na2ec7Ox/bveZ5GeCHUC/+9z/b8fs97OO+Uuq5Q
         p6srhN03RrCrcwQ7/xFmmGWHXWUfFdMZYDzp4H8Xs+ywq+y5NYqvmQqUO4vSjCY0SgERynw8j3Ash8gv
         DfOceE4YZtlhVwZMpKtQ3O3S9Ho88Hq9CASC8Pl8WMro6OjooO8B+H2DwijuK+LIgL1doxiLO9jW1g/T
@@ -213,6 +213,9 @@
   </metadata>
   <metadata name="porc.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
+  </metadata>
+  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>203, 47</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>25</value>

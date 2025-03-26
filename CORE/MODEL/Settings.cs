@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace sELedit.CORE.MODEL
 {
@@ -22,5 +23,35 @@ namespace sELedit.CORE.MODEL
 		public string ConfigPckPath { get; set; }
 
 		public string SurfacePckPath { get; set; }
+
+
+
+
+
+
+		public bool CheckFileExists(string propertyName)
+		{
+			if (string.IsNullOrEmpty(propertyName)) return false;
+
+			Type type = this.GetType();
+
+			PropertyInfo property = type.GetProperty(propertyName);
+
+			if (property == null)
+			{
+				return false;
+			}
+
+			var value = property.GetValue(this) as string;
+
+			if (string.IsNullOrEmpty(value))
+			{
+				return false;
+			}
+
+			return System.IO.File.Exists(value);
+		}
 	}
+
+
 }

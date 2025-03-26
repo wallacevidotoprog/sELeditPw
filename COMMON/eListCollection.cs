@@ -1,29 +1,29 @@
 ﻿using System;
-using System.IO;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using System.Collections.Generic;
 
 namespace sELedit
 {
 	public class eListCollection
 	{
-		public eListCollection(string elFile, ref ColorProgressBar.ColorProgressBar cpb2)
+		public eListCollection(string elFile, IProgress<int> progress)
 		{
-			Lists = Load(elFile, ref cpb2);
+			Lists = Load(elFile, progress);
 		}
 
 		public short Version;
-        public string VersionData;
-        public short Signature;
+		public string VersionData;
+		public short Signature;
 		public int ConversationListIndex;
 		public string ConfigFile;
 		public eList[] Lists;
-        public IDictionary<int, int> addonIndex = new Dictionary<int, int>(); //itemID list
-        
+		public IDictionary<int, int> addonIndex = new Dictionary<int, int>(); //itemID list
 
-        public void RemoveItem(int ListIndex, int ElementIndex)
+
+		public void RemoveItem(int ListIndex, int ElementIndex)
 		{
 			Lists[ListIndex].RemoveItem(ElementIndex);
 		}
@@ -183,8 +183,8 @@ namespace sELedit
 				Li[i].elementTypes = sr.ReadLine().Split(new char[] { ';' });
 				for (int a = 0; a < Li[i].elementTypes.Length; a++)
 				{
-                    //file_icon
-                   
+					//file_icon
+
 					if (Li[i].elementFields[a] == "file_icon" && !Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].StartsWith("FACE_") && !Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].StartsWith("FACE_") && !Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].StartsWith("CUSTOMIZE") && !Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].EndsWith("_CONFIG") && !Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Contains("_SUITE_") && !Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].StartsWith("HOME_"))
 					{
 						Li[i].itemUse = true;
@@ -231,69 +231,70 @@ namespace sELedit
 			return result;
 		}
 
-        public static SortedList Listcnts;
-        public static SortedList ListOsets;
-        public static short Listver;
-        public static int[] SStat;
+		public static SortedList Listcnts;
+		public static SortedList ListOsets;
+		public static short Listver;
+		public static int[] SStat;
 
-        // only works for PW !!!
-        public eList[] Load(string elFile, ref ColorProgressBar.ColorProgressBar cpb2)
+		// only works for PW !!!
+		public eList[] Load(string elFile, IProgress<int> progress)
 		{
 			eList[] Li = new eList[0];
-            addonIndex = new Dictionary<int, int>();
-            
+			addonIndex = new Dictionary<int, int>();
 
-            Listcnts = null;
-            ListOsets = null;
-            Listver = -1;
-            SStat = new int[5] { 0, 0, 0, 0, 0 };
 
-            string fileStream = Path.GetDirectoryName(elFile) + "\\elements.list.count";
-            if (File.Exists(fileStream))
-            {
-                Listcnts = new SortedList();
-                ListOsets = new SortedList();
-                using (StreamReader reader = new StreamReader(fileStream))
-                {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        string[] val = line.Split('=');
-                        if (val[0] == "ver") { Listver = Convert.ToInt16(val[1]); }
-                        else if (val[0] == "offset") { ListOsets.Add(val[1], val[2]); }
-                        else { Listcnts.Add(val[0], val[1]); }
-                    }
-                }
-            }
+			Listcnts = null;
+			ListOsets = null;
+			Listver = -1;
+			SStat = new int[5] { 0, 0, 0, 0, 0 };
 
-            // open the element file
-            FileStream fs = File.OpenRead(elFile);
+			string fileStream = Path.GetDirectoryName(elFile) + "\\elements.list.count";
+			if (File.Exists(fileStream))
+			{
+				Listcnts = new SortedList();
+				ListOsets = new SortedList();
+				using (StreamReader reader = new StreamReader(fileStream))
+				{
+					string line;
+					while ((line = reader.ReadLine()) != null)
+					{
+						string[] val = line.Split('=');
+						if (val[0] == "ver") { Listver = Convert.ToInt16(val[1]); }
+						else if (val[0] == "offset") { ListOsets.Add(val[1], val[2]); }
+						else { Listcnts.Add(val[0], val[1]); }
+					}
+				}
+			}
+
+			// open the element file
+			FileStream fs = File.OpenRead(elFile);
 			BinaryReader br = new BinaryReader(fs);
 
 			Version = br.ReadInt16();
-            if (Listver > -1) { Version = Listver; }
+			if (Listver > -1) { Version = Listver; }
 			Signature = br.ReadInt16();
 
 			// check if a corresponding configuration file exists
-			 string[] configFiles = Directory.GetFiles(Application.StartupPath + "\\configs", "PW_*_v" + Version + ".cfg");
+			string[] configFiles = Directory.GetFiles(Application.StartupPath + "\\configs", "PW_*_v" + Version + ".cfg");
 			if (configFiles.Length > 0)
 			{
 				// configure an eList array with the configuration file
 				ConfigFile = configFiles[0];
 
-                VersionData = Path.GetFileName(ConfigFile).Split(new string[] { "_" }, StringSplitOptions.None)[1].ToString();
+				VersionData = Path.GetFileName(ConfigFile).Split(new string[] { "_" }, StringSplitOptions.None)[1].ToString();
 
-                
 
-                Li = loadConfiguration(ConfigFile);
-				cpb2.Maximum = Li.Length;
-                cpb2.Value = 0;
+
+				Li = loadConfiguration(ConfigFile);
+
+				int totalLists = Li.Length;
+				progress?.Report(0);
 
 				// read the element file
 				for (int l = 0; l < Li.Length; l++)
 				{
-                    SStat[0] = l;
-                    Application.DoEvents();
+					SStat[0] = l;
+					Application.DoEvents();
 
 					// read offset
 					if (Li[l].listOffset != null)
@@ -405,78 +406,80 @@ namespace sELedit
 						{
 							Li[l].listType = br.ReadInt32();
 						}
-                        if (Listver > -1 && Listcnts[l.ToString()] != null)
-                        {
-                            int num = Convert.ToInt32(Listcnts[l.ToString()]);
-                            Li[l].elementValues = new object[num][];
-                            br.ReadBytes(4);
-                        }
-                        else
-                        {
-                            Li[l].elementValues = new object[br.ReadInt32()][];
-                        }
+						if (Listver > -1 && Listcnts[l.ToString()] != null)
+						{
+							int num = Convert.ToInt32(Listcnts[l.ToString()]);
+							Li[l].elementValues = new object[num][];
+							br.ReadBytes(4);
+						}
+						else
+						{
+							Li[l].elementValues = new object[br.ReadInt32()][];
+						}
 
-                        SStat[1] = Li[l].elementValues.Length;
+						SStat[1] = Li[l].elementValues.Length;
 
-                        if (Version >= 191)
+						if (Version >= 191)
 						{
 							Li[l].elementSize = br.ReadInt32();
 						}
 
-                        try
-                        {
-                            // go through all elements of a list
-                            for (int e = 0; e < Li[l].elementValues.Length; e++)
-                            {
-                                Li[l].elementValues[e] = new object[Li[l].elementTypes.Length];
+						try
+						{
+							// go through all elements of a list
+							for (int e = 0; e < Li[l].elementValues.Length; e++)
+							{
+								Li[l].elementValues[e] = new object[Li[l].elementTypes.Length];
 
-                                // go through all fields of an element
-                                int idtest = -1;
-                                for (int f = 0; f < Li[l].elementValues[e].Length; f++)
-                                {
-                                    try
-                                    {
-                                        Li[l].elementValues[e][f] = readValue(br, Li[l].elementTypes[f]);
-                                        var a = Li[l].elementFields[f];
-                                        if (a == "ID")
-                                        {
-                                            int IDtoCoOLOR = int.Parse(Li[l].elementValues[e][f].ToString());
+								// go through all fields of an element
+								int idtest = -1;
+								for (int f = 0; f < Li[l].elementValues[e].Length; f++)
+								{
+									try
+									{
+										Li[l].elementValues[e][f] = readValue(br, Li[l].elementTypes[f]);
+										var a = Li[l].elementFields[f];
+										if (a == "ID")
+										{
+											int IDtoCoOLOR = int.Parse(Li[l].elementValues[e][f].ToString());
 
-                                            idtest = Int32.Parse(Li[l].GetValue(e, f));
-                                            SStat[2] = idtest;
-                                            if (l == 0)
-                                            {
-                                                if (!addonIndex.ContainsKey(idtest))
-                                                {
-                                                    addonIndex.Add(idtest, e);
-                                                }
-                                                else
-                                                {
-                                                    MessageBox.Show("Error: Found duplicate Addon id:" + idtest);
-                                                    addonIndex[idtest] = e;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    catch (Exception)
-                                    {
+											idtest = Int32.Parse(Li[l].GetValue(e, f));
+											SStat[2] = idtest;
+											if (l == 0)
+											{
+												if (!addonIndex.ContainsKey(idtest))
+												{
+													addonIndex.Add(idtest, e);
+												}
+												else
+												{
+													MessageBox.Show("Error: Found duplicate Addon id:" + idtest);
+													addonIndex[idtest] = e;
+												}
+											}
+										}
+									}
+									catch (Exception)
+									{
 
-                                        throw;
-                                    }
-                                    
+										throw;
+									}
 
-                                }
-                            }
-                        }
-                        catch (Exception)
-                        {
 
-                            throw;
-                        }
-						
+								}
+							}
+						}
+						catch (Exception)
+						{
+
+							throw;
+						}
+
 					}
-                    cpb2.Value++;
+					int progressValue = (int)((l + 1) / (double)totalLists * 100);
+					progress?.Report(progressValue);
 				}
+				progress?.Report(0);
 			}
 			else
 			{

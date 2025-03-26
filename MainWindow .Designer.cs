@@ -56,9 +56,11 @@
 			this.col_IMG = new System.Windows.Forms.DataGridViewImageColumn();
 			this.col_NAME = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.splitContainer_central = new System.Windows.Forms.SplitContainer();
-			this.panel5 = new System.Windows.Forms.Panel();
-			this.comboBox_lists = new LBLIBRARY.Components.ComboBoxA();
-			this.panel6 = new System.Windows.Forms.Panel();
+			this.dataGridView_item = new System.Windows.Forms.DataGridView();
+			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column3 = new sELedit.configs.TextAndImageColumn();
+			this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.panel_center = new System.Windows.Forms.Panel();
 			this.panel_retorno = new System.Windows.Forms.Panel();
 			this.tabControl_sub_rec = new LBLIBRARY.Components.TabControlZ();
@@ -113,18 +115,14 @@
 			this.tabPage_desc = new System.Windows.Forms.TabPage();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.richTextBox_DESC_POS = new System.Windows.Forms.RichTextBox();
-			this.dataGridView_item = new System.Windows.Forms.DataGridView();
-			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Column3 = new sELedit.configs.TextAndImageColumn();
-			this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.panel_bs = new System.Windows.Forms.Panel();
 			this.numericUpDownEx_ID = new System.Windows.Forms.NumericUpDown();
-			this.pictureBox_color_Item = new System.Windows.Forms.PictureBox();
-			this.textBox_NAME = new LBLIBRARY.Components.TextBoxEx();
 			this.pictureBox_icon = new System.Windows.Forms.PictureBox();
+			this.pictureBox_color_Item = new System.Windows.Forms.PictureBox();
 			this.pictureBox_BOX = new System.Windows.Forms.PictureBox();
+			this.textBox_NAME = new LBLIBRARY.Components.TextBoxEx();
 			this.panel_buts = new System.Windows.Forms.FlowLayoutPanel();
+			this.comboBox_lists = new GroupedComboBox();
 			this.panel7 = new System.Windows.Forms.Panel();
 			this.button8 = new System.Windows.Forms.Button();
 			this.button7 = new System.Windows.Forms.Button();
@@ -203,6 +201,9 @@
 			this.Column8 = new sELedit.configs.TextAndImageColumn();
 			this.QTD = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.porc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.toolStripStatusLabel_load = new System.Windows.Forms.ToolStripStatusLabel();
+			this.toolStripProgressBar_loads = new System.Windows.Forms.ToolStripProgressBar();
 			this.contextMenuStrip_items.SuspendLayout();
 			this.contextMenuStrip_intro.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView_elems)).BeginInit();
@@ -210,8 +211,7 @@
 			this.splitContainer_central.Panel1.SuspendLayout();
 			this.splitContainer_central.Panel2.SuspendLayout();
 			this.splitContainer_central.SuspendLayout();
-			this.panel5.SuspendLayout();
-			this.panel6.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dataGridView_item)).BeginInit();
 			this.panel_center.SuspendLayout();
 			this.panel_retorno.SuspendLayout();
 			this.tabControl_sub_rec.SuspendLayout();
@@ -230,14 +230,15 @@
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView_gshop)).BeginInit();
 			this.tabPage_desc.SuspendLayout();
 			this.groupBox3.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView_item)).BeginInit();
 			this.panel_bs.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownEx_ID)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox_color_Item)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox_icon)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox_color_Item)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox_BOX)).BeginInit();
+			this.panel_buts.SuspendLayout();
 			this.panel7.SuspendLayout();
 			this.toolStrip_MENU.SuspendLayout();
+			this.statusStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// contextMenuStrip_items
@@ -365,8 +366,7 @@
 			// 
 			// textBox_search
 			// 
-			this.textBox_search.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.textBox_search.Location = new System.Drawing.Point(0, 0);
+			this.textBox_search.Location = new System.Drawing.Point(5, 28);
 			this.textBox_search.Name = "textBox_search";
 			this.textBox_search.Size = new System.Drawing.Size(213, 20);
 			this.textBox_search.TabIndex = 0;
@@ -385,7 +385,7 @@
 			// textBox_SetValue
 			// 
 			this.textBox_SetValue.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.textBox_SetValue.Location = new System.Drawing.Point(765, 32);
+			this.textBox_SetValue.Location = new System.Drawing.Point(425, 53);
 			this.textBox_SetValue.Multiline = true;
 			this.textBox_SetValue.Name = "textBox_SetValue";
 			this.textBox_SetValue.Size = new System.Drawing.Size(194, 56);
@@ -399,7 +399,7 @@
 			// 
 			this.button_SetValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.button_SetValue.ForeColor = System.Drawing.Color.Black;
-			this.button_SetValue.Location = new System.Drawing.Point(590, 63);
+			this.button_SetValue.Location = new System.Drawing.Point(244, 45);
 			this.button_SetValue.Name = "button_SetValue";
 			this.button_SetValue.Size = new System.Drawing.Size(125, 23);
 			this.button_SetValue.TabIndex = 16;
@@ -424,10 +424,9 @@
             this.col_NAME});
 			this.dataGridView_elems.ContextMenuStrip = this.contextMenuStrip_items;
 			this.dataGridView_elems.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.dataGridView_elems.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dataGridView_elems.EnableHeadersVisualStyles = false;
-			this.dataGridView_elems.GridColor = System.Drawing.Color.Black;
-			this.dataGridView_elems.Location = new System.Drawing.Point(0, 50);
+			this.dataGridView_elems.GridColor = System.Drawing.Color.White;
+			this.dataGridView_elems.Location = new System.Drawing.Point(12, 54);
 			this.dataGridView_elems.MultiSelect = false;
 			this.dataGridView_elems.Name = "dataGridView_elems";
 			this.dataGridView_elems.ReadOnly = true;
@@ -440,7 +439,7 @@
 			this.dataGridView_elems.RowsDefaultCellStyle = dataGridViewCellStyle1;
 			this.dataGridView_elems.RowTemplate.Height = 32;
 			this.dataGridView_elems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dataGridView_elems.Size = new System.Drawing.Size(221, 668);
+			this.dataGridView_elems.Size = new System.Drawing.Size(206, 193);
 			this.dataGridView_elems.TabIndex = 329;
 			this.dataGridView_elems.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_elems_CellMouseEnter);
 			this.dataGridView_elems.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_elems_CellMouseLeave_1);
@@ -489,69 +488,113 @@
 			// 
 			// splitContainer_central.Panel1
 			// 
+			this.splitContainer_central.Panel1.BackColor = System.Drawing.Color.White;
+			this.splitContainer_central.Panel1.Controls.Add(this.comboBox_lists);
+			this.splitContainer_central.Panel1.Controls.Add(this.textBox_search);
 			this.splitContainer_central.Panel1.Controls.Add(this.dataGridView_elems);
-			this.splitContainer_central.Panel1.Controls.Add(this.panel5);
+			this.splitContainer_central.Panel1.Controls.Add(this.dataGridView_item);
 			// 
 			// splitContainer_central.Panel2
 			// 
 			this.splitContainer_central.Panel2.Controls.Add(this.panel_center);
 			this.splitContainer_central.Panel2.Controls.Add(this.panel_bs);
 			this.splitContainer_central.Panel2.Controls.Add(this.panel_buts);
-			this.splitContainer_central.Panel2.Controls.Add(this.panel7);
 			this.splitContainer_central.Size = new System.Drawing.Size(1187, 718);
 			this.splitContainer_central.SplitterDistance = 221;
 			this.splitContainer_central.TabIndex = 331;
 			// 
-			// panel5
+			// dataGridView_item
 			// 
-			this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.panel5.Controls.Add(this.comboBox_lists);
-			this.panel5.Controls.Add(this.panel6);
-			this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel5.Location = new System.Drawing.Point(0, 0);
-			this.panel5.Name = "panel5";
-			this.panel5.Size = new System.Drawing.Size(221, 50);
-			this.panel5.TabIndex = 335;
+			this.dataGridView_item.AllowUserToAddRows = false;
+			this.dataGridView_item.AllowUserToDeleteRows = false;
+			this.dataGridView_item.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			this.dataGridView_item.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
+			this.dataGridView_item.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dataGridView_item.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4});
+			this.dataGridView_item.ContextMenuStrip = this.contextMenuStrip_intro;
+			this.dataGridView_item.EnableHeadersVisualStyles = false;
+			this.dataGridView_item.GridColor = System.Drawing.Color.LightGray;
+			this.dataGridView_item.Location = new System.Drawing.Point(12, 420);
+			this.dataGridView_item.MultiSelect = false;
+			this.dataGridView_item.Name = "dataGridView_item";
+			this.dataGridView_item.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dataGridView_item.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+			this.dataGridView_item.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
+			dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView_item.RowsDefaultCellStyle = dataGridViewCellStyle3;
+			this.dataGridView_item.RowTemplate.Height = 18;
+			this.dataGridView_item.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.dataGridView_item.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+			this.dataGridView_item.ShowCellToolTips = false;
+			this.dataGridView_item.Size = new System.Drawing.Size(199, 152);
+			this.dataGridView_item.StandardTab = true;
+			this.dataGridView_item.TabIndex = 339;
+			this.dataGridView_item.Visible = false;
+			this.dataGridView_item.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_item_CellContentDoubleClick);
+			this.dataGridView_item.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_item_CellMouseEnter);
+			this.dataGridView_item.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_item_CellMouseLeave);
+			this.dataGridView_item.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.change_value_NEW);
+			this.dataGridView_item.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridView_item_RowPostPaint);
+			this.dataGridView_item.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridView_item_RowPrePaint);
+			this.dataGridView_item.Click += new System.EventHandler(this.dataGridView_GET_SET);
+			this.dataGridView_item.DoubleClick += new System.EventHandler(this.dataGridView_item_DoubleClick);
 			// 
-			// comboBox_lists
+			// Column1
 			// 
-			this.comboBox_lists.ArrowColor = System.Drawing.Color.Silver;
-			this.comboBox_lists.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-			this.comboBox_lists.Dock = System.Windows.Forms.DockStyle.Top;
-			this.comboBox_lists.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox_lists.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.comboBox_lists.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
-			this.comboBox_lists.FormattingEnabled = true;
-			this.comboBox_lists.Location = new System.Drawing.Point(0, 25);
-			this.comboBox_lists.MaxDropDownItems = 15;
-			this.comboBox_lists.Name = "comboBox_lists";
-			this.comboBox_lists.SelectionColor = System.Drawing.Color.Green;
-			this.comboBox_lists.SetColorBlack = LBLIBRARY.Components.ComboBoxA.MyEnum.True;
-			this.comboBox_lists.SetFont = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-			this.comboBox_lists.Size = new System.Drawing.Size(217, 21);
-			this.comboBox_lists.TabIndex = 334;
-			this.comboBox_lists.SelectedIndexChanged += new System.EventHandler(this.change_list);
+			this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.Column1.HeaderText = "Name";
+			this.Column1.Name = "Column1";
+			this.Column1.ReadOnly = true;
+			this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Column1.Width = 41;
 			// 
-			// panel6
+			// Column2
 			// 
-			this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.panel6.Controls.Add(this.textBox_search);
-			this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel6.Location = new System.Drawing.Point(0, 0);
-			this.panel6.Name = "panel6";
-			this.panel6.Size = new System.Drawing.Size(217, 25);
-			this.panel6.TabIndex = 337;
+			this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.Column2.HeaderText = "Type";
+			this.Column2.Name = "Column2";
+			this.Column2.ReadOnly = true;
+			this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Column2.Width = 37;
+			// 
+			// Column3
+			// 
+			this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.Column3.HeaderText = "Value";
+			this.Column3.Image = null;
+			this.Column3.Name = "Column3";
+			this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// Column4
+			// 
+			this.Column4.HeaderText = "Index";
+			this.Column4.Name = "Column4";
+			this.Column4.Visible = false;
 			// 
 			// panel_center
 			// 
+			this.panel_center.BackColor = System.Drawing.Color.White;
 			this.panel_center.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.panel_center.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.panel_center.Controls.Add(this.panel_retorno);
-			this.panel_center.Controls.Add(this.dataGridView_item);
 			this.panel_center.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel_center.Location = new System.Drawing.Point(0, 86);
+			this.panel_center.Location = new System.Drawing.Point(0, 94);
 			this.panel_center.Name = "panel_center";
-			this.panel_center.Size = new System.Drawing.Size(962, 540);
+			this.panel_center.Size = new System.Drawing.Size(962, 624);
 			this.panel_center.TabIndex = 340;
 			// 
 			// panel_retorno
@@ -639,10 +682,10 @@
 			this.dataGridView_npcs.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView_npcs.RowHeadersVisible = false;
 			this.dataGridView_npcs.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView_npcs.RowsDefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView_npcs.RowsDefaultCellStyle = dataGridViewCellStyle4;
 			this.dataGridView_npcs.RowTemplate.Height = 32;
 			this.dataGridView_npcs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dataGridView_npcs.Size = new System.Drawing.Size(361, 140);
@@ -724,10 +767,10 @@
 			this.dataGridView_SUITE.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView_SUITE.RowHeadersVisible = false;
 			this.dataGridView_SUITE.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView_SUITE.RowsDefaultCellStyle = dataGridViewCellStyle3;
+			dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView_SUITE.RowsDefaultCellStyle = dataGridViewCellStyle5;
 			this.dataGridView_SUITE.RowTemplate.Height = 32;
 			this.dataGridView_SUITE.ScrollBars = System.Windows.Forms.ScrollBars.None;
 			this.dataGridView_SUITE.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -901,10 +944,10 @@
 			this.dataGridView_recipes.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView_recipes.RowHeadersVisible = false;
 			this.dataGridView_recipes.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView_recipes.RowsDefaultCellStyle = dataGridViewCellStyle4;
+			dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView_recipes.RowsDefaultCellStyle = dataGridViewCellStyle6;
 			this.dataGridView_recipes.RowTemplate.Height = 32;
 			this.dataGridView_recipes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dataGridView_recipes.Size = new System.Drawing.Size(355, 220);
@@ -1028,10 +1071,10 @@
 			this.dataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView1.RowHeadersVisible = false;
 			this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle7;
 			this.dataGridView1.RowTemplate.Height = 32;
 			this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dataGridView1.Size = new System.Drawing.Size(367, 168);
@@ -1099,10 +1142,10 @@
 			this.dataGridView_tasks.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView_tasks.RowHeadersVisible = false;
 			this.dataGridView_tasks.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView_tasks.RowsDefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle8.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView_tasks.RowsDefaultCellStyle = dataGridViewCellStyle8;
 			this.dataGridView_tasks.RowTemplate.Height = 32;
 			this.dataGridView_tasks.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dataGridView_tasks.Size = new System.Drawing.Size(367, 129);
@@ -1184,10 +1227,10 @@
 			this.dataGridView_gshop.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView_gshop.RowHeadersVisible = false;
 			this.dataGridView_gshop.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView_gshop.RowsDefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle9.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView_gshop.RowsDefaultCellStyle = dataGridViewCellStyle9;
 			this.dataGridView_gshop.RowTemplate.Height = 32;
 			this.dataGridView_gshop.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dataGridView_gshop.Size = new System.Drawing.Size(367, 144);
@@ -1261,136 +1304,86 @@
 			this.richTextBox_DESC_POS.Text = "";
 			this.richTextBox_DESC_POS.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.richTextBox_DESC_POS_MouseDoubleClick);
 			// 
-			// dataGridView_item
-			// 
-			this.dataGridView_item.AllowUserToAddRows = false;
-			this.dataGridView_item.AllowUserToDeleteRows = false;
-			this.dataGridView_item.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			this.dataGridView_item.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
-			this.dataGridView_item.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dataGridView_item.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4});
-			this.dataGridView_item.ContextMenuStrip = this.contextMenuStrip_intro;
-			this.dataGridView_item.EnableHeadersVisualStyles = false;
-			this.dataGridView_item.GridColor = System.Drawing.Color.Black;
-			this.dataGridView_item.Location = new System.Drawing.Point(59, 31);
-			this.dataGridView_item.MultiSelect = false;
-			this.dataGridView_item.Name = "dataGridView_item";
-			this.dataGridView_item.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dataGridView_item.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
-			this.dataGridView_item.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
-			dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle9.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView_item.RowsDefaultCellStyle = dataGridViewCellStyle9;
-			this.dataGridView_item.RowTemplate.Height = 18;
-			this.dataGridView_item.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.dataGridView_item.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dataGridView_item.ShowCellToolTips = false;
-			this.dataGridView_item.Size = new System.Drawing.Size(359, 334);
-			this.dataGridView_item.StandardTab = true;
-			this.dataGridView_item.TabIndex = 339;
-			this.dataGridView_item.Visible = false;
-			this.dataGridView_item.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_item_CellContentDoubleClick);
-			this.dataGridView_item.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_item_CellMouseEnter);
-			this.dataGridView_item.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_item_CellMouseLeave);
-			this.dataGridView_item.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.change_value_NEW);
-			this.dataGridView_item.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridView_item_RowPostPaint);
-			this.dataGridView_item.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridView_item_RowPrePaint);
-			this.dataGridView_item.Click += new System.EventHandler(this.dataGridView_GET_SET);
-			this.dataGridView_item.DoubleClick += new System.EventHandler(this.dataGridView_item_DoubleClick);
-			// 
-			// Column1
-			// 
-			this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.Column1.HeaderText = "Name";
-			this.Column1.Name = "Column1";
-			this.Column1.ReadOnly = true;
-			this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Column1.Width = 41;
-			// 
-			// Column2
-			// 
-			this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.Column2.HeaderText = "Type";
-			this.Column2.Name = "Column2";
-			this.Column2.ReadOnly = true;
-			this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Column2.Width = 37;
-			// 
-			// Column3
-			// 
-			this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.Column3.HeaderText = "Value";
-			this.Column3.Image = null;
-			this.Column3.Name = "Column3";
-			this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-			this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// Column4
-			// 
-			this.Column4.HeaderText = "Index";
-			this.Column4.Name = "Column4";
-			this.Column4.Visible = false;
-			// 
 			// panel_bs
 			// 
-			this.panel_bs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			this.panel_bs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
 			this.panel_bs.Controls.Add(this.numericUpDownEx_ID);
-			this.panel_bs.Controls.Add(this.pictureBox_color_Item);
-			this.panel_bs.Controls.Add(this.textBox_NAME);
 			this.panel_bs.Controls.Add(this.pictureBox_icon);
+			this.panel_bs.Controls.Add(this.pictureBox_color_Item);
 			this.panel_bs.Controls.Add(this.pictureBox_BOX);
+			this.panel_bs.Controls.Add(this.textBox_NAME);
 			this.panel_bs.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel_bs.Location = new System.Drawing.Point(0, 54);
 			this.panel_bs.Name = "panel_bs";
-			this.panel_bs.Size = new System.Drawing.Size(962, 32);
+			this.panel_bs.Size = new System.Drawing.Size(962, 40);
 			this.panel_bs.TabIndex = 338;
 			// 
 			// numericUpDownEx_ID
 			// 
-			this.numericUpDownEx_ID.BackColor = System.Drawing.SystemColors.InfoText;
-			this.numericUpDownEx_ID.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.numericUpDownEx_ID.ForeColor = System.Drawing.Color.White;
-			this.numericUpDownEx_ID.Location = new System.Drawing.Point(38, 2);
+			this.numericUpDownEx_ID.BackColor = System.Drawing.Color.White;
+			this.numericUpDownEx_ID.Dock = System.Windows.Forms.DockStyle.Left;
+			this.numericUpDownEx_ID.Font = new System.Drawing.Font("Arial Unicode MS", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.numericUpDownEx_ID.ForeColor = System.Drawing.Color.Black;
+			this.numericUpDownEx_ID.Location = new System.Drawing.Point(40, 0);
 			this.numericUpDownEx_ID.Maximum = new decimal(new int[] {
             999999,
             0,
             0,
             0});
 			this.numericUpDownEx_ID.Name = "numericUpDownEx_ID";
-			this.numericUpDownEx_ID.Size = new System.Drawing.Size(128, 30);
+			this.numericUpDownEx_ID.Size = new System.Drawing.Size(128, 40);
 			this.numericUpDownEx_ID.TabIndex = 341;
 			this.numericUpDownEx_ID.ValueChanged += new System.EventHandler(this.numericUpDownEx_ID_ValueChanged);
+			// 
+			// pictureBox_icon
+			// 
+			this.pictureBox_icon.BackgroundImage = global::sELedit.Properties.Resources.bloco_select;
+			this.pictureBox_icon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.pictureBox_icon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pictureBox_icon.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pictureBox_icon.Dock = System.Windows.Forms.DockStyle.Left;
+			this.pictureBox_icon.Location = new System.Drawing.Point(0, 0);
+			this.pictureBox_icon.Name = "pictureBox_icon";
+			this.pictureBox_icon.Size = new System.Drawing.Size(40, 40);
+			this.pictureBox_icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox_icon.TabIndex = 1;
+			this.pictureBox_icon.TabStop = false;
+			this.pictureBox_icon.Click += new System.EventHandler(this.pictureBox_icon_Click);
+			this.pictureBox_icon.MouseEnter += new System.EventHandler(this.pictureBox_icon_MouseEnter);
+			this.pictureBox_icon.MouseLeave += new System.EventHandler(this.pictureBox_icon_MouseLeave);
 			// 
 			// pictureBox_color_Item
 			// 
 			this.pictureBox_color_Item.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.pictureBox_color_Item.Image = global::sELedit.Properties.Resources.InsertColor;
-			this.pictureBox_color_Item.Location = new System.Drawing.Point(510, 1);
+			this.pictureBox_color_Item.Location = new System.Drawing.Point(795, 0);
 			this.pictureBox_color_Item.Name = "pictureBox_color_Item";
-			this.pictureBox_color_Item.Size = new System.Drawing.Size(32, 31);
+			this.pictureBox_color_Item.Size = new System.Drawing.Size(40, 40);
 			this.pictureBox_color_Item.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox_color_Item.TabIndex = 4;
 			this.pictureBox_color_Item.TabStop = false;
 			this.pictureBox_color_Item.Click += new System.EventHandler(this.pictureBox_color_Item_Click);
 			// 
+			// pictureBox_BOX
+			// 
+			this.pictureBox_BOX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pictureBox_BOX.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pictureBox_BOX.Dock = System.Windows.Forms.DockStyle.Right;
+			this.pictureBox_BOX.Image = global::sELedit.Properties.Resources.BiGQuestionMark;
+			this.pictureBox_BOX.Location = new System.Drawing.Point(922, 0);
+			this.pictureBox_BOX.Name = "pictureBox_BOX";
+			this.pictureBox_BOX.Size = new System.Drawing.Size(40, 40);
+			this.pictureBox_BOX.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox_BOX.TabIndex = 0;
+			this.pictureBox_BOX.TabStop = false;
+			this.pictureBox_BOX.Click += new System.EventHandler(this.pictureBox_BOX_Click);
+			// 
 			// textBox_NAME
 			// 
-			this.textBox_NAME.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-			this.textBox_NAME.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.textBox_NAME.ForeColor = System.Drawing.Color.White;
-			this.textBox_NAME.Location = new System.Drawing.Point(170, 2);
+			this.textBox_NAME.BackColor = System.Drawing.Color.White;
+			this.textBox_NAME.Font = new System.Drawing.Font("Courier New", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.textBox_NAME.ForeColor = System.Drawing.Color.Black;
+			this.textBox_NAME.Location = new System.Drawing.Point(171, 0);
 			this.textBox_NAME.MaximalValue = new decimal(new int[] {
             0,
             0,
@@ -1404,50 +1397,31 @@
 			this.textBox_NAME.Name = "textBox_NAME";
 			this.textBox_NAME.ReadOnly = true;
 			this.textBox_NAME.SetDecimalPlaces = 0;
-			this.textBox_NAME.Size = new System.Drawing.Size(336, 27);
+			this.textBox_NAME.Size = new System.Drawing.Size(618, 41);
 			this.textBox_NAME.TabIndex = 2;
+			this.textBox_NAME.Text = "ansdjasflsadjaskghkasdhgas";
 			this.textBox_NAME.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.textBox_NAME.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.textBox_NAME_MouseDoubleClick);
 			// 
-			// pictureBox_icon
-			// 
-			this.pictureBox_icon.BackgroundImage = global::sELedit.Properties.Resources.bloco_select;
-			this.pictureBox_icon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.pictureBox_icon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pictureBox_icon.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pictureBox_icon.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pictureBox_icon.Location = new System.Drawing.Point(0, 0);
-			this.pictureBox_icon.Name = "pictureBox_icon";
-			this.pictureBox_icon.Size = new System.Drawing.Size(32, 32);
-			this.pictureBox_icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.pictureBox_icon.TabIndex = 1;
-			this.pictureBox_icon.TabStop = false;
-			this.pictureBox_icon.Click += new System.EventHandler(this.pictureBox_icon_Click);
-			this.pictureBox_icon.MouseEnter += new System.EventHandler(this.pictureBox_icon_MouseEnter);
-			this.pictureBox_icon.MouseLeave += new System.EventHandler(this.pictureBox_icon_MouseLeave);
-			// 
-			// pictureBox_BOX
-			// 
-			this.pictureBox_BOX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pictureBox_BOX.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pictureBox_BOX.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pictureBox_BOX.Image = global::sELedit.Properties.Resources.BiGQuestionMark;
-			this.pictureBox_BOX.Location = new System.Drawing.Point(929, 0);
-			this.pictureBox_BOX.Name = "pictureBox_BOX";
-			this.pictureBox_BOX.Size = new System.Drawing.Size(33, 32);
-			this.pictureBox_BOX.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.pictureBox_BOX.TabIndex = 0;
-			this.pictureBox_BOX.TabStop = false;
-			this.pictureBox_BOX.Click += new System.EventHandler(this.pictureBox_BOX_Click);
-			// 
 			// panel_buts
 			// 
-			this.panel_buts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			this.panel_buts.BackColor = System.Drawing.Color.White;
+			this.panel_buts.Controls.Add(this.panel7);
 			this.panel_buts.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel_buts.Location = new System.Drawing.Point(0, 0);
 			this.panel_buts.Name = "panel_buts";
 			this.panel_buts.Size = new System.Drawing.Size(962, 54);
 			this.panel_buts.TabIndex = 339;
+			// 
+			// comboBox_lists
+			// 
+			this.comboBox_lists.DataSource = null;
+			this.comboBox_lists.FormattingEnabled = true;
+			this.comboBox_lists.Location = new System.Drawing.Point(5, 3);
+			this.comboBox_lists.Name = "comboBox_lists";
+			this.comboBox_lists.Size = new System.Drawing.Size(213, 21);
+			this.comboBox_lists.TabIndex = 335;
+			this.comboBox_lists.SelectedIndexChanged += new System.EventHandler(this.change_list);
 			// 
 			// panel7
 			// 
@@ -1463,10 +1437,9 @@
 			this.panel7.Controls.Add(this.button1);
 			this.panel7.Controls.Add(this.numericUpDownEx_value);
 			this.panel7.Controls.Add(this.textBox_SetValue);
-			this.panel7.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel7.Location = new System.Drawing.Point(0, 626);
+			this.panel7.Location = new System.Drawing.Point(3, 3);
 			this.panel7.Name = "panel7";
-			this.panel7.Size = new System.Drawing.Size(962, 92);
+			this.panel7.Size = new System.Drawing.Size(622, 134);
 			this.panel7.TabIndex = 336;
 			// 
 			// button8
@@ -1576,7 +1549,7 @@
             0,
             0,
             0});
-			this.numericUpDownEx_value.Location = new System.Drawing.Point(765, 3);
+			this.numericUpDownEx_value.Location = new System.Drawing.Point(112, 74);
 			this.numericUpDownEx_value.MaximalValue = new decimal(new int[] {
             0,
             0,
@@ -2217,16 +2190,45 @@
 			this.porc.Name = "porc";
 			this.porc.ReadOnly = true;
 			// 
+			// statusStrip1
+			// 
+			this.statusStrip1.BackColor = System.Drawing.Color.White;
+			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel_load,
+            this.toolStripProgressBar_loads});
+			this.statusStrip1.Location = new System.Drawing.Point(0, 725);
+			this.statusStrip1.Name = "statusStrip1";
+			this.statusStrip1.Size = new System.Drawing.Size(1190, 24);
+			this.statusStrip1.TabIndex = 334;
+			this.statusStrip1.Text = "statusStrip1";
+			// 
+			// toolStripStatusLabel_load
+			// 
+			this.toolStripStatusLabel_load.ActiveLinkColor = System.Drawing.Color.LightGray;
+			this.toolStripStatusLabel_load.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+			this.toolStripStatusLabel_load.ForeColor = System.Drawing.Color.Black;
+			this.toolStripStatusLabel_load.Name = "toolStripStatusLabel_load";
+			this.toolStripStatusLabel_load.Size = new System.Drawing.Size(51, 19);
+			this.toolStripStatusLabel_load.Text = "LOADS:";
+			this.toolStripStatusLabel_load.Visible = false;
+			// 
+			// toolStripProgressBar_loads
+			// 
+			this.toolStripProgressBar_loads.Name = "toolStripProgressBar_loads";
+			this.toolStripProgressBar_loads.Size = new System.Drawing.Size(100, 18);
+			// 
 			// MainWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
 			this.ClientSize = new System.Drawing.Size(1190, 749);
+			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.cpb2);
 			this.Controls.Add(this.toolStrip_MENU);
 			this.Controls.Add(this.splitContainer_central);
-			this.Enabled = false;
 			this.ForeColor = System.Drawing.Color.White;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -2241,12 +2243,11 @@
 			this.contextMenuStrip_intro.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView_elems)).EndInit();
 			this.splitContainer_central.Panel1.ResumeLayout(false);
+			this.splitContainer_central.Panel1.PerformLayout();
 			this.splitContainer_central.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer_central)).EndInit();
 			this.splitContainer_central.ResumeLayout(false);
-			this.panel5.ResumeLayout(false);
-			this.panel6.ResumeLayout(false);
-			this.panel6.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dataGridView_item)).EndInit();
 			this.panel_center.ResumeLayout(false);
 			this.panel_retorno.ResumeLayout(false);
 			this.tabControl_sub_rec.ResumeLayout(false);
@@ -2265,17 +2266,19 @@
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView_gshop)).EndInit();
 			this.tabPage_desc.ResumeLayout(false);
 			this.groupBox3.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView_item)).EndInit();
 			this.panel_bs.ResumeLayout(false);
 			this.panel_bs.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownEx_ID)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox_color_Item)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox_icon)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox_color_Item)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox_BOX)).EndInit();
+			this.panel_buts.ResumeLayout(false);
 			this.panel7.ResumeLayout(false);
 			this.panel7.PerformLayout();
 			this.toolStrip_MENU.ResumeLayout(false);
 			this.toolStrip_MENU.PerformLayout();
+			this.statusStrip1.ResumeLayout(false);
+			this.statusStrip1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -2301,11 +2304,7 @@
         private System.Windows.Forms.SplitContainer splitContainer_central;
         private System.Windows.Forms.ToolStrip toolStrip_MENU;
         private System.Windows.Forms.ToolStripButton toolStripButton_Config;
-        private LBLIBRARY.Components.ComboBoxA comboBox_lists;
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
-        
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_ID;
         private System.Windows.Forms.DataGridViewImageColumn col_IMG;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_NAME;
@@ -2466,6 +2465,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
         private System.Windows.Forms.NumericUpDown numericUpDownEx_ID;
-    }
+		private System.Windows.Forms.StatusStrip statusStrip1;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_load;
+		private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar_loads;
+		private GroupedComboBox comboBox_lists;
+	}
 }
 
