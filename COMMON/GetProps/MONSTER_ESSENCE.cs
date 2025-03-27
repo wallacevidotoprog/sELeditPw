@@ -1,4 +1,5 @@
 ﻿
+using sELedit.CORE.BASE;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -12,98 +13,98 @@ namespace sELedit
             string line = "";
             try
             {
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "level")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "level")
                     {
-                        line += "\n" + Extensions.GetLocalization(7300) + " " + MainWindow.eLC.GetValue(38, pos, k);
+                        line += "\n" + Extensions.GetLocalization(7300) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "life")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "life")
                     {
-                        line += "\n" + Extensions.GetLocalization(7301) + " " + Convert.ToInt32(MainWindow.eLC.GetValue(38, pos, k)).ToString("N0", CultureInfo.CreateSpecificCulture("zh-CN"));
+                        line += "\n" + Extensions.GetLocalization(7301) + " " + Convert.ToInt32(sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k)).ToString("N0", CultureInfo.CreateSpecificCulture("zh-CN"));
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "hp_regenerate")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "hp_regenerate")
                     {
-                        line += "\n" + String.Format(Extensions.GetLocalization(7318), MainWindow.eLC.GetValue(38, pos, k));
+                        line += "\n" + String.Format(Extensions.GetLocalization(7318), sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k));
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "short_range_mode")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "short_range_mode")
                     {
-                        string short_range_mode = MainWindow.eLC.GetValue(38, pos, k);
+                        string short_range_mode = sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         line += "\n" + Extensions.GetLocalization(7337);
                         if (short_range_mode == "") line += " " + Extensions.GetLocalization(3130);
                         if (short_range_mode == "1") line += " " + Extensions.GetLocalization(3131);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "damage_min")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "damage_min")
                     {
-                        line += "\n" + Extensions.GetLocalization(7314) + " " + MainWindow.eLC.GetValue(38, pos, k) + "-" + MainWindow.eLC.GetValue(38, pos, k + 1);
+                        line += "\n" + Extensions.GetLocalization(7314) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k) + "-" + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k + 1);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "magic_damage_min")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "magic_damage_min")
                     {
-                        line += "\n" + Extensions.GetLocalization(7317) + " " + MainWindow.eLC.GetValue(38, pos, k) + "-" + MainWindow.eLC.GetValue(38, pos, k + 1);
+                        line += "\n" + Extensions.GetLocalization(7317) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k) + "-" + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k + 1);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "attack_range")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "attack_range")
                     {
-                        line += "\n" + String.Format(Extensions.GetLocalization(7315), MainWindow.eLC.GetValue(38, pos, k));
+                        line += "\n" + String.Format(Extensions.GetLocalization(7315), sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k));
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "attack_speed")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "attack_speed")
                     {
-                        line += "\n" + String.Format(Extensions.GetLocalization(7316), MainWindow.eLC.GetValue(38, pos, k));
+                        line += "\n" + String.Format(Extensions.GetLocalization(7316), sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k));
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "defence")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "defence")
                     {
-                        line += "\n" + Extensions.GetLocalization(7302) + " " + MainWindow.eLC.GetValue(38, pos, k);
+                        line += "\n" + Extensions.GetLocalization(7302) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "magic_defences_1")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "magic_defences_1")
                     {
-                        line += "\n" + Extensions.GetLocalization(7303) + " " + MainWindow.eLC.GetValue(38, pos, k);
-                        line += "\n" + Extensions.GetLocalization(7304) + " " + MainWindow.eLC.GetValue(38, pos, k + 1);
-                        line += "\n" + Extensions.GetLocalization(7305) + " " + MainWindow.eLC.GetValue(38, pos, k + 2);
-                        line += "\n" + Extensions.GetLocalization(7306) + " " + MainWindow.eLC.GetValue(38, pos, k + 3);
-                        line += "\n" + Extensions.GetLocalization(7307) + " " + MainWindow.eLC.GetValue(38, pos, k + 4);
+                        line += "\n" + Extensions.GetLocalization(7303) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
+                        line += "\n" + Extensions.GetLocalization(7304) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k + 1);
+                        line += "\n" + Extensions.GetLocalization(7305) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k + 2);
+                        line += "\n" + Extensions.GetLocalization(7306) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k + 3);
+                        line += "\n" + Extensions.GetLocalization(7307) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k + 4);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "immune_type")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "immune_type")
                     {
-                        string immune_type = MainWindow.eLC.GetValue(38, pos, k);
+                        string immune_type = sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         if (immune_type != "0")
                         {
                             string tmp = "";
@@ -161,79 +162,79 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "exp")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "exp")
                     {
-                        line += "\n" + Extensions.GetLocalization(7308) + " " + MainWindow.eLC.GetValue(38, pos, k);
+                        line += "\n" + Extensions.GetLocalization(7308) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "skillpoint")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "skillpoint")
                     {
-                        line += "\n" + Extensions.GetLocalization(7309) + " " + MainWindow.eLC.GetValue(38, pos, k);
+                        line += "\n" + Extensions.GetLocalization(7309) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "money_average")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "money_average")
                     {
-                        line += "\n" + Extensions.GetLocalization(7310) + " " + MainWindow.eLC.GetValue(38, pos, k);
-                        line += "\n" + Extensions.GetLocalization(7311) + " " + MainWindow.eLC.GetValue(38, pos, k + 1);
+                        line += "\n" + Extensions.GetLocalization(7310) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
+                        line += "\n" + Extensions.GetLocalization(7311) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k + 1);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "attack")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "attack")
                     {
-                        line += "\n" + Extensions.GetLocalization(7312) + " " + MainWindow.eLC.GetValue(38, pos, k);
+                        line += "\n" + Extensions.GetLocalization(7312) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "armor")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "armor")
                     {
-                        line += "\n" + Extensions.GetLocalization(7313) + " " + MainWindow.eLC.GetValue(38, pos, k);
+                        line += "\n" + Extensions.GetLocalization(7313) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "aggressive_mode")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "aggressive_mode")
                     {
-                        string aggressive_mode = MainWindow.eLC.GetValue(38, pos, k);
+                        string aggressive_mode = sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         line += "\n" + Extensions.GetLocalization(7319) + " ";
                         if (aggressive_mode == "0") line += Extensions.GetLocalization(2310);
                         else line += Extensions.GetLocalization(2311);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "aggro_range")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "aggro_range")
                     {
-                        line += "\n" + String.Format(Extensions.GetLocalization(7320), MainWindow.eLC.GetValue(38, pos, k));
+                        line += "\n" + String.Format(Extensions.GetLocalization(7320), sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k));
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "aggro_time")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "aggro_time")
                     {
-                        line += "\n" + String.Format(Extensions.GetLocalization(7321), Extensions.ItemPropsSecondsToString2(Convert.ToUInt32(MainWindow.eLC.GetValue(38, pos, k))));
+                        line += "\n" + String.Format(Extensions.GetLocalization(7321), Extensions.ItemPropsSecondsToString2(Convert.ToUInt32(sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k))));
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "inhabit_type")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "inhabit_type")
                     {
-                        string inhabit_type = MainWindow.eLC.GetValue(38, pos, k);
+                        string inhabit_type = sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         line += "\n" + Extensions.GetLocalization(7322) + " ";
                         if (inhabit_type == "0") line += Extensions.GetLocalization(3100);
                         if (inhabit_type == "1") line += Extensions.GetLocalization(3101);
@@ -245,40 +246,40 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "walk_speed")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "walk_speed")
                     {
-                        line += "\n" + String.Format(Extensions.GetLocalization(7323), MainWindow.eLC.GetValue(38, pos, k));
-                        line += "\n" + String.Format(Extensions.GetLocalization(7324), MainWindow.eLC.GetValue(38, pos, k));
-                        line += "\n" + String.Format(Extensions.GetLocalization(7325), MainWindow.eLC.GetValue(38, pos, k));
-                        line += "\n" + String.Format(Extensions.GetLocalization(7326), MainWindow.eLC.GetValue(38, pos, k));
+                        line += "\n" + String.Format(Extensions.GetLocalization(7323), sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k));
+                        line += "\n" + String.Format(Extensions.GetLocalization(7324), sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k));
+                        line += "\n" + String.Format(Extensions.GetLocalization(7325), sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k));
+                        line += "\n" + String.Format(Extensions.GetLocalization(7326), sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k));
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "attack_degree")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "attack_degree")
                     {
-                        line += "\n" + Extensions.GetLocalization(7327) + " " + MainWindow.eLC.GetValue(38, pos, k);
-                        line += "\n" + Extensions.GetLocalization(7328) + " " + MainWindow.eLC.GetValue(38, pos, k + 1);
+                        line += "\n" + Extensions.GetLocalization(7327) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
+                        line += "\n" + Extensions.GetLocalization(7328) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k + 1);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "invisible_lvl")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "invisible_lvl")
                     {
-                        line += "\n" + Extensions.GetLocalization(7333) + " " + MainWindow.eLC.GetValue(38, pos, k);
-                        line += "\n" + Extensions.GetLocalization(7334) + " " + MainWindow.eLC.GetValue(38, pos, k + 1);
+                        line += "\n" + Extensions.GetLocalization(7333) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
+                        line += "\n" + Extensions.GetLocalization(7334) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k + 1);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "common_strategy")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "common_strategy")
                     {
-                        string common_strategy = MainWindow.eLC.GetValue(38, pos, k);
+                        string common_strategy = sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         if (common_strategy != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7329) + " " + common_strategy;
@@ -286,11 +287,11 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "hp_adjust_common_value")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "hp_adjust_common_value")
                     {
-                        string hp_adjust_common_value = MainWindow.eLC.GetValue(38, pos, k);
+                        string hp_adjust_common_value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         if (hp_adjust_common_value != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7330) + " " + hp_adjust_common_value;
@@ -298,11 +299,11 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "defence_adjust_common_value")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "defence_adjust_common_value")
                     {
-                        string defence_adjust_common_value = MainWindow.eLC.GetValue(38, pos, k);
+                        string defence_adjust_common_value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         if (defence_adjust_common_value != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7331) + " " + defence_adjust_common_value;
@@ -310,11 +311,11 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "attack_adjust_common_value")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "attack_adjust_common_value")
                     {
-                        string attack_adjust_common_value = MainWindow.eLC.GetValue(38, pos, k);
+                        string attack_adjust_common_value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         if (attack_adjust_common_value != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7332) + " " + attack_adjust_common_value;
@@ -322,22 +323,22 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "probability_drop_num0")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "probability_drop_num0")
                     {
-                        string probability_drop_num0 = MainWindow.eLC.GetValue(38, pos, k);
+                        string probability_drop_num0 = sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         line += "\n" + Extensions.GetLocalization(7335) + " ";
                         if (probability_drop_num0 == "1") line += Extensions.GetLocalization(2310);
                         else line += Extensions.GetLocalization(2311);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[38].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[38].elementFields[k] == "drop_mine_probability")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[38].elementFields[k] == "drop_mine_probability")
                     {
-                        string probability_drop_num0 = MainWindow.eLC.GetValue(38, pos, k);
+                        string probability_drop_num0 = sELeditCache.Instance.sELeditDatas.eLC.GetValue(38, pos, k);
                         line += "\n" + Extensions.GetLocalization(7336) + " ";
                         if (probability_drop_num0 == "0") line += Extensions.GetLocalization(2310);
                         else line += Extensions.GetLocalization(2311);

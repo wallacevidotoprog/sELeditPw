@@ -88,7 +88,7 @@
 
 //            }
 
-//            MainWindow.database = database;
+//            sELeditCache.Instance.sELeditDatas.database = database;
 
 //            return true;
 //        }
@@ -105,7 +105,7 @@
 //					imageList1.Images.Add(Image.FromFile(arquivos[fd]));
 
 //				}
-//				MainWindow.database.ImageTask = imageList1;
+//				sELeditCache.Instance.sELeditDatas.database.ImageTask = imageList1;
 //			}
 //			catch (Exception)
 //			{

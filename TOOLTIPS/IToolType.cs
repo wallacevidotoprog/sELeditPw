@@ -30,9 +30,9 @@ namespace sELedit
 				int itemID = 0;
 
 
-				//if (MainWindow.database.item_color.ContainsKey(data.itemId))
+				//if (sELeditCache.Instance.sELeditDatas.database.item_color.ContainsKey(data.itemId))
 				//{
-				//    itemID = MainWindow.database.item_color[data.itemId];
+				//    itemID = sELeditCache.Instance.sELeditDatas.database.item_color[data.itemId];
 				//}
 				Color color = Color.White;
 				titleText.Text = data.name;

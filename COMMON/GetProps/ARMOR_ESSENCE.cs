@@ -1,4 +1,5 @@
 ﻿
+using sELedit.CORE.BASE;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,20 +16,20 @@ namespace sELedit
             string line = "";
             try
             {
-                for (int k = 0; k < MainWindow.eLC.Lists[6].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[6].elementFields[k] == "id_sub_type")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[k] == "id_sub_type")
                     {
-                        string id_sub_type = MainWindow.eLC.GetValue(6, pos_item, k);
-                        for (int t = 0; t < MainWindow.eLC.Lists[5].elementValues.Length; t++)
+                        string id_sub_type = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k);
+                        for (int t = 0; t < sELeditCache.Instance.sELeditDatas.eLC.Lists[5].elementValues.Length; t++)
                         {
-                            if (MainWindow.eLC.GetValue(5, t, 0) == id_sub_type)
+                            if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(5, t, 0) == id_sub_type)
                             {
-                                for (int a = 0; a < MainWindow.eLC.Lists[5].elementFields.Length; a++)
+                                for (int a = 0; a < sELeditCache.Instance.sELeditDatas.eLC.Lists[5].elementFields.Length; a++)
                                 {
-                                    if (MainWindow.eLC.Lists[5].elementFields[a] == "Name")
+                                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[5].elementFields[a] == "Name")
                                     {
-                                        line += "\n" + MainWindow.eLC.GetValue(5, t, a);
+                                        line += "\n" + sELeditCache.Instance.sELeditDatas.eLC.GetValue(5, t, a);
                                         break;
                                     }
                                 }
@@ -38,29 +39,29 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[6].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[6].elementFields[k] == "level")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[k] == "level")
                     {
-                        line += "\n" + String.Format(Extensions.GetLocalization(7000), MainWindow.eLC.GetValue(6, pos_item, k));
+                        line += "\n" + String.Format(Extensions.GetLocalization(7000), sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k));
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[6].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; k++)
                     {
-                        if (MainWindow.eLC.Lists[6].elementFields[k] == "mp_enhance_low")
+                        if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[k] == "mp_enhance_low")
                         {
-                            string hp_enhance_low = MainWindow.eLC.GetValue(6, pos_item, k + 2);
+                            string hp_enhance_low = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k + 2);
                             if (hp_enhance_low != "0")
                             {
                                 line += "\n" + Extensions.GetLocalization(7006) + " +" + hp_enhance_low;
                             }
-                            string mp_enhance_low = MainWindow.eLC.GetValue(6, pos_item, k);
+                            string mp_enhance_low = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k);
                             if (mp_enhance_low != "0")
                             {
                                 line += "\n" + Extensions.GetLocalization(7007) + " +" + mp_enhance_low;
                             }
-                            string armor_enhance_low = MainWindow.eLC.GetValue(6, pos_item, k + 4);
+                            string armor_enhance_low = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k + 4);
                             if (armor_enhance_low != "0")
                             {
                                 line += "\n" + Extensions.GetLocalization(7008) + " +" + armor_enhance_low;
@@ -68,36 +69,36 @@ namespace sELedit
                             break;
                         }
                     }
-                for (int k = 0; k < MainWindow.eLC.Lists[6].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[6].elementFields[k] == "defence_low")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[k] == "defence_low")
                     {
-                        string defence_low = MainWindow.eLC.GetValue(6, pos_item, k);
+                        string defence_low = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k);
                         if (defence_low != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7009) + " +" + defence_low;
                         }
-                        string magic_defences_1_low = MainWindow.eLC.GetValue(6, pos_item, k + 2);
+                        string magic_defences_1_low = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k + 2);
                         if (magic_defences_1_low != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7010) + " +" + magic_defences_1_low;
                         }
-                        string magic_defences_2_low = MainWindow.eLC.GetValue(6, pos_item, k + 4);
+                        string magic_defences_2_low = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k + 4);
                         if (magic_defences_2_low != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7011) + " +" + magic_defences_2_low;
                         }
-                        string magic_defences_3_low = MainWindow.eLC.GetValue(6, pos_item, k + 6);
+                        string magic_defences_3_low = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k + 6);
                         if (magic_defences_3_low != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7012) + " +" + magic_defences_3_low;
                         }
-                        string magic_defences_4_low = MainWindow.eLC.GetValue(6, pos_item, k + 8);
+                        string magic_defences_4_low = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k + 8);
                         if (magic_defences_4_low != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7013) + " +" + magic_defences_4_low;
                         }
-                        string magic_defences_5_low = MainWindow.eLC.GetValue(6, pos_item, k + 10);
+                        string magic_defences_5_low = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k + 10);
                         if (magic_defences_5_low != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7014) + " +" + magic_defences_5_low;
@@ -105,27 +106,27 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[6].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[6].elementFields[k] == "durability_min")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[k] == "durability_min")
                     {
-                        line += "\n" + Extensions.GetLocalization(7015) + " " + MainWindow.eLC.GetValue(6, pos_item, k) + "/" + MainWindow.eLC.GetValue(6, pos_item, k + 1);
+                        line += "\n" + Extensions.GetLocalization(7015) + " " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k) + "/" + sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k + 1);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[6].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[6].elementFields[k] == "character_combo_id")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[k] == "character_combo_id")
                     {
-                        line += Extensions.DecodingCharacterComboId(MainWindow.eLC.GetValue(6, pos_item, k));
+                        line += Extensions.DecodingCharacterComboId(sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k));
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[6].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[6].elementFields[k] == "require_level")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[k] == "require_level")
                     {
-                        string require_level = MainWindow.eLC.GetValue(6, pos_item, k);
+                        string require_level = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k);
                         if (require_level != "0")
                         {
                             line += "\n" + String.Format(Extensions.GetLocalization(7018), require_level);
@@ -133,26 +134,26 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[6].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[6].elementFields[k] == "require_strength")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[k] == "require_strength")
                     {
-                        string require_strength = MainWindow.eLC.GetValue(6, pos_item, k);
+                        string require_strength = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k);
                         if (require_strength != "0")
                         {
                             line += "\n" + String.Format(Extensions.GetLocalization(7019), require_strength);
                         }
-                        string require_agility = MainWindow.eLC.GetValue(6, pos_item, k + 1);
+                        string require_agility = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k + 1);
                         if (require_agility != "0")
                         {
                             line += "\n" + String.Format(Extensions.GetLocalization(7020), require_agility);
                         }
-                        string require_energy = MainWindow.eLC.GetValue(6, pos_item, k + 2);
+                        string require_energy = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k + 2);
                         if (require_energy != "0")
                         {
                             line += "\n" + String.Format(Extensions.GetLocalization(7021), require_energy);
                         }
-                        string require_tili = MainWindow.eLC.GetValue(6, pos_item, k + 3);
+                        string require_tili = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k + 3);
                         if (require_tili != "0")
                         {
                             line += "\n" + String.Format(Extensions.GetLocalization(7022), require_tili);
@@ -160,11 +161,11 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[6].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[6].elementFields[k] == "require_reputation")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[k] == "require_reputation")
                     {
-                        string require_reputation = MainWindow.eLC.GetValue(6, pos_item, k);
+                        string require_reputation = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k);
                         if (require_reputation != "0")
                         {
                             line += "\n" + String.Format(Extensions.GetLocalization(7023), require_reputation);
@@ -172,20 +173,20 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[6].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[6].elementFields[k] == "fixed_props")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[k] == "fixed_props")
                     {
-                        if ("0" == MainWindow.eLC.GetValue(6, pos_item, k))
+                        if ("0" == sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k))
                         {
                             string[] probability_addon_numX = new string[5];
                             int nu = 0;
-                            for (int t = 0; t < MainWindow.eLC.Lists[6].elementFields.Length; t++)
+                            for (int t = 0; t < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; t++)
                             {
-                                if (MainWindow.eLC.Lists[6].elementFields[t] == "probability_addon_num" + nu)
+                                if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[t] == "probability_addon_num" + nu)
                                 {
 
-                                    probability_addon_numX[nu] = MainWindow.eLC.GetValue(6, pos_item, t);
+                                    probability_addon_numX[nu] = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, t);
                                     nu++;
                                     if (nu == 5) { break; }
                                 }
@@ -226,11 +227,11 @@ namespace sELedit
 
                             for (int t = 1; t < 33; t++)
                             {
-                                for (int a = 0; a < MainWindow.eLC.Lists[6].elementFields.Length; a++)
+                                for (int a = 0; a < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; a++)
                                 {
-                                    if (MainWindow.eLC.Lists[6].elementFields[a] == "addons_" + t + "_id_addon")
+                                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[a] == "addons_" + t + "_id_addon")
                                     {
-                                        string id_addon = MainWindow.eLC.GetValue(6, pos_item, a);
+                                        string id_addon = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, a);
                                         if (id_addon != "0")
                                         {
                                             idAdds[nu] = "\n" + "^4286f4" + EQUIPMENT_ADDON.GetAddon(id_addon) + "^FFFFFF"; nu++;
@@ -251,14 +252,14 @@ namespace sELedit
                             }
                         }
 
-                        else if ("0" != MainWindow.eLC.GetValue(6, pos_item, k))
+                        else if ("0" != sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k))
                         {
                             string probability_addon_num0 = "0";
-                            for (int t = 0; t < MainWindow.eLC.Lists[6].elementFields.Length; t++)
+                            for (int t = 0; t < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; t++)
                             {
-                                if (MainWindow.eLC.Lists[6].elementFields[t] == "probability_addon_num0")
+                                if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[t] == "probability_addon_num0")
                                 {
-                                    probability_addon_num0 = MainWindow.eLC.GetValue(6, pos_item, t);
+                                    probability_addon_num0 = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, t);
                                     break;
                                 }
                             }
@@ -266,11 +267,11 @@ namespace sELedit
                             {
                                 for (int t = 1; t < 33; t++)
                                 {
-                                    for (int a = 0; a < MainWindow.eLC.Lists[6].elementFields.Length; a++)
+                                    for (int a = 0; a < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; a++)
                                     {
-                                        if (MainWindow.eLC.Lists[6].elementFields[a] == "addons_" + t + "_id_addon")
+                                        if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[a] == "addons_" + t + "_id_addon")
                                         {
-                                            string id_addon = MainWindow.eLC.GetValue(6, pos_item, a);
+                                            string id_addon = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, a);
                                             if (id_addon != "0")
                                             {
                                                 line += "\n" + "^4286f4" + EQUIPMENT_ADDON.GetAddon(id_addon) + "^FFFFFF";
@@ -282,14 +283,14 @@ namespace sELedit
                             }
                         }
 
-                        //if ("0" != MainWindow.eLC.GetValue(6, pos_item, k))
+                        //if ("0" != sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k))
                         //{
                         //    string probability_addon_num0 = "0";
-                        //    for (int t = 0; t < MainWindow.eLC.Lists[6].elementFields.Length; t++)
+                        //    for (int t = 0; t < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; t++)
                         //    {
-                        //        if (MainWindow.eLC.Lists[6].elementFields[t] == "probability_addon_num0")
+                        //        if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[t] == "probability_addon_num0")
                         //        {
-                        //            probability_addon_num0 = MainWindow.eLC.GetValue(6, pos_item, t);
+                        //            probability_addon_num0 = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, t);
                         //            break;
                         //        }
                         //    }
@@ -297,11 +298,11 @@ namespace sELedit
                         //    {
                         //        for (int t = 1; t < 33; t++)
                         //        {
-                        //            for (int a = 0; a < MainWindow.eLC.Lists[6].elementFields.Length; a++)
+                        //            for (int a = 0; a < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; a++)
                         //            {
-                        //                if (MainWindow.eLC.Lists[6].elementFields[a] == "addons_" + t + "_id_addon")
+                        //                if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[a] == "addons_" + t + "_id_addon")
                         //                {
-                        //                    string id_addon = MainWindow.eLC.GetValue(6, pos_item, a);
+                        //                    string id_addon = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, a);
                         //                    if (id_addon != "0")
                         //                    {
                         //                        line += "\n" + "^4286f4" + EQUIPMENT_ADDON.GetAddon(id_addon) + "^FFFFFF";
@@ -315,11 +316,11 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[6].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[6].elementFields[k] == "price")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[6].elementFields[k] == "price")
                     {
-                        string price = MainWindow.eLC.GetValue(6, pos_item, k);
+                        string price = sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, k);
                         if (price != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7024) + " " + Convert.ToInt32(price).ToString("N0", CultureInfo.CreateSpecificCulture("zh-CN"));
@@ -328,58 +329,58 @@ namespace sELedit
                     }
                 }
                 bool Suc = false; int[] IdCombo = new int[12]; int[] IdAddons = new int[11];
-                for (int k = 0; k < MainWindow.eLC.Lists[90].elementValues.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementValues.Length; k++)
                 {
                     for (int a = 1; a < 13; a++)
                     {
-                        for (int t = 0; t < MainWindow.eLC.Lists[90].elementFields.Length; t++)
+                        for (int t = 0; t < sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementFields.Length; t++)
                         {
-                            if (MainWindow.eLC.Lists[90].elementFields[t] == "equipments_" + a + "_id")
+                            if (sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementFields[t] == "equipments_" + a + "_id")
                             {
-                                if (Convert.ToInt32(MainWindow.eLC.GetValue(90, k, t)) == Convert.ToInt32(MainWindow.eLC.GetValue(6, pos_item, 0)))
+                                if (Convert.ToInt32(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, t)) == Convert.ToInt32(sELeditCache.Instance.sELeditDatas.eLC.GetValue(6, pos_item, 0)))
                                 {
                                     Suc = true;
                                     string name = "";
                                     string max_equips = "0";
-                                    IdCombo[0] = int.Parse(MainWindow.eLC.GetValue(90, k, 3));
-                                    IdCombo[1] = int.Parse(MainWindow.eLC.GetValue(90, k, 4));
-                                    IdCombo[2] = int.Parse(MainWindow.eLC.GetValue(90, k, 5));
-                                    IdCombo[3] = int.Parse(MainWindow.eLC.GetValue(90, k, 6));
-                                    IdCombo[4] = int.Parse(MainWindow.eLC.GetValue(90, k, 7));
-                                    IdCombo[5] = int.Parse(MainWindow.eLC.GetValue(90, k, 8));
-                                    IdCombo[6] = int.Parse(MainWindow.eLC.GetValue(90, k, 9));
-                                    IdCombo[7] = int.Parse(MainWindow.eLC.GetValue(90, k, 10));
-                                    IdCombo[8] = int.Parse(MainWindow.eLC.GetValue(90, k, 11));
-                                    IdCombo[9] = int.Parse(MainWindow.eLC.GetValue(90, k, 12));
-                                    IdCombo[10] = int.Parse(MainWindow.eLC.GetValue(90, k, 13));
-                                    IdCombo[11] = int.Parse(MainWindow.eLC.GetValue(90, k, 14));
+                                    IdCombo[0] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 3));
+                                    IdCombo[1] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 4));
+                                    IdCombo[2] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 5));
+                                    IdCombo[3] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 6));
+                                    IdCombo[4] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 7));
+                                    IdCombo[5] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 8));
+                                    IdCombo[6] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 9));
+                                    IdCombo[7] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 10));
+                                    IdCombo[8] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 11));
+                                    IdCombo[9] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 12));
+                                    IdCombo[10] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 13));
+                                    IdCombo[11] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 14));
 
-                                    IdAddons[0] = int.Parse(MainWindow.eLC.GetValue(90, k,15));
-                                    IdAddons[1] = int.Parse(MainWindow.eLC.GetValue(90, k,16));
-                                    IdAddons[2] = int.Parse(MainWindow.eLC.GetValue(90, k,17));
-                                    IdAddons[3] = int.Parse(MainWindow.eLC.GetValue(90, k,18));
-                                    IdAddons[4] = int.Parse(MainWindow.eLC.GetValue(90, k,19));
-                                    IdAddons[5] = int.Parse(MainWindow.eLC.GetValue(90, k,20));
-                                    IdAddons[6] = int.Parse(MainWindow.eLC.GetValue(90, k,21));
-                                    IdAddons[7] = int.Parse(MainWindow.eLC.GetValue(90, k,22));
-                                    IdAddons[8] = int.Parse(MainWindow.eLC.GetValue(90, k,23));
-                                    IdAddons[9] = int.Parse(MainWindow.eLC.GetValue(90, k,24));
-                                    IdAddons[10] = int.Parse(MainWindow.eLC.GetValue(90, k,25));
+                                    IdAddons[0] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k,15));
+                                    IdAddons[1] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k,16));
+                                    IdAddons[2] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k,17));
+                                    IdAddons[3] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k,18));
+                                    IdAddons[4] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k,19));
+                                    IdAddons[5] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k,20));
+                                    IdAddons[6] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k,21));
+                                    IdAddons[7] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k,22));
+                                    IdAddons[8] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k,23));
+                                    IdAddons[9] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k,24));
+                                    IdAddons[10] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k,25));
 
 
-                                    for (int n = 0; n < MainWindow.eLC.Lists[90].elementFields.Length; n++)
+                                    for (int n = 0; n < sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementFields.Length; n++)
                                     {
-                                        if (MainWindow.eLC.Lists[90].elementFields[n] == "Name")
+                                        if (sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementFields[n] == "Name")
                                         {
-                                            name = MainWindow.eLC.GetValue(90, k, n);
+                                            name = sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, n);
                                             break;
                                         }
                                     }
-                                    for (int n = 0; n < MainWindow.eLC.Lists[90].elementFields.Length; n++)
+                                    for (int n = 0; n < sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementFields.Length; n++)
                                     {
-                                        if (MainWindow.eLC.Lists[90].elementFields[n] == "max_equips")
+                                        if (sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementFields[n] == "max_equips")
                                         {
-                                            max_equips = MainWindow.eLC.GetValue(90, k, n);
+                                            max_equips = sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, n);
                                             break;
                                         }
                                     }
@@ -401,7 +402,7 @@ namespace sELedit
                                     {
                                         if (IdAddons[i] != 0)
                                         {
-                                            line += "^4286f4(" + add.ToString() + ") - " + MainWindow.database._suite[IdAddons[i]] /*Extensions.GetNameItem(IdCombo[i])*/ + "\n";
+                                            line += "^4286f4(" + add.ToString() + ") - " + sELeditCache.Instance.sELeditDatas.database._suite[IdAddons[i]] /*Extensions.GetNameItem(IdCombo[i])*/ + "\n";
                                         }
                                         add++;
                                     }

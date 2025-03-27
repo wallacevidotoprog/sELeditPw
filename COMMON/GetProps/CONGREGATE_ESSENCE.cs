@@ -1,4 +1,5 @@
 ﻿
+using sELedit.CORE.BASE;
 using System;
 using System.Globalization;
 
@@ -11,11 +12,11 @@ namespace sELedit
             string line = "";
             try
             {
-                for (int k = 0; k < MainWindow.eLC.Lists[141].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[141].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[141].elementFields[k] == "price")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[141].elementFields[k] == "price")
                     {
-                        string price = MainWindow.eLC.GetValue(141, pos_item, k);
+                        string price = sELeditCache.Instance.sELeditDatas.eLC.GetValue(141, pos_item, k);
                         if (price != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7024) + " " + Convert.ToInt32(price).ToString("N0", CultureInfo.CreateSpecificCulture("zh-CN"));
@@ -25,11 +26,11 @@ namespace sELedit
                 }
                 for (int a = 1; a < 9; a++)
                 {
-                    for (int k = 0; k < MainWindow.eLC.Lists[141].elementFields.Length; k++)
+                    for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[141].elementFields.Length; k++)
                     {
-                        if (MainWindow.eLC.Lists[141].elementFields[k] == "area_" + a + "_id")
+                        if (sELeditCache.Instance.sELeditDatas.eLC.Lists[141].elementFields[k] == "area_" + a + "_id")
                         {
-                            string area_id = MainWindow.eLC.GetValue(141, pos_item, k);
+                            string area_id = sELeditCache.Instance.sELeditDatas.eLC.GetValue(141, pos_item, k);
                             if (area_id != "0")
                             {
                                 if (a == 1)

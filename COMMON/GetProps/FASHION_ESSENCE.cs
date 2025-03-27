@@ -1,4 +1,5 @@
 ﻿
+using sELedit.CORE.BASE;
 using System;
 using System.Globalization;
 
@@ -13,20 +14,20 @@ namespace sELedit
             {
                 string equip_location = "0";
                 string level = "0";
-                for (int k = 0; k < MainWindow.eLC.Lists[83].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[83].elementFields[k] == "id_sub_type")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields[k] == "id_sub_type")
                     {
-                        string id_sub_type = MainWindow.eLC.GetValue(83, pos_item, k);
-                        for (int t = 0; t < MainWindow.eLC.Lists[82].elementValues.Length; t++)
+                        string id_sub_type = sELeditCache.Instance.sELeditDatas.eLC.GetValue(83, pos_item, k);
+                        for (int t = 0; t < sELeditCache.Instance.sELeditDatas.eLC.Lists[82].elementValues.Length; t++)
                         {
-                            if (MainWindow.eLC.GetValue(82, t, 0) == id_sub_type)
+                            if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(82, t, 0) == id_sub_type)
                             {
-                                for (int a = 0; a < MainWindow.eLC.Lists[82].elementFields.Length; a++)
+                                for (int a = 0; a < sELeditCache.Instance.sELeditDatas.eLC.Lists[82].elementFields.Length; a++)
                                 {
-                                    if (MainWindow.eLC.Lists[82].elementFields[a] == "Name")
+                                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[82].elementFields[a] == "Name")
                                     {
-                                        line += "\n" + MainWindow.eLC.GetValue(82, t, a);
+                                        line += "\n" + sELeditCache.Instance.sELeditDatas.eLC.GetValue(82, t, a);
                                         break;
                                     }
                                 }
@@ -36,11 +37,11 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[83].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[83].elementFields[k] == "equip_location")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields[k] == "equip_location")
                     {
-                        equip_location = MainWindow.eLC.GetValue(83, pos_item, k);
+                        equip_location = sELeditCache.Instance.sELeditDatas.eLC.GetValue(83, pos_item, k);
                         break;
                     }
                 }
@@ -48,11 +49,11 @@ namespace sELedit
                 {
                     line += "\n" + Extensions.GetLocalization(7043) + " ???";
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[83].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[83].elementFields[k] == "require_level")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields[k] == "require_level")
                     {
-                        string require_level = MainWindow.eLC.GetValue(83, pos_item, k);
+                        string require_level = sELeditCache.Instance.sELeditDatas.eLC.GetValue(83, pos_item, k);
                         if (require_level != "0")
                         {
                             line += "\n" + String.Format(Extensions.GetLocalization(7018), require_level);
@@ -60,11 +61,11 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[83].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[83].elementFields[k] == "level")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields[k] == "level")
                     {
-                        level = MainWindow.eLC.GetValue(83, pos_item, k);
+                        level = sELeditCache.Instance.sELeditDatas.eLC.GetValue(83, pos_item, k);
                         if (equip_location == "10")
                         {
                             line += "\n" + String.Format(Extensions.GetLocalization(7000), level);
@@ -72,21 +73,21 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[83].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[83].elementFields[k] == "character_combo_id")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields[k] == "character_combo_id")
                     {
-                        line += Extensions.DecodingCharacterComboId(MainWindow.eLC.GetValue(83, pos_item, k));
+                        line += Extensions.DecodingCharacterComboId(sELeditCache.Instance.sELeditDatas.eLC.GetValue(83, pos_item, k));
                         break;
                     }
                 }
                 if (equip_location == "10")
                 {
-                    for (int k = 0; k < MainWindow.eLC.Lists[83].elementFields.Length; k++)
+                    for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields.Length; k++)
                     {
-                        if (MainWindow.eLC.Lists[83].elementFields[k] == "action_type")
+                        if (sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields[k] == "action_type")
                         {
-                            string action_type = MainWindow.eLC.GetValue(83, pos_item, k);
+                            string action_type = sELeditCache.Instance.sELeditDatas.eLC.GetValue(83, pos_item, k);
                             line += "\n" + Extensions.GetLocalization(7044) + " ";
                             if (action_type == "0")
                             {
@@ -152,11 +153,11 @@ namespace sELedit
                         }
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[83].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[83].elementFields[k] == "gender")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields[k] == "gender")
                     {
-                        string gender = MainWindow.eLC.GetValue(83, pos_item, k);
+                        string gender = sELeditCache.Instance.sELeditDatas.eLC.GetValue(83, pos_item, k);
                         line += "\n" + Extensions.GetLocalization(7045) + " ";
                         if (gender == "0")
                         {
@@ -169,11 +170,11 @@ namespace sELedit
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[83].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[83].elementFields[k] == "price")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[83].elementFields[k] == "price")
                     {
-                        string price = MainWindow.eLC.GetValue(83, pos_item, k);
+                        string price = sELeditCache.Instance.sELeditDatas.eLC.GetValue(83, pos_item, k);
                         if (price != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7024) + " " + Convert.ToInt32(price).ToString("N0", CultureInfo.CreateSpecificCulture("zh-CN"));

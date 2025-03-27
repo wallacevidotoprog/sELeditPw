@@ -1,6 +1,9 @@
-﻿using sELedit.CORE.BASE;
+﻿using sELedit.configs;
+using sELedit.CORE.BASE;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace sELedit.CORE.Extencion.Controls
@@ -20,11 +23,13 @@ namespace sELedit.CORE.Extencion.Controls
 		public DataGridProps(int listSelectedIndex, DataGridView dataGridView_elems, Dictionary<string, List<(int Index, object[] Values, string[] Fields)>> keyValuePairs)
 		{
 			InitializeComponent();
+			EnableSelectionItem = false;
 			this.listSelectedIndex = listSelectedIndex;
 			this.dataGridView_elems = dataGridView_elems;
 			this.keyValuePairs = keyValuePairs;
 			StartTabs();
 			SetPropsGrid("default");
+			EnableSelectionItem = true;
 		}
 
 		private void StartTabs()
@@ -42,16 +47,27 @@ namespace sELedit.CORE.Extencion.Controls
 			TabSelect = tab;
 			try
 			{
-				if (EnableSelectionItem)
+
+				if (!EnableSelectionItem)
 				{
 					int indexDG = 0;
 					dataGridView_itemProps.Rows.Clear();
 					foreach (var tb in keyValuePairs[tab.ToLower()])
 					{
-						dataGridView_itemProps.Rows.Add(new string[] {
-						sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields[tb.Index].Replace("_"," ").ToUpper(),
-						sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementTypes[tb.Index],
-						sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, tb.Index) });
+						dataGridView_itemProps.Rows.Add(new object[] {
+							new DisplayValueItem{
+								DisplayText=sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields[tb.Index].Replace("_"," ").ToUpper(),
+								RealValue = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields[tb.Index].Replace("_"," ").ToUpper()},
+
+							new DisplayValueItem{
+								DisplayText=sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementTypes[tb.Index],
+								RealValue = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementTypes[tb.Index]},
+
+							new DisplayValueItem{
+								DisplayText=sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, tb.Index),
+								RealValue = sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, tb.Index) }
+						});
+
 						dataGridView_itemProps.Rows[indexDG].HeaderCell.Value = tb.Index.ToString();
 						indexDG++;
 					}
@@ -109,7 +125,7 @@ namespace sELedit.CORE.Extencion.Controls
 			{
 				if (item.Cells[0].Value.ToString().ToUpper() == change.ToString())
 				{
-					item.Cells[2].Value = value; break;
+					item.Cells[2].Value = new DisplayValueItem { DisplayText = value, RealValue = value }; break;
 				}
 			}
 			EnableSelectionItem = true;
@@ -119,7 +135,7 @@ namespace sELedit.CORE.Extencion.Controls
 
 		private void change_value(object sender, DataGridViewCellEventArgs ea)
 		{
-			//if (EnableSelectionItem) return;
+			if (!EnableSelectionItem) return;
 			try
 			{
 				if (sELeditCache.Instance.sELeditDatas.eLC != null && ea.ColumnIndex > -1 && ea.RowIndex > -1)
@@ -131,12 +147,13 @@ namespace sELedit.CORE.Extencion.Controls
 
 					if (dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value.ToString().Contains("[") && dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value.ToString().Contains("]"))
 					{
-						var _set_v = Convert.ToString(dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value.ToString()).Replace("[", "").Replace("] ", "").Split('-');
+						var _set_v = Convert.ToString((dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value as DisplayValueItem)?.RealValue.ToString()).Replace("[", "").Replace("] ", "").Split('-');
 						_set = _set_v[0].Replace(" ", "");
+
 					}
 					else
 					{
-						_set = Convert.ToString(dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value.ToString());
+						_set = Convert.ToString((dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value as DisplayValueItem)?.RealValue.ToString());
 					}
 
 
@@ -271,6 +288,7 @@ namespace sELedit.CORE.Extencion.Controls
 			}
 			catch (Exception exs)
 			{
+				EnableSelectionItem = true;
 				MessageBox.Show("CHANGING ERROR!\nFailed changing value, this value seems to be invalid.\n" + exs.Message);
 			}
 
@@ -334,7 +352,7 @@ namespace sELedit.CORE.Extencion.Controls
 					numericUpDown_SetValue.MaximalValue = Int32.MaxValue;
 					numericUpDown_SetValue.MinimalValue = 0;
 					numericUpDown_SetValue.Increment = 1;
-					numericUpDown_SetValue.Value = Convert.ToDecimal(dataGridView_itemProps.Rows[e.RowIndex].Cells[2].Value);
+					numericUpDown_SetValue.Value = Convert.ToDecimal((dataGridView_itemProps.Rows[e.RowIndex].Cells[2].Value as DisplayValueItem)?.RealValue);
 
 					panel_action.Visible = true;
 					break;
@@ -347,7 +365,7 @@ namespace sELedit.CORE.Extencion.Controls
 					numericUpDown_SetValue.MaximalValue = decimal.Parse("1,000000");
 					numericUpDown_SetValue.MinimalValue = decimal.Parse("0,000000");
 					numericUpDown_SetValue.Increment = 0.25M;
-					numericUpDown_SetValue.Value = Convert.ToDecimal(dataGridView_itemProps.Rows[e.RowIndex].Cells[2].Value);
+					numericUpDown_SetValue.Value = Convert.ToDecimal((dataGridView_itemProps.Rows[e.RowIndex].Cells[2].Value as DisplayValueItem)?.RealValue);
 
 					panel_action.Visible = true;
 					break;
@@ -357,12 +375,492 @@ namespace sELedit.CORE.Extencion.Controls
 				case "string:":
 					numericUpDown_SetValue.Visible = false;
 					textBox_SetValue.Visible = true;
-					textBox_SetValue.Text = (string)dataGridView_itemProps.Rows[e.RowIndex].Cells[2].Value;
+					textBox_SetValue.Text = (string)(dataGridView_itemProps.Rows[e.RowIndex].Cells[2].Value as DisplayValueItem)?.RealValue;
 
 					panel_action.Visible = true;
 					break;
 
 			}
+		}
+
+		private void dataGridView_item_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+		{
+			DataGridView dgv = (DataGridView)sender;
+			if (listSelectedIndex != 54 && listSelectedIndex != 40)
+			{
+
+				if (dgv.Rows.Count > 0)
+				{
+
+					try
+					{
+						string ID_ITEM = sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, 0).ToString();
+
+						//int indexName = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields, x => x.ToUpper() == "NAME");
+						string NAME_ITEM = dgv.Rows[e.RowIndex].Cells[0].Value.ToString().ToLower().Replace(" ", "_");//sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, indexName);
+
+						string TYPE_ITEM = dgv.Rows[e.RowIndex].Cells[1].Value.ToString().ToLower().Replace(" ", "_");
+
+						if (ID_ITEM != "0")
+						{
+
+							bool fi = false;
+							bool fini = false;
+
+
+
+							switch (NAME_ITEM)
+							{
+								case string x when ((x.EndsWith("_id_addon") || x.StartsWith("skills_") || x.StartsWith("after_death") || x.StartsWith("skill_hp") || x.EndsWith("_id_unique") || x.EndsWith("_id_rand")) && TYPE_ITEM.StartsWith("int32")):
+
+									dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem
+									{
+										DisplayText = "[" + ID_ITEM + "] - " + EQUIPMENT_ADDON.GetAddon(ID_ITEM.ToString()),
+										RealValue = ID_ITEM
+									};
+									break;
+
+								case string x when (x.StartsWith("addons_") && x.EndsWith("_id")):
+									break;
+
+								case string x when (x != ("character_combo_id") && x.EndsWith("element_id") || x.EndsWith("id_to_make") || x.StartsWith("id_upgrade_equip") || x.StartsWith("id_drop")
+									|| (x.StartsWith("materials_") && x.EndsWith("_id")) || (x.StartsWith("equipments_") && x.EndsWith("_id")) || (x.StartsWith("drop_matters") && x.EndsWith("_id"))):
+
+									if (ID_ITEM != "0")
+									{
+										try
+										{
+											for (int L = 0; L < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; L++)
+											{
+												if (sELeditCache.Instance.sELeditDatas.eLC.Lists[L].itemUse == true)
+												{
+													int La = L;
+													int pos = 0;
+													int posN = 0;
+													for (int i = 0; i < sELeditCache.Instance.sELeditDatas.eLC.Lists[La].elementFields.Length; i++)
+													{
+														if (sELeditCache.Instance.sELeditDatas.eLC.Lists[La].elementFields[i] == "Name")
+														{
+															posN = i;
+
+														}
+														if (sELeditCache.Instance.sELeditDatas.eLC.Lists[La].elementFields[i] == "file_icon")
+														{
+															pos = i;
+															break;
+														}
+
+													}
+
+													for (int ef = 0; ef < sELeditCache.Instance.sELeditDatas.eLC.Lists[La].elementValues.Length; ef++)
+													{
+
+														//if (ID_ITEM == sELeditCache.Instance.sELeditDatas.eLC.GetValue(La, ef, 0))
+														//{
+														//	if (sELeditCache.Instance.sELeditDatas.database.sourceBitmap != null && sELeditCache.Instance.sELeditDatas.database.ContainsKey(Path.GetFileName(sELeditCache.Instance.sELeditDatas.eLC.GetValue(La, ef, pos))))
+														//	{
+														//		if (sELeditCache.Instance.sELeditDatas.database.ContainsKey(Path.GetFileName(sELeditCache.Instance.sELeditDatas.eLC.GetValue(La, ef, pos))))
+														//		{
+														//			if (dgv.Rows[e.RowIndex].Cells[2].Value.ToString() == "0")
+														//			{
+														//				((TextAndImageCell)dgv.Rows[e.RowIndex].Cells[2]).Image = Extensions.ResizeImage(null, 0, 0);
+														//			}
+														//			else
+														//			{
+														//				((TextAndImageCell)dgv.Rows[e.RowIndex].Cells[2]).Image = Extensions.ResizeImage(sELeditCache.Instance.sELeditDatas.database.images(Path.GetFileName(sELeditCache.Instance.sELeditDatas.eLC.GetValue(La, ef, pos))), 18, 18);
+														//			}
+
+														//			dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem
+														//			{
+														//				DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(La, ef, posN),
+														//				RealValue = ID_ITEM
+														//			};
+
+														//			fi = true;
+
+														//			Color clr;
+														//			try
+														//			{ clr = Helper.getByID(sELeditCache.Instance.sELeditDatas.database.item_color[int.Parse(ID_ITEM.ToString())]); }
+														//			catch (Exception)
+														//			{ clr = Color.White; }
+
+														//			dgv.Rows[e.RowIndex].Cells[2].Style.ForeColor = clr;
+														//			break;
+														//		}
+														//	}
+														//}
+													}
+
+													if (fi == true)
+													{
+														break;
+													}
+												}
+											}
+
+
+										}
+										catch (Exception ex)
+										{
+
+											//MessageBox.Show(ex.Message + "\n" + linha);
+										}
+									}
+									break;
+
+								case "character_combo_id":
+									for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[3].elementFields.Length; k++)
+									{
+										if (sELeditCache.Instance.sELeditDatas.eLC.Lists[3].elementFields[k] == "character_combo_id")
+										{
+											dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + Extensions.DecodingCharacterComboId(ID_ITEM.ToString()), RealValue = ID_ITEM };
+											break;
+										}
+									}
+									break;
+
+								case "proc_type":
+									for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[3].elementFields.Length; k++)
+									{
+										if (sELeditCache.Instance.sELeditDatas.eLC.Lists[3].elementFields[k] == "proc_type")
+										{
+											dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + Extensions.Get_proc_type(ID_ITEM), RealValue = ID_ITEM };
+											break;
+										}
+									}
+									break;
+
+								case "id_major_type":
+									for (int l = 0; l < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; l++)
+									{
+										string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "MAJOR_TYPE");
+										string conf = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
+										if (major == conf)
+										{
+											for (int m = 0; m < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length; m++)
+											{
+												if (int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 0)) == int.Parse(ID_ITEM))
+												{
+													dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 1), RealValue = ID_ITEM };
+													fini = true;
+												}
+
+
+												if (fini)
+												{
+													break;
+												}
+											}
+											if (fini)
+											{
+												break;
+											}
+
+										}
+									}
+									break;
+
+								case "id_sub_type":
+									for (int l = 0; l < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; l++)
+									{
+										string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "SUB_TYPE");
+										string conf = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
+										if (major == conf)
+										{
+											for (int m = 0; m < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length; m++)
+											{
+												if (int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 0)) == int.Parse(ID_ITEM))
+												{
+													dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 1), RealValue = ID_ITEM };
+													fini = true;
+												}
+
+												if (fini)
+												{
+													break;
+												}
+											}
+											if (fini)
+											{
+												break;
+											}
+
+										}
+									}
+									break;
+
+								case string x when (x.StartsWith("addon_") && !x.EndsWith("rate")):
+									dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + EQUIPMENT_ADDON.GetAddon(ID_ITEM), RealValue = ID_ITEM };
+									break;
+
+								case "id_tasks_":
+									for (int i = 0; i < sELeditCache.Instance.sELeditDatas.database.Tasks.Length; i++)
+									{
+										if (sELeditCache.Instance.sELeditDatas.database.Tasks[i].ID == int.Parse(ID_ITEM))
+										{
+											dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.database.Tasks[i].Name;
+											break;
+										}
+
+									}
+									break;
+
+								case "id_type":
+									for (int l = 0; l < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; l++)
+									{
+										string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "TYPE");
+										string conf = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
+										if (major == conf)
+										{
+											for (int m = 0; m < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length; m++)
+											{
+												if (int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 0)) == int.Parse(ID_ITEM))
+												{
+													dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 1), RealValue = ID_ITEM };
+													fini = true;
+												}
+
+												if (fini)
+												{
+													break;
+												}
+											}
+											if (fini)
+											{
+												break;
+											}
+
+										}
+									}
+									break;
+
+								case string x when (x.StartsWith("task_lists_") && x.EndsWith("_id")):
+									for (int i = 0; i < sELeditCache.Instance.sELeditDatas.database.Tasks.Length; i++)
+									{
+										if (sELeditCache.Instance.sELeditDatas.database.Tasks[i].ID == int.Parse(ID_ITEM))
+										{
+
+											ImageList imageList1 = new ImageList();
+											string[] arquivos = Directory.GetFiles(Application.StartupPath + @"\images", "*.png", SearchOption.TopDirectoryOnly);
+											for (int fd = 0; fd < arquivos.Length; fd++)
+											{
+												imageList1.Images.Add(Image.FromFile(arquivos[fd]));
+
+											}
+
+
+
+											string asds = sELeditCache.Instance.sELeditDatas.database.Tasks[i].m_ulType.ToString();
+											((TextAndImageCell)dgv.Rows[e.RowIndex].Cells[2]).Image = Extensions.ResizeImage(imageList1.Images[5], 32, 21);
+											//MessageBox.Show(sELeditCache.Instance.sELeditDatas.database.Tasks[i].m_ulType);
+											dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.database.Tasks[i].Name;
+											break;
+										}
+
+									}
+									break;
+
+								#region 57
+
+								case "id_make_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[54].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(54, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(54, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+
+
+
+
+										}
+									}
+									break;
+								case "id_buy_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[41].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(41, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(41, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+										}
+									}
+									break;
+								case "id_sell_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[40].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(40, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(40, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+
+										}
+									}
+									break;
+								case "id_repair_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[42].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(42, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(42, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+										}
+									}
+									break;
+								case "id_install_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[43].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(43, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(43, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+										}
+									}
+									break;
+								case "id_uninstall_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[44].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(44, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(44, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+										}
+									}
+									break;
+								case "id_task_out_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[46].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(46, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(46, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+										}
+									}
+									break;
+								case "id_task_in_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[45].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(45, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(45, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+										}
+									}
+									break;
+								case "id_task_matter_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[47].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(47, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(47, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+										}
+									}
+									break;
+								case "id_skill_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[48].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(48, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem
+												{
+													DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(48, xe, 1),
+													RealValue = ID_ITEM
+												};
+												break;
+											}
+										}
+									}
+									break;
+								case "id_heal_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[49].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(49, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(49, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+										}
+									}
+									break;
+								case "id_transmit_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[50].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(50, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(50, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+										}
+									}
+									break;
+								case "id_proxy_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[52].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(52, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(52, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+										}
+									}
+									break;
+								case "id_storage_service":
+									{
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[53].elementValues.Length; xe++)
+										{
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(53, xe, 0) == ID_ITEM)
+											{
+												dgv.Rows[e.RowIndex].Cells[2].Value = new DisplayValueItem { DisplayText = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(53, xe, 1), RealValue = ID_ITEM };
+												break;
+											}
+										}
+									}
+									break;
+								#endregion
+
+
+								default:
+									break;
+							}
+						}
+
+					}
+
+					catch (Exception exd)
+					{
+						exd.ErrorGet();
+
+					}
+
+
+
+				}
+
+			}
+
 		}
 	}
 

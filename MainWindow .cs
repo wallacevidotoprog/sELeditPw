@@ -12,79 +12,40 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 
 namespace sELedit
 {
 
 	public partial class MainWindow : Form
 	{
-		[DllImport("Kernel32.dll")]
-		static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, int nSize, int lpNumberOfBytesRead);
-		[DllImport("user32.dll")]
-		private static extern IntPtr GetForegroundWindow();
-
 		#region NEW
 
 		private DataGridProps dgp;
+
+		public Cursor CursG;
+		public Cursor CursH;
+
+		public Configs configs;
+
 		#endregion
 
 
-
-
-
-
-
-
-
-		public static eListCollection eLC;
-		public eListConversation conversationList;
-
-		private Point mouseMoveCheck;
-		public bool EnableSelectionList = true;
-		public bool EnableSelectionItem = true;
-		string ElementsPath = "";
-		public Bitmap raw_img;
-		public static string[] buff_str;
-		public static string[] skillstr;
-		public static SortedList addonslist;
-		public static SortedList InstanceList;
-		public static CacheSave database = null;
-		private int proctypeLocation = 0;
-		private int proctypeLocationvak = 0;
 		private IToolType customTooltype;
 		ToolTip t = new ToolTip();
 		ToolTip_addons t2 = new ToolTip_addons();
-		public static SortedList LocalizationText;
-		string textBox_offset = null;
-		XmlSerializer deserializer;
-		TextReader reader;
-
-
-		//public AssetManager asm;
-		Thread AssetManagerLoad;
-		Thread _loads;
-		RECIPES rr;
 		SurfacesChanger _SurfacesChanger;
-		public bool ATT_CONF { get; set; }
-		public bool SetItens { get; private set; }
-		public string Btn_Select { get; private set; }
 		public Select_id select;
 		public ClassMaskWindow eClassMask;
 		public RECIPES rec;
+
 		public ProcTypeGenerator procType;
 		public set_ADDONS setADD;
 		public _major_sub major_Sub;
-		public Configs configs;
-		private DataGridView dgV;
-		private string typeItem;
-		private InfoTool ift;
-		private PCKs pck;
-		public bool Essenc;
+
+		//private PCKs pck;
+		
 
 		public MainWindow()
 		{
@@ -134,7 +95,7 @@ namespace sELedit
 
 			//if (configs.ATT)
 			//{
-			//    eLC = null; database.Tasks = null; database.Gshop = null; database.GshopEvent = null;
+			//    sELeditCache.Instance.sELeditDatas.eLC = null; sELeditCache.Instance.sELeditDatas.database.Tasks = null; sELeditCache.Instance.sELeditDatas.database.Gshop = null; sELeditCache.Instance.sELeditDatas.database.GshopEvent = null;
 			//    AssetManagerLoad = new Thread(delegate () { Loads(); }); AssetManagerLoad.Start();
 			//}
 
@@ -148,18 +109,19 @@ namespace sELedit
 		private void saveElementedataToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 
-			if (ElementsPath != "" && File.Exists(ElementsPath))
+			if (sELeditCache.Instance.Settings.CheckFileExists(nameof(sELeditCache.Instance.Settings.ElementsDataPath)))
 			{
 				try
 				{
+
 					Cursor = Cursors.AppStarting;
 					//progressBar_progress.Style = ProgressBarStyle.Marquee;
-					File.Copy(ElementsPath, ElementsPath + ".bak", true);
-					if (eLC.ConversationListIndex > -1 && eLC.Lists.Length > eLC.ConversationListIndex)
+					File.Copy(sELeditCache.Instance.Settings.ElementsDataPath, sELeditCache.Instance.Settings.ElementsDataPath + ".bak", true);
+					if (sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex > -1 && sELeditCache.Instance.sELeditDatas.eLC.Lists.Length > sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 					{
-						eLC.Lists[eLC.ConversationListIndex].elementValues[0][0] = conversationList.GetBytes();
+						sELeditCache.Instance.sELeditDatas.eLC.Lists[sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex].elementValues[0][0] = sELeditCache.Instance.sELeditDatas.conversationList.GetBytes();
 					}
-					eLC.Save(ElementsPath);
+					sELeditCache.Instance.sELeditDatas.eLC.Save(sELeditCache.Instance.Settings.ElementsDataPath);
 					//progressBar_progress.Style = ProgressBarStyle.Continuous;
 					Cursor = Cursors.Default;
 				}
@@ -174,15 +136,15 @@ namespace sELedit
 
 		private void saveGshop12ToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			//if (database.Gshop != null)
+			//if (sELeditCache.Instance.sELeditDatas.database.Gshop != null)
 			//{
-			//    SalveShops.SaveGshopData(database.Gshop, XmlData.GshopDataPath);
-			//    SalveShops.SaveGshopSevData(database.Gshop, XmlData.GshopDataPath);
+			//    SalveShops.SaveGshopData(sELeditCache.Instance.sELeditDatas.database.Gshop, XmlData.GshopDataPath);
+			//    SalveShops.SaveGshopSevData(sELeditCache.Instance.sELeditDatas.database.Gshop, XmlData.GshopDataPath);
 			//}
-			//if (database.GshopEvent != null)
+			//if (sELeditCache.Instance.sELeditDatas.database.GshopEvent != null)
 			//{
-			//    SalveShops.SaveGshopData(database.GshopEvent, XmlData.Gshop1DataPath);
-			//    SalveShops.SaveGshopSevData(database.GshopEvent, XmlData.Gshop1DataPath);
+			//    SalveShops.SaveGshopData(sELeditCache.Instance.sELeditDatas.database.GshopEvent, XmlData.Gshop1DataPath);
+			//    SalveShops.SaveGshopSevData(sELeditCache.Instance.sELeditDatas.database.GshopEvent, XmlData.Gshop1DataPath);
 			//}
 
 
@@ -206,11 +168,11 @@ namespace sELedit
 					Cursor = Cursors.AppStarting;
 					//progressBar_progress.Style = ProgressBarStyle.Marquee;
 					//File.Copy(eSave.FileName, eSave.FileName + ".bak", true);
-					if (eLC.ConversationListIndex > -1 && eLC.Lists.Length > eLC.ConversationListIndex)
+					if (sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex > -1 && sELeditCache.Instance.sELeditDatas.eLC.Lists.Length > sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 					{
-						eLC.Lists[eLC.ConversationListIndex].elementValues[0][0] = conversationList.GetBytes();
+						sELeditCache.Instance.sELeditDatas.eLC.Lists[sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex].elementValues[0][0] = sELeditCache.Instance.sELeditDatas.conversationList.GetBytes();
 					}
-					eLC.Save(eSave.FileName);
+					sELeditCache.Instance.sELeditDatas.eLC.Save(eSave.FileName);
 					//progressBar_progress.Style = ProgressBarStyle.Continuous;
 					Cursor = Cursors.Default;
 				}
@@ -240,31 +202,31 @@ namespace sELedit
 		private void change_list(object sender, EventArgs ea)
 		{
 
-			//pictureBox_icon.BackgroundImage = database.images("unknown.dds");
+			//pictureBox_icon.BackgroundImage = sELeditCache.Instance.sELeditDatas.database.images("unknown.dds");
 			addItemRecipeToolStripMenuItem.Visible = false;
 			dataGridView_elems.Columns[1].Visible = false;
 
-			//if (eLC.Lists[(int)comboBox_lists.SelectedValue].itemUse)
+			//if (sELeditCache.Instance.sELeditDatas.eLC.Lists[(int)comboBox_lists.SelectedValue].itemUse)
 			//{
 			//	addItemRecipeToolStripMenuItem.Visible = true;
 			//}
 
-			if (comboBox_lists.SelectedIndex > -1 && EnableSelectionList)
+			if (comboBox_lists.SelectedIndex > -1 /*&& EnableSelectionList*/)
 			{
 				int l = (int)comboBox_lists.SelectedValue;
 				dataGridView_elems.Rows.Clear();
-				//textBox_offset = eLC.GetOffset(l);
+				//textBox_offset = sELeditCache.Instance.sELeditDatas.eLC.GetOffset(l);
 
 				//dataGridView_item.Rows.Clear();
 
-				if (l != eLC.ConversationListIndex)
+				if (l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 				{
 					// Find Position for Name
 					int pos = -1;
 
-					for (int i = 0; i < eLC.Lists[l].elementFields.Length; i++)
+					for (int i = 0; i < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields.Length; i++)
 					{
-						if (eLC.Lists[l].elementFields[i] == "Name")
+						if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[i] == "Name")
 						{
 							pos = i;
 							break;
@@ -272,23 +234,21 @@ namespace sELedit
 
 					}
 
-					for (int e = 0; e < eLC.Lists[l].elementValues.Length; e++)
+					for (int e = 0; e < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length; e++)
 					{
-						dataGridView_elems.Rows.Add(new object[] { eLC.GetValue(l, e, 0), null, eLC.GetValue(l, e, pos) });
+						dataGridView_elems.Rows.Add(new object[] { sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, 0), null, sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, pos) });
 
 					}
-					if (eLC.Lists[l].itemUse) { dataGridView_elems.Columns[1].Visible = true; }
+					if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].itemUse) { dataGridView_elems.Columns[1].Visible = true; }
 				}
 				else
 				{
-					for (int e = 0; e < conversationList.talk_proc_count; e++)
+					for (int e = 0; e < sELeditCache.Instance.sELeditDatas.conversationList.talk_proc_count; e++)
 					{
-						dataGridView_elems.Rows.Add(new object[] { conversationList.talk_procs[e].id_talk, Properties.Resources.unknown, conversationList.talk_procs[e].id_talk + " - Dialog" });
+						dataGridView_elems.Rows.Add(new object[] { sELeditCache.Instance.sELeditDatas.conversationList.talk_procs[e].id_talk, Properties.Resources.unknown, sELeditCache.Instance.sELeditDatas.conversationList.talk_procs[e].id_talk + " - Dialog" });
 					}
 				}
 
-
-				Btn_Select = "PRIMAL";
 				change_item(null, null);
 
 
@@ -401,7 +361,7 @@ namespace sELedit
 
 		private void MouseClick(object sender, EventArgs et)
 		{
-			SetItens = false;
+
 			Button button = (Button)sender;
 
 			int l = comboBox_lists.SelectedIndex;
@@ -410,7 +370,7 @@ namespace sELedit
 			int pd = 0;
 			//dataGridView_item.Rows.Clear();
 			string list = button.Name;
-			Btn_Select = list;
+
 
 			if (list == "retorno")
 			{
@@ -437,17 +397,17 @@ namespace sELedit
 				//}
 
 			}
-			for (int f = 0; f < eLC.Lists[l].elementValues[e].Length; f++)
+			for (int f = 0; f < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues[e].Length; f++)
 			{
-				var a = eLC.Lists[l].elementFields[f];
+				var a = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[f];
 
 
 				if (a.StartsWith("addons_") || a.StartsWith("skills_") || a.StartsWith("after_death") || a.StartsWith("skill_hp"))
 				{
 					if (list.StartsWith("addons_") || list.StartsWith("skills_") || list.StartsWith("after_death") || list.StartsWith("skill_hp"))
 					{
-						var b = eLC.Lists[l].elementTypes[f];
-						var c = eLC.GetValue(l, e, f);
+						var b = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementTypes[f];
+						var c = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, f);
 
 						//dataGridView_item.Rows.Add(new string[] { a, b, c, f.ToString() });
 						//dataGridView_item.Rows[pd].HeaderCell.Value = pd.ToString();
@@ -462,8 +422,8 @@ namespace sELedit
 				{
 					if (list.StartsWith("rands_"))
 					{
-						var b = eLC.Lists[l].elementTypes[f];
-						var c = eLC.GetValue(l, e, f);
+						var b = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementTypes[f];
+						var c = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, f);
 
 						//dataGridView_item.Rows.Add(new string[] { a, b, c, f.ToString() });
 						//dataGridView_item.Rows[pd].HeaderCell.Value = pd.ToString();
@@ -476,8 +436,8 @@ namespace sELedit
 				{
 					if (list.StartsWith("uniques_"))
 					{
-						var b = eLC.Lists[l].elementTypes[f];
-						var c = eLC.GetValue(l, e, f);
+						var b = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementTypes[f];
+						var c = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, f);
 
 						//dataGridView_item.Rows.Add(new string[] { a, b, c, f.ToString() });
 						//dataGridView_item.Rows[pd].HeaderCell.Value = pd.ToString();
@@ -489,8 +449,8 @@ namespace sELedit
 				{
 					if (list.StartsWith("materials_") || list.StartsWith("drop_matters"))
 					{
-						var b = eLC.Lists[l].elementTypes[f];
-						var c = eLC.GetValue(l, e, f);
+						var b = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementTypes[f];
+						var c = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, f);
 
 						//dataGridView_item.Rows.Add(new string[] { a, b, c, f.ToString() });
 						//dataGridView_item.Rows[pd].HeaderCell.Value = pd.ToString();
@@ -502,8 +462,8 @@ namespace sELedit
 				{
 					if (list == "PRIMAL")
 					{
-						var b = eLC.Lists[l].elementTypes[f];
-						var c = eLC.GetValue(l, e, f);
+						var b = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementTypes[f];
+						var c = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, f);
 
 						//dataGridView_item.Rows.Add(new string[] { a, b, c, f.ToString() });
 						//dataGridView_item.Rows[pd].HeaderCell.Value = pd.ToString();
@@ -527,7 +487,7 @@ namespace sELedit
 
 
 			}
-			SetItens = true;
+
 
 		}
 
@@ -605,12 +565,13 @@ namespace sELedit
 		private void textBox_NAME_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
 
-			if (eLC.Lists[comboBox_lists.SelectedIndex].itemUse)
+			if (sELeditCache.Instance.sELeditDatas.eLC.Lists[comboBox_lists.SelectedIndex].itemUse)
 			{
+
 				try
 				{
 					(new _ListNamesColor(textBox_NAME.Text, Color.Black, comboBox_lists.SelectedIndex, textBox_NAME.Width, Cursor.Position, int.Parse(numericUpDownEx_ID.Value.ToString()))).ShowDialog(this);
-					textBox_NAME.ForeColor = Helper.getByID(database.item_color[int.Parse(numericUpDownEx_ID.Value.ToString())]);
+					textBox_NAME.ForeColor = Helper.getByID(sELeditCache.Instance.sELeditDatas.database.item_color[int.Parse(numericUpDownEx_ID.Value.ToString())]);
 				}
 				catch (Exception ex)
 				{
@@ -850,88 +811,7 @@ namespace sELedit
 			#endregion
 		}
 		#endregion
-		#region etc
-
-		//if (Btn_Select.StartsWith("addons_") || Btn_Select.StartsWith("rands_") || Btn_Select.StartsWith("uniques_") || Btn_Select.StartsWith("drop_matters"))
-		//{
-		//	DataGridView dataGrid = dataGridView_item;
-		//	ProbabilityEditorWindow addonss;
-		//	ElementProbability[] Elements = null;
-		//	Elements = new ElementProbability[dataGrid.Rows.Count];
-		//	int line = 0;
-		//	for (int i = 0; i < dataGrid.Rows.Count; i++)
-		//	{
-		//		string name = dataGrid.Rows[i].Cells[0].Value.ToString().Split(new string[] { " - " }, StringSplitOptions.None)[0].Replace("[", "").Replace("]", "").Replace(" ", "");
-		//		string type = dataGrid.Rows[i].Cells[1].Value.ToString();
-		//		string value = dataGrid.Rows[i].Cells[2].Value.ToString().Split(new string[] { " - " }, StringSplitOptions.None)[0].Replace("[", "").Replace("]", "").Replace(" ", "");
-		//		string valueP = dataGrid.Rows[i + 1].Cells[2].Value.ToString().Split(new string[] { " - " }, StringSplitOptions.None)[0].Replace("[", "").Replace("]", "").Replace(" ", "");
-
-		//		if (type.Contains("int32"))
-		//		{
-		//			if (value != "0")
-		//			{
-		//				Elements[line] = new ElementProbability();
-		//				Elements[line].Id = int.Parse(value);
-		//				Elements[line].Probability = float.Parse(valueP) * 100f;
-
-		//				line++;
-		//			}
-		//			i++;
-		//		}
-
-		//	}
-		//	if (Elements != null)
-		//	{
-		//		Elements = Elements.Where(a => a != null).ToArray();
-
-		//		if (Btn_Select.StartsWith("drop_matters"))
-		//		{
-		//			addonss = new NOVO.ProbabilityEditorWindow(Elements, 0);
-		//			addonss.ShowDialog();
-		//		}
-		//		else
-		//		{
-		//			addonss = new NOVO.ProbabilityEditorWindow(Elements, 1);
-		//			addonss.ShowDialog();
-		//		}
-
-		//		line = 0;
-		//		Elements = addonss.Elements;
-		//		for (int i = 0; i < dataGrid.Rows.Count; i++)
-		//		{
-		//			string type = dataGrid.Rows[i].Cells[1].Value.ToString();
-
-		//			if (type.Contains("int32"))
-		//			{
-		//				if (line < Elements.Length)
-		//				{
-		//					dataGrid.Rows[i].Cells[2].Value = Elements[line].Id;
-		//					dataGrid.Rows[i + 1].Cells[2].Value = Elements[line].Probability / 100f;
-		//					line++;
-		//				}
-
-		//			}
-		//			i++;
-		//		}
-		//	}
-
-		//}
-		//else
-		//{
-		//	if (Btn_Select == "PRIMAL")
-		//	{
-		//	}
-		//	if (Btn_Select == "retorno")
-		//	{
-		//	}
-		//	#endregion
-		//}
-
-
-		//}
-
-		#endregion
-
+		
 
 		#region Grids
 
@@ -944,14 +824,14 @@ namespace sELedit
 
 				dataGridView_recipes.Rows.Clear();
 				string id_RP = null;
-				for (int k = 0; k < eLC.Lists[69].elementValues.Length; k++)
+				for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[69].elementValues.Length; k++)
 				{
-					id_RP = eLC.GetValue(69, k, 0);
-					byte[] id_name = enc.GetBytes(eLC.GetValue(69, k, 3));
-					var id_1 = eLC.GetValue(69, k, 8);
-					var id_2 = eLC.GetValue(69, k, 10);
-					var id_3 = eLC.GetValue(69, k, 12);
-					var id_4 = eLC.GetValue(69, k, 14);
+					id_RP = sELeditCache.Instance.sELeditDatas.eLC.GetValue(69, k, 0);
+					byte[] id_name = enc.GetBytes(sELeditCache.Instance.sELeditDatas.eLC.GetValue(69, k, 3));
+					var id_1 = sELeditCache.Instance.sELeditDatas.eLC.GetValue(69, k, 8);
+					var id_2 = sELeditCache.Instance.sELeditDatas.eLC.GetValue(69, k, 10);
+					var id_3 = sELeditCache.Instance.sELeditDatas.eLC.GetValue(69, k, 12);
+					var id_4 = sELeditCache.Instance.sELeditDatas.eLC.GetValue(69, k, 14);
 					//string itens = "";
 					if (ID == int.Parse(id_1) || ID == int.Parse(id_2) || ID == int.Parse(id_3))
 					{
@@ -973,23 +853,23 @@ namespace sELedit
 					if (IdForMaker != null)
 					{
 
-						for (int k = 0; k < eLC.Lists[54].elementValues.Length; k++)
+						for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[54].elementValues.Length; k++)
 						{
-							for (int f = 0; f < eLC.Lists[54].elementValues[k].Length; f++)
+							for (int f = 0; f < sELeditCache.Instance.sELeditDatas.eLC.Lists[54].elementValues[k].Length; f++)
 							{
-								var a = eLC.Lists[54].elementFields[f];
+								var a = sELeditCache.Instance.sELeditDatas.eLC.Lists[54].elementFields[f];
 
 								if (a.Contains("_id_goods"))
 								{
-									var c = eLC.GetValue(54, k, f);
+									var c = sELeditCache.Instance.sELeditDatas.eLC.GetValue(54, k, f);
 									if (c == IdForMaker)
 									{
-										var idMk = eLC.GetValue(54, k, 0);
-										for (int kk = 0; kk < eLC.Lists[57].elementValues.Length; kk++)
+										var idMk = sELeditCache.Instance.sELeditDatas.eLC.GetValue(54, k, 0);
+										for (int kk = 0; kk < sELeditCache.Instance.sELeditDatas.eLC.Lists[57].elementValues.Length; kk++)
 										{
-											if (eLC.GetValue(57, kk, 26) == idMk)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(57, kk, 26) == idMk)
 											{
-												dataGridView_npcs.Rows.Add(new object[] { eLC.GetValue(57, kk, 0), eLC.GetValue(57, kk, 1), "MAKER", IdForMaker });
+												dataGridView_npcs.Rows.Add(new object[] { sELeditCache.Instance.sELeditDatas.eLC.GetValue(57, kk, 0), sELeditCache.Instance.sELeditDatas.eLC.GetValue(57, kk, 1), "MAKER", IdForMaker });
 											}
 
 										}
@@ -1009,24 +889,24 @@ namespace sELedit
 				if (ID != null || (ID != 0))
 				{
 
-					for (int k = 0; k < eLC.Lists[40].elementValues.Length; k++)
+					for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[40].elementValues.Length; k++)
 					{
-						for (int f = 0; f < eLC.Lists[40].elementValues[k].Length; f++)
+						for (int f = 0; f < sELeditCache.Instance.sELeditDatas.eLC.Lists[40].elementValues[k].Length; f++)
 						{
-							var a = eLC.Lists[40].elementFields[f];
+							var a = sELeditCache.Instance.sELeditDatas.eLC.Lists[40].elementFields[f];
 
 							if (a.EndsWith("_id"))
 							{
-								var c = eLC.GetValue(40, k, f);
+								var c = sELeditCache.Instance.sELeditDatas.eLC.GetValue(40, k, f);
 
 								if (c == ID.ToString())
 								{
-									var idMk = eLC.GetValue(40, k, 0);
-									for (int kk = 0; kk < eLC.Lists[57].elementValues.Length; kk++)
+									var idMk = sELeditCache.Instance.sELeditDatas.eLC.GetValue(40, k, 0);
+									for (int kk = 0; kk < sELeditCache.Instance.sELeditDatas.eLC.Lists[57].elementValues.Length; kk++)
 									{
-										if (eLC.GetValue(57, kk, 12) == idMk)
+										if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(57, kk, 12) == idMk)
 										{
-											dataGridView_npcs.Rows.Add(new object[] { eLC.GetValue(57, kk, 0), eLC.GetValue(57, kk, 1), "SELL", ID });
+											dataGridView_npcs.Rows.Add(new object[] { sELeditCache.Instance.sELeditDatas.eLC.GetValue(57, kk, 0), sELeditCache.Instance.sELeditDatas.eLC.GetValue(57, kk, 1), "SELL", ID });
 										}
 
 									}
@@ -1051,20 +931,20 @@ namespace sELedit
 				dataGridView_SUITE.Rows.Clear();
 				int[] IdCombo = new int[12];
 				bool Suc = false;
-				for (int k = 0; k < eLC.Lists[90].elementValues.Length; k++)
+				for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementValues.Length; k++)
 				{
 					for (int a = 1; a < 13; a++)
 					{
-						for (int t = 0; t < eLC.Lists[90].elementFields.Length; t++)
+						for (int t = 0; t < sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementFields.Length; t++)
 						{
-							if (eLC.Lists[90].elementFields[t] == "equipments_" + a + "_id")
+							if (sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementFields[t] == "equipments_" + a + "_id")
 							{
-								if (Convert.ToInt32(eLC.GetValue(90, k, t)) == Convert.ToInt32(ID/*eLC.GetValue(3, pos_item, 0)*/))
+								if (Convert.ToInt32(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, t)) == Convert.ToInt32(ID/*sELeditCache.Instance.sELeditDatas.eLC.GetValue(3, pos_item, 0)*/))
 								{
 									int xtx = 3;
 									for (int i = 0; i < 12; i++)
 									{
-										IdCombo[i] = int.Parse(eLC.GetValue(90, k, xtx)); xtx++;
+										IdCombo[i] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, xtx)); xtx++;
 									}
 
 									Suc = true;
@@ -1072,20 +952,20 @@ namespace sELedit
 									string name = "";
 									string max_equips = "0";
 
-									for (int n = 0; n < eLC.Lists[90].elementFields.Length; n++)
+									for (int n = 0; n < sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementFields.Length; n++)
 									{
-										if (eLC.Lists[90].elementFields[n] == "Name")
+										if (sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementFields[n] == "Name")
 										{
-											name = eLC.GetValue(90, k, n);
-											id = eLC.GetValue(90, k, 0);
+											name = sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, n);
+											id = sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 0);
 											break;
 										}
 									}
-									for (int n = 0; n < eLC.Lists[90].elementFields.Length; n++)
+									for (int n = 0; n < sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementFields.Length; n++)
 									{
-										if (eLC.Lists[90].elementFields[n] == "max_equips")
+										if (sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementFields[n] == "max_equips")
 										{
-											max_equips = eLC.GetValue(90, k, n);
+											max_equips = sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, n);
 											break;
 										}
 									}
@@ -1117,13 +997,13 @@ namespace sELedit
 
 				#region desc
 				// System.NullReferenceException: 'Referência de objeto não definida para uma instância de um objeto.'
-				//for (int i = 0; i < database.ItemUse.Count; i++)
+				//for (int i = 0; i < sELeditCache.Instance.sELeditDatas.database.ItemUse.Count; i++)
 				//{
-				//	if (int.Parse(database.ItemUse.GetKey(i).ToString()) == comboBox_lists.SelectedIndex)
+				//	if (int.Parse(sELeditCache.Instance.sELeditDatas.database.ItemUse.GetKey(i).ToString()) == comboBox_lists.SelectedIndex)
 				//	{
-				//		if (database.item_ext_desc.ContainsKey(ID.ToString()))
+				//		if (sELeditCache.Instance.sELeditDatas.database.item_ext_desc.ContainsKey(ID.ToString()))
 				//		{
-				//			SetText(database.item_ext_desc[ID.ToString()].ToString());
+				//			SetText(sELeditCache.Instance.sELeditDatas.database.item_ext_desc[ID.ToString()].ToString());
 
 				//		}
 
@@ -1134,18 +1014,18 @@ namespace sELedit
 				#region Task
 				//dataGridView_tasks.Rows.Clear();
 				//dataGridView1.Rows.Clear();
-				//if (database.Tasks != null)
+				//if (sELeditCache.Instance.sELeditDatas.database.Tasks != null)
 				//{
-				//	for (int t = 0; t < database.Tasks.Length; t++)
+				//	for (int t = 0; t < sELeditCache.Instance.sELeditDatas.database.Tasks.Length; t++)
 				//	{
-				//		for (int m = 0; m < database.Tasks[t].m_Award_S.m_CandItems.Length; m++)
+				//		for (int m = 0; m < sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems.Length; m++)
 				//		{
-				//			for (int i = 0; i < database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems.Length; i++)
+				//			for (int i = 0; i < sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems.Length; i++)
 				//			{
-				//				if (database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_ulItemTemplId == ID)
+				//				if (sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_ulItemTemplId == ID)
 				//				{
 
-				//					dataGridView_tasks.Rows.Add(new object[] { database.Tasks[t].ID, database.Tasks[t].Name, database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_ulItemNum + " UN", Convert.ToDecimal(database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_fProb * 100) + "%  " });
+				//					dataGridView_tasks.Rows.Add(new object[] { sELeditCache.Instance.sELeditDatas.database.Tasks[t].ID, sELeditCache.Instance.sELeditDatas.database.Tasks[t].Name, sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_ulItemNum + " UN", Convert.ToDecimal(sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_fProb * 100) + "%  " });
 				//				}
 				//			}
 				//		}
@@ -1156,16 +1036,16 @@ namespace sELedit
 				//	{
 
 				//		dataGridView1.Rows.Clear();
-				//		for (int t = 0; t < database.Tasks.Length; t++)
+				//		for (int t = 0; t < sELeditCache.Instance.sELeditDatas.database.Tasks.Length; t++)
 				//		{
-				//			if (database.Tasks[t].ID == int.Parse(dataGridView_item.Rows[4].Cells[2].Value.ToString().Replace("[", "").Replace("]", "").Split(new string[] { " - " }, StringSplitOptions.None)[0].ToString().Replace(" ", "")))
+				//			if (sELeditCache.Instance.sELeditDatas.database.Tasks[t].ID == int.Parse(dataGridView_item.Rows[4].Cells[2].Value.ToString().Replace("[", "").Replace("]", "").Split(new string[] { " - " }, StringSplitOptions.None)[0].ToString().Replace(" ", "")))
 				//			{
-				//				for (int m = 0; m < database.Tasks[t].m_Award_S.m_CandItems.Length; m++)
+				//				for (int m = 0; m < sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems.Length; m++)
 				//				{
-				//					for (int i = 0; i < database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems.Length; i++)
+				//					for (int i = 0; i < sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems.Length; i++)
 				//					{
 
-				//						dataGridView1.Rows.Add(new object[] { database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_ulItemTemplId, database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_ulItemNum + " UN", Convert.ToDecimal(database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_fProb * 100) + "%  " });
+				//						dataGridView1.Rows.Add(new object[] { sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_ulItemTemplId, sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_ulItemNum + " UN", Convert.ToDecimal(sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_fProb * 100) + "%  " });
 
 				//					}
 				//					break;
@@ -1187,15 +1067,15 @@ namespace sELedit
 
 				#region GSHOP
 				//dataGridView_gshop.Rows.Clear();
-				//if (database.Gshop != null)
+				//if (sELeditCache.Instance.sELeditDatas.database.Gshop != null)
 				//{
-				//	for (int i = 0; i < database.Gshop.List_items.Count; i++)
+				//	for (int i = 0; i < sELeditCache.Instance.sELeditDatas.database.Gshop.List_items.Count; i++)
 				//	{
-				//		if (database.Gshop.List_items[i].Id == ID)
+				//		if (sELeditCache.Instance.sELeditDatas.database.Gshop.List_items[i].Id == ID)
 				//		{
 				//			try
 				//			{
-				//				dataGridView_gshop.Rows.Add(new object[] { "GSHOP", database.Gshop.List_categories[database.Gshop.List_items[i].Item_category].Category_name, database.Gshop.List_categories[database.Gshop.List_items[i].Item_category].Sub_categories[database.Gshop.List_items[i].Item_sub_category], database.Gshop.List_items[i].Amount, Convert.ToDecimal(database.Gshop.List_items[i].Sales[0].Price) / 100 });
+				//				dataGridView_gshop.Rows.Add(new object[] { "GSHOP", sELeditCache.Instance.sELeditDatas.database.Gshop.List_categories[sELeditCache.Instance.sELeditDatas.database.Gshop.List_items[i].Item_category].Category_name, sELeditCache.Instance.sELeditDatas.database.Gshop.List_categories[sELeditCache.Instance.sELeditDatas.database.Gshop.List_items[i].Item_category].Sub_categories[sELeditCache.Instance.sELeditDatas.database.Gshop.List_items[i].Item_sub_category], sELeditCache.Instance.sELeditDatas.database.Gshop.List_items[i].Amount, Convert.ToDecimal(sELeditCache.Instance.sELeditDatas.database.Gshop.List_items[i].Sales[0].Price) / 100 });
 
 				//			}
 				//			catch (Exception)
@@ -1208,15 +1088,15 @@ namespace sELedit
 				//	}
 				//}
 				//dataGridView_gshop.ClearSelection();
-				//if (database.GshopEvent != null)
+				//if (sELeditCache.Instance.sELeditDatas.database.GshopEvent != null)
 				//{
-				//	for (int i = 0; i < database.GshopEvent.List_items.Count; i++)
+				//	for (int i = 0; i < sELeditCache.Instance.sELeditDatas.database.GshopEvent.List_items.Count; i++)
 				//	{
-				//		if (database.GshopEvent.List_items[i].Id == ID)
+				//		if (sELeditCache.Instance.sELeditDatas.database.GshopEvent.List_items[i].Id == ID)
 				//		{
 				//			try
 				//			{
-				//				dataGridView_gshop.Rows.Add(new object[] { "GSHOP EVENT", database.GshopEvent.List_categories[database.GshopEvent.List_items[i].Item_category].Category_name, database.GshopEvent.List_categories[database.GshopEvent.List_items[i].Item_category].Sub_categories[database.GshopEvent.List_items[i].Item_sub_category], database.GshopEvent.List_items[i].Amount, Convert.ToDecimal(database.GshopEvent.List_items[i].Sales[0].Price) / 100 });
+				//				dataGridView_gshop.Rows.Add(new object[] { "GSHOP EVENT", sELeditCache.Instance.sELeditDatas.database.GshopEvent.List_categories[sELeditCache.Instance.sELeditDatas.database.GshopEvent.List_items[i].Item_category].Category_name, sELeditCache.Instance.sELeditDatas.database.GshopEvent.List_categories[sELeditCache.Instance.sELeditDatas.database.GshopEvent.List_items[i].Item_category].Sub_categories[sELeditCache.Instance.sELeditDatas.database.GshopEvent.List_items[i].Item_sub_category], sELeditCache.Instance.sELeditDatas.database.GshopEvent.List_items[i].Amount, Convert.ToDecimal(sELeditCache.Instance.sELeditDatas.database.GshopEvent.List_items[i].Sales[0].Price) / 100 });
 
 				//			}
 				//			catch (Exception)
@@ -1234,255 +1114,6 @@ namespace sELedit
 
 		}
 
-		public void DataGrid(object sender, DataGridViewCellEventArgs e, DataGridView gridView)
-		{
-
-			foreach (DataGridViewRow item in gridView.Rows)
-			{
-				Color cl;
-				switch (item.Cells[0].Value.ToString())
-				{
-					case "ID":
-						numericUpDownEx_ID.Value = decimal.Parse(item.Cells[2].Value.ToString());
-						break;
-					case "Name":
-						try
-						{ cl = Helper.getByID(database.item_color[int.Parse(numericUpDownEx_ID.Value.ToString())]); }
-						catch (Exception)
-						{ cl = Color.White; }
-						textBox_NAME.Text = item.Cells[2].Value.ToString();
-						textBox_NAME.ForeColor = cl;
-						if (textBox_NAME.Text.StartsWith("^"))
-						{
-							textBox_NAME.ForeColor = Extensions.ColorHex(textBox_NAME.Text);
-						}
-						break;
-					case "file_icon":
-						if (database.ContainsKey(Path.GetFileName(item.Cells[2].Value.ToString())))
-						{ pictureBox_icon.BackgroundImage = database.images(Path.GetFileName(item.Cells[2].Value.ToString())); }
-						else { pictureBox_icon.BackgroundImage = database.images("unknown.dds"); }
-						break;
-
-					default:
-						break;
-				}
-
-
-
-
-
-			}
-
-		}
-
-		private void dataGridView_GET_SET(object sender, EventArgs e)
-		{
-
-			numericUpDownEx_value.Value = 0; textBox_SetValue.Text = "Set Value";
-			DataGridView dgv = (DataGridView)sender;
-			dgV = dgv;
-			string value = "";
-			string type = "";
-			string name = "";
-
-			if (dgv.SelectedRows.Count > 0)
-			{
-
-				name = dgv.Rows[dgv.SelectedCells[0].RowIndex].Cells[0].Value.ToString();
-				string[] a = dgv.Rows[dgv.SelectedCells[0].RowIndex].Cells[1].Value.ToString().Split(':');
-				type = a[0];
-				typeItem = type;
-			}
-
-			//GetVaclue
-			var tt_1 = dgv.Rows[dgv.SelectedCells[0].RowIndex].Cells[2].Value.ToString().Replace("[", "").Replace("]", "").Split('-');
-			value = tt_1[0];
-
-			if (type.StartsWith("int"))
-			{
-				numericUpDownEx_value.SetDecimalPlaces = 0;
-				numericUpDownEx_value.SetThousandsSeparator = false;
-				numericUpDownEx_value.MaximalValue = Int32.MaxValue;
-				numericUpDownEx_value.MinimalValue = 0;
-				numericUpDownEx_value.Increment = 1;
-				numericUpDownEx_value.Value = decimal.Parse(value);
-				//2 8
-
-			}
-			if (type.StartsWith("float"))
-			{
-				numericUpDownEx_value.SetDecimalPlaces = 6;
-				numericUpDownEx_value.SetThousandsSeparator = true;
-				numericUpDownEx_value.MaximalValue = 1;
-				numericUpDownEx_value.MinimalValue = decimal.Parse("0,000000");
-				numericUpDownEx_value.Increment = 0.25M;
-				numericUpDownEx_value.Value = decimal.Parse(value);
-
-			}
-			if (type.StartsWith("string") || type.StartsWith("wstring"))
-			{
-				textBox_SetValue.Text = value.ToString();
-			}
-
-
-		}
-
-		//private void change_value_NEW(object sender, DataGridViewCellEventArgs ea)
-		//{
-		//	DataGridView grid = (DataGridView)sender;
-		//	if (SetItens)
-		//	{
-
-		//		try
-		//		{
-		//			if (eLC != null && ea.ColumnIndex > -1)
-		//			{
-		//				int l = comboBox_lists.SelectedIndex;
-		//				int f = int.Parse(grid.Rows[ea.RowIndex].Cells[3].Value.ToString());//ea.RowIndex;
-		//				int r = dataGridView_elems.CurrentCell.RowIndex;
-		//				string _set = string.Empty;
-
-		//				if (grid.Rows[ea.RowIndex].Cells[2].Value.ToString().Contains("[") && grid.Rows[ea.RowIndex].Cells[2].Value.ToString().Contains("]"))
-		//				{
-		//					var _set_v = Convert.ToString(grid.Rows[ea.RowIndex].Cells[2].Value.ToString()).Replace("[", "").Replace("] ", "").Split('-');
-		//					_set = _set_v[0].Replace(" ", "");
-		//				}
-		//				else
-		//				{
-		//					_set = Convert.ToString(grid.Rows[ea.RowIndex].Cells[2].Value.ToString());
-		//				}
-
-
-		//				if (true)
-		//				{
-
-		//				}
-		//				if (l != eLC.ConversationListIndex)
-		//				{
-		//					EnableSelectionItem = false;
-		//					int[] selIndices = gridSelectedIndices(dataGridView_elems);
-		//					for (int e = 0; e < selIndices.Length; e++)
-		//					{
-		//						eLC.SetValue(l, selIndices[e], f, _set);//-------------------------------------------------------set value
-
-		//						if (grid == dataGridView_item)
-		//						{
-		//							for (int a = 0; a < selIndices.Length; a++)
-		//							{
-		//								if (dataGridView_item.Rows[a].Cells[0].Value.ToString() == "ID" || dataGridView_item.Rows[a].Cells[0].Value.ToString() == "Name" || dataGridView_item.Rows[a].Cells[0].Value.ToString() == "file_icon" || dataGridView_item.Rows[a].Cells[0].Value.ToString() == "file_icon1")
-		//								{
-		//									// change the values in the listbox depending on new name & id
-
-		//									// Find Position for Name
-		//									int pos = -1;
-		//									int pos2 = -1;
-		//									for (int i = 0; i < eLC.Lists[l].elementFields.Length; i++)
-		//									{
-		//										if (eLC.Lists[l].elementFields[i] == "Name")
-		//										{
-		//											pos = i;
-		//										}
-		//										if (eLC.Lists[l].elementFields[i] == "file_icon" || eLC.Lists[l].elementFields[i] == "file_icon1")
-		//										{
-		//											pos2 = i;
-		//										}
-		//										if (pos != -1 && pos2 != -1)
-		//										{
-		//											break;
-		//										}
-		//									}
-		//									Bitmap img = Properties.Resources.blank;
-		//									string path = Path.GetFileName(eLC.GetValue(l, selIndices[e], pos2));
-		//									if (database.sourceBitmap != null && database.ContainsKey(path))
-		//									{
-		//										if (database.ContainsKey(path))
-		//										{
-		//											img = database.images(path);
-		//										}
-		//									}
-
-		//									dataGridView_elems.Rows[selIndices[e]].Cells[0].Value = eLC.GetValue(l, selIndices[e], 0);
-		//									dataGridView_elems.Rows[selIndices[e]].Cells[1].Value = img;
-		//									dataGridView_elems.Rows[selIndices[e]].Cells[2].Value = eLC.GetValue(l, selIndices[e], pos);
-		//								}
-
-		//							}
-
-		//						}
-		//					}
-		//					EnableSelectionItem = true;
-
-		//				}
-		//				else
-		//				{
-		//					//TALK_PROCs check which item was changed by field name
-		//					string fieldName = dataGridView_item[0, ea.RowIndex].Value.ToString();
-
-		//					if (fieldName == "id_talk")
-		//					{
-		//						conversationList.talk_procs[r].id_talk = Convert.ToInt32(dataGridView_item.CurrentCell.Value);
-		//						return;
-		//					}
-		//					if (fieldName == "text")
-		//					{
-		//						conversationList.talk_procs[r].SetText(dataGridView_item.CurrentCell.Value.ToString());
-		//						return;
-		//					}
-		//					if (fieldName.StartsWith("window_") && fieldName.EndsWith("_id"))
-		//					{
-		//						int q = Convert.ToInt32(fieldName.Replace("window_", "").Replace("_id", ""));
-		//						conversationList.talk_procs[r].windows[q].id = Convert.ToInt32(dataGridView_item.CurrentCell.Value);
-		//						return;
-		//					}
-		//					if (fieldName.StartsWith("window_") && fieldName.Contains("option_") && fieldName.EndsWith("_param"))
-		//					{
-		//						string[] s = fieldName.Replace("window_", "").Replace("_option_", ";").Replace("_param", "").Split(new char[] { ';' });
-		//						int q = Convert.ToInt32(s[0]);
-		//						int c = Convert.ToInt32(s[1]);
-		//						conversationList.talk_procs[r].windows[q].options[c].param = Convert.ToInt32(dataGridView_item.CurrentCell.Value);
-		//						return;
-		//					}
-		//					if (fieldName.StartsWith("window_") && fieldName.Contains("option_") && fieldName.EndsWith("_text"))
-		//					{
-		//						string[] s = fieldName.Replace("window_", "").Replace("_option_", ";").Replace("_text", "").Split(new char[] { ';' });
-		//						int q = Convert.ToInt32(s[0]);
-		//						int c = Convert.ToInt32(s[1]);
-		//						conversationList.talk_procs[r].windows[q].options[c].SetText(dataGridView_item.CurrentCell.Value.ToString());
-		//						return;
-		//					}
-		//					if (fieldName.StartsWith("window_") && fieldName.Contains("option_") && fieldName.EndsWith("_id"))
-		//					{
-		//						string[] s = fieldName.Replace("window_", "").Replace("_option_", ";").Replace("_id", "").Split(new char[] { ';' });
-		//						int q = Convert.ToInt32(s[0]);
-		//						int c = Convert.ToInt32(s[1]);
-		//						conversationList.talk_procs[r].windows[q].options[c].id = Convert.ToInt32(dataGridView_item.CurrentCell.Value);
-		//						return;
-		//					}
-		//					if (fieldName.StartsWith("window_") && fieldName.EndsWith("_id_parent"))
-		//					{
-		//						int q = Convert.ToInt32(fieldName.Replace("window_", "").Replace("_id_parent", ""));
-		//						conversationList.talk_procs[r].windows[q].id_parent = Convert.ToInt32(dataGridView_item.CurrentCell.Value);
-		//						return;
-		//					}
-		//					if (fieldName.StartsWith("window_") && fieldName.EndsWith("_talk_text"))
-		//					{
-		//						int q = Convert.ToInt32(fieldName.Replace("window_", "").Replace("_talk_text", ""));
-		//						conversationList.talk_procs[r].windows[q].SetText(dataGridView_item.CurrentCell.Value.ToString());
-		//						dataGridView_item[1, ea.RowIndex].Value = "wstring:" + conversationList.talk_procs[r].windows[q].talk_text_len;
-		//						return;
-		//					}
-		//				}
-
-		//			}
-		//		}
-		//		catch (Exception exs)
-		//		{
-		//			MessageBox.Show("CHANGING ERROR!\nFailed changing value, this value seems to be invalid.\n" + exs.Message);
-		//		}
-
-		//		DataGrid(null, null, grid);
-		//	}
-		//}
 
 		public int[] gridSelectedIndices(DataGridView grd)
 		{
@@ -1502,116 +1133,116 @@ namespace sELedit
 
 		private void click_SetValue(object sender, EventArgs e)
 		{
-			if (dgV != null)
-			{
-				string valueSet = string.Empty;
+			//if (dgV != null)
+			//{
+			//	string valueSet = string.Empty;
 
-				if (typeItem.StartsWith("int"))
-				{
-					valueSet = Convert.ToInt32(numericUpDownEx_value.Value.ToString()).ToString(); ;
-				}
-				if (typeItem.StartsWith("float"))
-				{
-					valueSet = numericUpDownEx_value.Value.ToString();
+			//	//if (typeItem.StartsWith("int"))
+			//	//{
+			//	//	valueSet = Convert.ToInt32(numericUpDownEx_value.Value.ToString()).ToString(); ;
+			//	//}
+			//	//if (typeItem.StartsWith("float"))
+			//	//{
+			//	//	valueSet = numericUpDownEx_value.Value.ToString();
 
-				}
-				if (typeItem.StartsWith("string") || typeItem.StartsWith("wstring"))
-				{
-					valueSet = textBox_SetValue.Text;
-				}
+			//	//}
+			//	//if (typeItem.StartsWith("string") || typeItem.StartsWith("wstring"))
+			//	//{
+			//	//	valueSet = textBox_SetValue.Text;
+			//	//}
 
-				int l = comboBox_lists.SelectedIndex;
-				if (l > -1 && l != eLC.ConversationListIndex)
-				{
-					ArrayList SelectedCellsIndexes = new ArrayList();
-					int[] selIndices = gridSelectedIndices(dataGridView_elems);
-					for (int i = 0; i < dgV.SelectedCells.Count; i++)
-					{
-						bool check = true;
-						for (int k = 0; k < SelectedCellsIndexes.Count; k++)
-						{
-							if ((int)SelectedCellsIndexes[k] == dgV.SelectedCells[i].RowIndex)
-							{
-								check = false;
-								break;
-							}
-						}
-						if (check)
-							SelectedCellsIndexes.Add(dgV.SelectedCells[i].RowIndex);
-					}
-					SelectedCellsIndexes.Sort();
-					for (int i = 0; i < SelectedCellsIndexes.Count; i++)
-					{
+			//	int l = comboBox_lists.SelectedIndex;
+			//	if (l > -1 && l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
+			//	{
+			//		ArrayList SelectedCellsIndexes = new ArrayList();
+			//		int[] selIndices = gridSelectedIndices(dataGridView_elems);
+			//		for (int i = 0; i < dgV.SelectedCells.Count; i++)
+			//		{
+			//			bool check = true;
+			//			for (int k = 0; k < SelectedCellsIndexes.Count; k++)
+			//			{
+			//				if ((int)SelectedCellsIndexes[k] == dgV.SelectedCells[i].RowIndex)
+			//				{
+			//					check = false;
+			//					break;
+			//				}
+			//			}
+			//			if (check)
+			//				SelectedCellsIndexes.Add(dgV.SelectedCells[i].RowIndex);
+			//		}
+			//		SelectedCellsIndexes.Sort();
+			//		for (int i = 0; i < SelectedCellsIndexes.Count; i++)
+			//		{
 
-						dgV.Rows[(int)SelectedCellsIndexes[i]].Cells[2].Value = valueSet;
-					}
-					for (int i = 0; i < selIndices.Length; i++)
-					{
-						for (int f = 0; f < SelectedCellsIndexes.Count; f++)
-						{
+			//			dgV.Rows[(int)SelectedCellsIndexes[i]].Cells[2].Value = valueSet;
+			//		}
+			//		for (int i = 0; i < selIndices.Length; i++)
+			//		{
+			//			for (int f = 0; f < SelectedCellsIndexes.Count; f++)
+			//			{
 
-							eLC.SetValue(l, selIndices[i], int.Parse(dgV.Rows[(int)SelectedCellsIndexes[i]].Cells[3].Value.ToString()), valueSet);
+			//				sELeditCache.Instance.sELeditDatas.eLC.SetValue(l, selIndices[i], int.Parse(dgV.Rows[(int)SelectedCellsIndexes[i]].Cells[3].Value.ToString()), valueSet);
 
-							// (int)SelectedCellsIndexes[f]
+			//				// (int)SelectedCellsIndexes[f]
 
 
-							if (dgV.Rows[(int)SelectedCellsIndexes[f]].Cells[0].Value.ToString() == "Name")
-							{
-								int pos = -1;
-								int pos2 = -1;
-								for (int p = 0; p < eLC.Lists[l].elementFields.Length; p++)
-								{
-									if (eLC.Lists[l].elementFields[p] == "Name")
-									{
-										pos = p;
-									}
-									if (eLC.Lists[l].elementFields[p] == "file_icon" || eLC.Lists[l].elementFields[p] == "file_icon1")
-									{
-										pos2 = p;
-									}
-									if (pos != -1 && pos2 != -1)
-									{
-										break;
-									}
-								}
-								if (eLC.Lists[l].elementFields[0] == "ID")
-								{
-									Bitmap img = Properties.Resources.unknown;
-									string path = Path.GetFileName(eLC.GetValue(l, selIndices[i], pos2));
-									if (database.sourceBitmap != null && database.ContainsKey(path))
-									{
-										if (database.ContainsKey(path))
-										{
-											img = database.images(path);
-										}
-									}
-									dataGridView_elems.Rows[selIndices[i]].Cells[0].Value = eLC.GetValue(l, selIndices[i], 0);
-									dataGridView_elems.Rows[selIndices[i]].Cells[1].Value = img;
-									dataGridView_elems.Rows[selIndices[i]].Cells[2].Value = eLC.GetValue(l, selIndices[i], pos);
-								}
-								else
-								{
-									dataGridView_elems.Rows[selIndices[i]].Cells[0].Value = "";
-									dataGridView_elems.Rows[selIndices[i]].Cells[1].Value = Properties.Resources.unknown;
-									dataGridView_elems.Rows[selIndices[i]].Cells[2].Value = eLC.GetValue(l, selIndices[i], pos);
-								}
-							}
-						}
-					}
-				}
-			}
+			//				if (dgV.Rows[(int)SelectedCellsIndexes[f]].Cells[0].Value.ToString() == "Name")
+			//				{
+			//					int pos = -1;
+			//					int pos2 = -1;
+			//					for (int p = 0; p < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields.Length; p++)
+			//					{
+			//						if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[p] == "Name")
+			//						{
+			//							pos = p;
+			//						}
+			//						if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[p] == "file_icon" || sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[p] == "file_icon1")
+			//						{
+			//							pos2 = p;
+			//						}
+			//						if (pos != -1 && pos2 != -1)
+			//						{
+			//							break;
+			//						}
+			//					}
+			//					if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[0] == "ID")
+			//					{
+			//						Bitmap img = Properties.Resources.unknown;
+			//						string path = Path.GetFileName(sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, selIndices[i], pos2));
+			//						if (sELeditCache.Instance.sELeditDatas.database.sourceBitmap != null && sELeditCache.Instance.sELeditDatas.database.ContainsKey(path))
+			//						{
+			//							if (sELeditCache.Instance.sELeditDatas.database.ContainsKey(path))
+			//							{
+			//								img = sELeditCache.Instance.sELeditDatas.database.images(path);
+			//							}
+			//						}
+			//						dataGridView_elems.Rows[selIndices[i]].Cells[0].Value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, selIndices[i], 0);
+			//						dataGridView_elems.Rows[selIndices[i]].Cells[1].Value = img;
+			//						dataGridView_elems.Rows[selIndices[i]].Cells[2].Value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, selIndices[i], pos);
+			//					}
+			//					else
+			//					{
+			//						dataGridView_elems.Rows[selIndices[i]].Cells[0].Value = "";
+			//						dataGridView_elems.Rows[selIndices[i]].Cells[1].Value = Properties.Resources.unknown;
+			//						dataGridView_elems.Rows[selIndices[i]].Cells[2].Value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, selIndices[i], pos);
+			//					}
+			//				}
+			//			}
+			//		}
+			//	}
+			//}
 
 		}
 
 		private void dataGridView_elems_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs ee)
 		{
 			return;
-			if (eLC.Lists[comboBox_lists.SelectedIndex].itemUse && !(database.item_color is null))
+			if (sELeditCache.Instance.sELeditDatas.eLC.Lists[comboBox_lists.SelectedIndex].itemUse && !(sELeditCache.Instance.sELeditDatas.database.item_color is null))
 			{
 
 				Color a;
 				try
-				{ a = Helper.getByID(database.item_color[int.Parse(((DataGridView)sender).Rows[ee.RowIndex].Cells[0].Value.ToString())]); }
+				{ a = Helper.getByID(sELeditCache.Instance.sELeditDatas.database.item_color[int.Parse(((DataGridView)sender).Rows[ee.RowIndex].Cells[0].Value.ToString())]); }
 				catch (Exception)
 				{ a = Color.White; }
 
@@ -1674,21 +1305,21 @@ namespace sELedit
 									{
 										try
 										{
-											for (int L = 0; L < eLC.Lists.Length; L++)
+											for (int L = 0; L < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; L++)
 											{
-												if (eLC.Lists[L].itemUse == true)
+												if (sELeditCache.Instance.sELeditDatas.eLC.Lists[L].itemUse == true)
 												{
 													int La = L;
 													int pos = 0;
 													int posN = 0;
-													for (int i = 0; i < eLC.Lists[La].elementFields.Length; i++)
+													for (int i = 0; i < sELeditCache.Instance.sELeditDatas.eLC.Lists[La].elementFields.Length; i++)
 													{
-														if (eLC.Lists[La].elementFields[i] == "Name")
+														if (sELeditCache.Instance.sELeditDatas.eLC.Lists[La].elementFields[i] == "Name")
 														{
 															posN = i;
 
 														}
-														if (eLC.Lists[La].elementFields[i] == "file_icon")
+														if (sELeditCache.Instance.sELeditDatas.eLC.Lists[La].elementFields[i] == "file_icon")
 														{
 															pos = i;
 															break;
@@ -1696,14 +1327,14 @@ namespace sELedit
 
 													}
 
-													for (int ef = 0; ef < eLC.Lists[La].elementValues.Length; ef++)
+													for (int ef = 0; ef < sELeditCache.Instance.sELeditDatas.eLC.Lists[La].elementValues.Length; ef++)
 													{
 
-														if (ID_ITEM == eLC.GetValue(La, ef, 0))
+														if (ID_ITEM == sELeditCache.Instance.sELeditDatas.eLC.GetValue(La, ef, 0))
 														{
-															if (database.sourceBitmap != null && database.ContainsKey(Path.GetFileName(eLC.GetValue(La, ef, pos))))
+															if (sELeditCache.Instance.sELeditDatas.database.sourceBitmap != null && sELeditCache.Instance.sELeditDatas.database.ContainsKey(Path.GetFileName(sELeditCache.Instance.sELeditDatas.eLC.GetValue(La, ef, pos))))
 															{
-																if (database.ContainsKey(Path.GetFileName(eLC.GetValue(La, ef, pos))))
+																if (sELeditCache.Instance.sELeditDatas.database.ContainsKey(Path.GetFileName(sELeditCache.Instance.sELeditDatas.eLC.GetValue(La, ef, pos))))
 																{
 																	//if (dgv.Rows[e.RowIndex].Cells[2].Value.ToString() == "0")
 																	//{
@@ -1711,15 +1342,15 @@ namespace sELedit
 																	//}
 																	//else
 																	//{
-																	((TextAndImageCell)dgv.Rows[e.RowIndex].Cells[2]).Image = Extensions.ResizeImage(database.images(Path.GetFileName(eLC.GetValue(La, ef, pos))), 18, 18);
+																	((TextAndImageCell)dgv.Rows[e.RowIndex].Cells[2]).Image = Extensions.ResizeImage(sELeditCache.Instance.sELeditDatas.database.images(Path.GetFileName(sELeditCache.Instance.sELeditDatas.eLC.GetValue(La, ef, pos))), 18, 18);
 																	//}
 
-																	dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(La, ef, posN);
+																	dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(La, ef, posN);
 																	fi = true;
 
 																	Color clr;
 																	try
-																	{ clr = Helper.getByID(database.item_color[int.Parse(ID_ITEM.ToString())]); }
+																	{ clr = Helper.getByID(sELeditCache.Instance.sELeditDatas.database.item_color[int.Parse(ID_ITEM.ToString())]); }
 																	catch (Exception)
 																	{ clr = Color.White; }
 
@@ -1748,9 +1379,9 @@ namespace sELedit
 									break;
 
 								case "character_combo_id":
-									for (int k = 0; k < eLC.Lists[3].elementFields.Length; k++)
+									for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[3].elementFields.Length; k++)
 									{
-										if (eLC.Lists[3].elementFields[k] == "character_combo_id")
+										if (sELeditCache.Instance.sELeditDatas.eLC.Lists[3].elementFields[k] == "character_combo_id")
 										{
 											dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + Extensions.DecodingCharacterComboId(ID_ITEM.ToString());
 											break;
@@ -1759,9 +1390,9 @@ namespace sELedit
 									break;
 
 								case "proc_type":
-									for (int k = 0; k < eLC.Lists[3].elementFields.Length; k++)
+									for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[3].elementFields.Length; k++)
 									{
-										if (eLC.Lists[3].elementFields[k] == "proc_type")
+										if (sELeditCache.Instance.sELeditDatas.eLC.Lists[3].elementFields[k] == "proc_type")
 										{
 											dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + Extensions.Get_proc_type(ID_ITEM);
 											break;
@@ -1770,17 +1401,17 @@ namespace sELedit
 									break;
 
 								case "id_major_type":
-									for (int l = 0; l < eLC.Lists.Length; l++)
+									for (int l = 0; l < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; l++)
 									{
-										string major = eLC.Lists[comboBox_lists.SelectedIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "MAJOR_TYPE");
-										string conf = eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
+										string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[comboBox_lists.SelectedIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "MAJOR_TYPE");
+										string conf = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
 										if (major == conf)
 										{
-											for (int m = 0; m < eLC.Lists[l].elementValues.Length; m++)
+											for (int m = 0; m < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length; m++)
 											{
-												if (int.Parse(eLC.GetValue(l, m, 0)) == int.Parse(ID_ITEM))
+												if (int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 0)) == int.Parse(ID_ITEM))
 												{
-													dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(l, m, 1);
+													dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 1);
 													fini = true;
 												}
 
@@ -1800,17 +1431,17 @@ namespace sELedit
 									break;
 
 								case "id_sub_type":
-									for (int l = 0; l < eLC.Lists.Length; l++)
+									for (int l = 0; l < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; l++)
 									{
-										string major = eLC.Lists[comboBox_lists.SelectedIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "SUB_TYPE");
-										string conf = eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
+										string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[comboBox_lists.SelectedIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "SUB_TYPE");
+										string conf = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
 										if (major == conf)
 										{
-											for (int m = 0; m < eLC.Lists[l].elementValues.Length; m++)
+											for (int m = 0; m < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length; m++)
 											{
-												if (int.Parse(eLC.GetValue(l, m, 0)) == int.Parse(ID_ITEM))
+												if (int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 0)) == int.Parse(ID_ITEM))
 												{
-													dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(l, m, 1);
+													dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 1);
 													fini = true;
 												}
 
@@ -1833,11 +1464,11 @@ namespace sELedit
 									break;
 
 								case "id_tasks_":
-									for (int i = 0; i < database.Tasks.Length; i++)
+									for (int i = 0; i < sELeditCache.Instance.sELeditDatas.database.Tasks.Length; i++)
 									{
-										if (database.Tasks[i].ID == int.Parse(ID_ITEM))
+										if (sELeditCache.Instance.sELeditDatas.database.Tasks[i].ID == int.Parse(ID_ITEM))
 										{
-											dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + database.Tasks[i].Name;
+											dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.database.Tasks[i].Name;
 											break;
 										}
 
@@ -1845,17 +1476,17 @@ namespace sELedit
 									break;
 
 								case "id_type":
-									for (int l = 0; l < eLC.Lists.Length; l++)
+									for (int l = 0; l < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; l++)
 									{
-										string major = eLC.Lists[comboBox_lists.SelectedIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "TYPE");
-										string conf = eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
+										string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[comboBox_lists.SelectedIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "TYPE");
+										string conf = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
 										if (major == conf)
 										{
-											for (int m = 0; m < eLC.Lists[l].elementValues.Length; m++)
+											for (int m = 0; m < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length; m++)
 											{
-												if (int.Parse(eLC.GetValue(l, m, 0)) == int.Parse(ID_ITEM))
+												if (int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 0)) == int.Parse(ID_ITEM))
 												{
-													dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(l, m, 1);
+													dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 1);
 													fini = true;
 												}
 
@@ -1874,9 +1505,9 @@ namespace sELedit
 									break;
 
 								case string x when (x.StartsWith("task_lists_") && x.EndsWith("_id")):
-									for (int i = 0; i < database.Tasks.Length; i++)
+									for (int i = 0; i < sELeditCache.Instance.sELeditDatas.database.Tasks.Length; i++)
 									{
-										if (database.Tasks[i].ID == int.Parse(ID_ITEM))
+										if (sELeditCache.Instance.sELeditDatas.database.Tasks[i].ID == int.Parse(ID_ITEM))
 										{
 
 											ImageList imageList1 = new ImageList();
@@ -1889,10 +1520,10 @@ namespace sELedit
 
 
 
-											string asds = database.Tasks[i].m_ulType.ToString();
+											string asds = sELeditCache.Instance.sELeditDatas.database.Tasks[i].m_ulType.ToString();
 											((TextAndImageCell)dgv.Rows[e.RowIndex].Cells[2]).Image = Extensions.ResizeImage(imageList1.Images[5], 32, 21);
-											//MessageBox.Show(database.Tasks[i].m_ulType);
-											dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + database.Tasks[i].Name;
+											//MessageBox.Show(sELeditCache.Instance.sELeditDatas.database.Tasks[i].m_ulType);
+											dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.database.Tasks[i].Name;
 											break;
 										}
 
@@ -1903,11 +1534,11 @@ namespace sELedit
 
 								case "id_make_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[54].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[54].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(54, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(54, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(54, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(54, xe, 1);
 												break;
 											}
 
@@ -1919,11 +1550,11 @@ namespace sELedit
 									break;
 								case "id_buy_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[41].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[41].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(41, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(41, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(41, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(41, xe, 1);
 												break;
 											}
 										}
@@ -1931,11 +1562,11 @@ namespace sELedit
 									break;
 								case "id_sell_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[40].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[40].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(40, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(40, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(40, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(40, xe, 1);
 												break;
 											}
 
@@ -1944,11 +1575,11 @@ namespace sELedit
 									break;
 								case "id_repair_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[42].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[42].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(42, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(42, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(42, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(42, xe, 1);
 												break;
 											}
 										}
@@ -1956,11 +1587,11 @@ namespace sELedit
 									break;
 								case "id_install_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[43].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[43].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(43, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(43, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(43, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(43, xe, 1);
 												break;
 											}
 										}
@@ -1968,11 +1599,11 @@ namespace sELedit
 									break;
 								case "id_uninstall_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[44].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[44].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(44, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(44, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(44, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(44, xe, 1);
 												break;
 											}
 										}
@@ -1980,11 +1611,11 @@ namespace sELedit
 									break;
 								case "id_task_out_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[46].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[46].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(46, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(46, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(46, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(46, xe, 1);
 												break;
 											}
 										}
@@ -1992,11 +1623,11 @@ namespace sELedit
 									break;
 								case "id_task_in_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[45].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[45].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(45, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(45, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(45, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(45, xe, 1);
 												break;
 											}
 										}
@@ -2004,11 +1635,11 @@ namespace sELedit
 									break;
 								case "id_task_matter_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[47].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[47].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(47, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(47, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(47, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(47, xe, 1);
 												break;
 											}
 										}
@@ -2016,11 +1647,11 @@ namespace sELedit
 									break;
 								case "id_skill_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[48].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[48].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(48, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(48, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(48, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(48, xe, 1);
 												break;
 											}
 										}
@@ -2028,11 +1659,11 @@ namespace sELedit
 									break;
 								case "id_heal_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[49].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[49].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(49, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(49, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(49, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(49, xe, 1);
 												break;
 											}
 										}
@@ -2040,11 +1671,11 @@ namespace sELedit
 									break;
 								case "id_transmit_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[50].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[50].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(50, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(50, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(50, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(50, xe, 1);
 												break;
 											}
 										}
@@ -2052,11 +1683,11 @@ namespace sELedit
 									break;
 								case "id_proxy_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[52].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[52].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(52, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(52, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(52, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(52, xe, 1);
 												break;
 											}
 										}
@@ -2064,11 +1695,11 @@ namespace sELedit
 									break;
 								case "id_storage_service":
 									{
-										for (int xe = 0; xe < eLC.Lists[53].elementValues.Length; xe++)
+										for (int xe = 0; xe < sELeditCache.Instance.sELeditDatas.eLC.Lists[53].elementValues.Length; xe++)
 										{
-											if (eLC.GetValue(53, xe, 0) == ID_ITEM)
+											if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(53, xe, 0) == ID_ITEM)
 											{
-												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + eLC.GetValue(53, xe, 1);
+												dgv.Rows[e.RowIndex].Cells[2].Value = "[" + ID_ITEM + "] - " + sELeditCache.Instance.sELeditDatas.eLC.GetValue(53, xe, 1);
 												break;
 											}
 										}
@@ -2103,7 +1734,7 @@ namespace sELedit
 			DataGridView dgv = (DataGridView)sender;
 			if (comboBox_lists.SelectedIndex == 54 || comboBox_lists.SelectedIndex == 40)
 			{
-				SetItens = false;
+
 				try
 				{
 					int ID = Extensions.GetIdItemFromGDV(dgv.Rows[e.RowIndex].Cells[2].Value.ToString());
@@ -2144,7 +1775,7 @@ namespace sELedit
 
 				}
 
-				SetItens = true;
+
 
 			}
 		}
@@ -2517,7 +2148,7 @@ namespace sELedit
 						if (verificar) { }
 						else
 						{
-							clr = Helper.getByID(MainWindow.database.item_color[Extensions.GetIdItemFromGDV(dataGridView_recipes.Rows[e.RowIndex].Cells[i].Value.ToString())]);
+							clr = Helper.getByID(sELeditCache.Instance.sELeditDatas.database.item_color[Extensions.GetIdItemFromGDV(dataGridView_recipes.Rows[e.RowIndex].Cells[i].Value.ToString())]);
 						}
 					}
 					catch (Exception ex)
@@ -2567,7 +2198,7 @@ namespace sELedit
 
 					Color clr;
 					try
-					{ clr = Helper.getByID(database.item_color[int.Parse(b.ToString())]); }
+					{ clr = Helper.getByID(sELeditCache.Instance.sELeditDatas.database.item_color[int.Parse(b.ToString())]); }
 					catch (Exception)
 					{ clr = Color.White; }
 
@@ -2588,21 +2219,21 @@ namespace sELedit
 		{
 			try
 			{
-				if (database.Tasks != null
+				if (sELeditCache.Instance.sELeditDatas.database.Tasks != null
 )
 				{
 
 					dataGridView1.Rows.Clear();
-					for (int t = 0; t < database.Tasks.Length; t++)
+					for (int t = 0; t < sELeditCache.Instance.sELeditDatas.database.Tasks.Length; t++)
 					{
-						if (database.Tasks[t].ID == int.Parse(dataGridView_tasks.Rows[e.RowIndex].Cells[0].Value.ToString().Replace("[", "").Replace("]", "").Split(new string[] { " - " }, StringSplitOptions.None)[0].ToString().Replace(" ", "")))
+						if (sELeditCache.Instance.sELeditDatas.database.Tasks[t].ID == int.Parse(dataGridView_tasks.Rows[e.RowIndex].Cells[0].Value.ToString().Replace("[", "").Replace("]", "").Split(new string[] { " - " }, StringSplitOptions.None)[0].ToString().Replace(" ", "")))
 						{
-							for (int m = 0; m < database.Tasks[t].m_Award_S.m_CandItems.Length; m++)
+							for (int m = 0; m < sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems.Length; m++)
 							{
-								for (int i = 0; i < database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems.Length; i++)
+								for (int i = 0; i < sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems.Length; i++)
 								{
 
-									dataGridView1.Rows.Add(new object[] { database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_ulItemTemplId, database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_ulItemNum + " UN", Convert.ToDecimal(database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_fProb * 100) + "%  " });
+									dataGridView1.Rows.Add(new object[] { sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_ulItemTemplId, sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_ulItemNum + " UN", Convert.ToDecimal(sELeditCache.Instance.sELeditDatas.database.Tasks[t].m_Award_S.m_CandItems[m].m_AwardItems[i].m_fProb * 100) + "%  " });
 
 								}
 								break;
@@ -2697,7 +2328,7 @@ namespace sELedit
 
 		private void dataGridView_recipes_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
-			SetItens = false;
+
 			int idRecipe = int.Parse(dataGridView_recipes.Rows[e.RowIndex].Cells[0].Value.ToString());
 
 			comboBox_lists.SelectedIndex = 69;
@@ -2715,7 +2346,7 @@ namespace sELedit
 					break;
 				}
 			}
-			SetItens = true;
+
 		}
 		#endregion
 
@@ -2738,28 +2369,28 @@ namespace sELedit
 				//if (dataGridView_item.CurrentCell != null)
 				//	f = dataGridView_item.CurrentCell.RowIndex + 1;
 				if (f < 0) { f = 0; }
-				if (eLC != null && eLC.Lists != null)
+				if (sELeditCache.Instance.sELeditDatas.eLC != null && sELeditCache.Instance.sELeditDatas.eLC.Lists != null)
 				{
-					EnableSelectionItem = false;
+					//EnableSelectionItem = false;
 					int ftmp = f;
 					if (checkBox_SearchAll.Checked)
 					{
 						int e = dataGridView_elems.CurrentCell.RowIndex;
 						if (e < 0) { e = 0; }
 						int etmp = e;
-						for (int lf = l; lf < eLC.Lists.Length; lf++)
+						for (int lf = l; lf < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; lf++)
 						{
-							for (int ef = etmp; ef < eLC.Lists[lf].elementValues.Length; ef++)
+							for (int ef = etmp; ef < sELeditCache.Instance.sELeditDatas.eLC.Lists[lf].elementValues.Length; ef++)
 							{
-								for (int ff = ftmp; ff < eLC.Lists[lf].elementFields.Length; ff++)
+								for (int ff = ftmp; ff < sELeditCache.Instance.sELeditDatas.eLC.Lists[lf].elementFields.Length; ff++)
 								{
 									if (checkBox_SearchExactMatching.Checked)
 									{
-										if (eLC.GetValue(lf, ef, ff) == id)
+										if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(lf, ef, ff) == id)
 										{
 											comboBox_lists.SelectedIndex = lf;
 											dataGridView_elems.ClearSelection();
-											EnableSelectionItem = true;
+											//EnableSelectionItem = true;
 											dataGridView_elems.CurrentCell = dataGridView_elems[0, ef];
 											dataGridView_elems.Rows[ef].Selected = true;
 											dataGridView_elems.FirstDisplayedScrollingRowIndex = ef;
@@ -2769,14 +2400,14 @@ namespace sELedit
 									}
 									else
 									{
-										value = eLC.GetValue(lf, ef, ff);
+										value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(lf, ef, ff);
 										if (!checkBox_SearchMatchCase.Checked)
 											value = value.ToLower();
 										if (value.Contains(id))
 										{
 											comboBox_lists.SelectedIndex = lf;
 											dataGridView_elems.ClearSelection();
-											EnableSelectionItem = true;
+											//EnableSelectionItem = true;
 											dataGridView_elems.CurrentCell = dataGridView_elems[0, ef];
 											dataGridView_elems.Rows[ef].Selected = true;
 											dataGridView_elems.FirstDisplayedScrollingRowIndex = ef;
@@ -2791,19 +2422,19 @@ namespace sELedit
 						}
 						etmp = e;
 						ftmp = f;
-						for (int lf = 0; lf < eLC.Lists.Length && lf <= l; lf++)
+						for (int lf = 0; lf < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length && lf <= l; lf++)
 						{
-							for (int ef = 0; ef < eLC.Lists[lf].elementValues.Length; ef++)
+							for (int ef = 0; ef < sELeditCache.Instance.sELeditDatas.eLC.Lists[lf].elementValues.Length; ef++)
 							{
-								for (int ff = 0; ff < eLC.Lists[lf].elementFields.Length; ff++)
+								for (int ff = 0; ff < sELeditCache.Instance.sELeditDatas.eLC.Lists[lf].elementFields.Length; ff++)
 								{
 									if (checkBox_SearchExactMatching.Checked)
 									{
-										if (eLC.GetValue(lf, ef, ff) == id)
+										if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(lf, ef, ff) == id)
 										{
 											comboBox_lists.SelectedIndex = lf;
 											dataGridView_elems.ClearSelection();
-											EnableSelectionItem = true;
+											//EnableSelectionItem = true;
 											dataGridView_elems.CurrentCell = dataGridView_elems[0, ef];
 											dataGridView_elems.Rows[ef].Selected = true;
 											dataGridView_elems.FirstDisplayedScrollingRowIndex = ef;
@@ -2813,14 +2444,14 @@ namespace sELedit
 									}
 									else
 									{
-										value = eLC.GetValue(lf, ef, ff);
+										value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(lf, ef, ff);
 										if (!checkBox_SearchMatchCase.Checked)
 											value = value.ToLower();
 										if (value.Contains(id))
 										{
 											comboBox_lists.SelectedIndex = lf;
 											dataGridView_elems.ClearSelection();
-											EnableSelectionItem = true;
+											//EnableSelectionItem = true;
 											dataGridView_elems.CurrentCell = dataGridView_elems[0, ef];
 											dataGridView_elems.Rows[ef].Selected = true;
 											dataGridView_elems.FirstDisplayedScrollingRowIndex = ef;
@@ -2839,26 +2470,26 @@ namespace sELedit
 						int e = dataGridView_elems.CurrentCell.RowIndex + 1;
 						if (e < 0) { e = 0; }
 						int etmp = e;
-						for (int lf = l; lf < eLC.Lists.Length; lf++)
+						for (int lf = l; lf < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; lf++)
 						{
 							int pos = 0;
-							for (int i = 0; i < eLC.Lists[lf].elementFields.Length; i++)
+							for (int i = 0; i < sELeditCache.Instance.sELeditDatas.eLC.Lists[lf].elementFields.Length; i++)
 							{
-								if (eLC.Lists[lf].elementFields[i] == "Name")
+								if (sELeditCache.Instance.sELeditDatas.eLC.Lists[lf].elementFields[i] == "Name")
 								{
 									pos = i;
 									break;
 								}
 							}
-							for (int ef = etmp; ef < eLC.Lists[lf].elementValues.Length; ef++)
+							for (int ef = etmp; ef < sELeditCache.Instance.sELeditDatas.eLC.Lists[lf].elementValues.Length; ef++)
 							{
 								if (checkBox_SearchExactMatching.Checked)
 								{
-									if (id == eLC.GetValue(lf, ef, 0) || eLC.GetValue(lf, ef, pos) == id)
+									if (id == sELeditCache.Instance.sELeditDatas.eLC.GetValue(lf, ef, 0) || sELeditCache.Instance.sELeditDatas.eLC.GetValue(lf, ef, pos) == id)
 									{
 										comboBox_lists.SelectedIndex = lf;
 										dataGridView_elems.ClearSelection();
-										EnableSelectionItem = true;
+										//EnableSelectionItem = true;
 										dataGridView_elems.CurrentCell = dataGridView_elems[0, ef];
 										dataGridView_elems.Rows[ef].Selected = true;
 										dataGridView_elems.FirstDisplayedScrollingRowIndex = ef;
@@ -2867,14 +2498,14 @@ namespace sELedit
 								}
 								else
 								{
-									value = eLC.GetValue(lf, ef, pos);
+									value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(lf, ef, pos);
 									if (!checkBox_SearchMatchCase.Checked)
 										value = value.ToLower();
-									if (id == eLC.GetValue(lf, ef, 0) || value.Contains(id))
+									if (id == sELeditCache.Instance.sELeditDatas.eLC.GetValue(lf, ef, 0) || value.Contains(id))
 									{
 										comboBox_lists.SelectedIndex = lf;
 										dataGridView_elems.ClearSelection();
-										EnableSelectionItem = true;
+										//EnableSelectionItem = true;
 										dataGridView_elems.CurrentCell = dataGridView_elems[0, ef];
 										dataGridView_elems.Rows[ef].Selected = true;
 										dataGridView_elems.FirstDisplayedScrollingRowIndex = ef;
@@ -2886,26 +2517,26 @@ namespace sELedit
 							etmp = 0;
 						}
 						etmp = e;
-						for (int lf = 0; lf < eLC.Lists.Length && lf <= l; lf++)
+						for (int lf = 0; lf < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length && lf <= l; lf++)
 						{
 							int pos = 0;
-							for (int i = 0; i < eLC.Lists[lf].elementFields.Length; i++)
+							for (int i = 0; i < sELeditCache.Instance.sELeditDatas.eLC.Lists[lf].elementFields.Length; i++)
 							{
-								if (eLC.Lists[lf].elementFields[i] == "Name")
+								if (sELeditCache.Instance.sELeditDatas.eLC.Lists[lf].elementFields[i] == "Name")
 								{
 									pos = i;
 									break;
 								}
 							}
-							for (int ef = 0; ef < eLC.Lists[lf].elementValues.Length; ef++)
+							for (int ef = 0; ef < sELeditCache.Instance.sELeditDatas.eLC.Lists[lf].elementValues.Length; ef++)
 							{
 								if (checkBox_SearchExactMatching.Checked)
 								{
-									if (id == eLC.GetValue(lf, ef, 0) || eLC.GetValue(lf, ef, pos) == id)
+									if (id == sELeditCache.Instance.sELeditDatas.eLC.GetValue(lf, ef, 0) || sELeditCache.Instance.sELeditDatas.eLC.GetValue(lf, ef, pos) == id)
 									{
 										comboBox_lists.SelectedIndex = lf;
 										dataGridView_elems.ClearSelection();
-										EnableSelectionItem = true;
+										//EnableSelectionItem = true;
 										dataGridView_elems.CurrentCell = dataGridView_elems[0, ef];
 										dataGridView_elems.Rows[ef].Selected = true;
 										dataGridView_elems.FirstDisplayedScrollingRowIndex = ef;
@@ -2914,14 +2545,14 @@ namespace sELedit
 								}
 								else
 								{
-									value = eLC.GetValue(lf, ef, pos);
+									value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(lf, ef, pos);
 									if (!checkBox_SearchMatchCase.Checked)
 										value = value.ToLower();
-									if (id == eLC.GetValue(lf, ef, 0) || value.Contains(id))
+									if (id == sELeditCache.Instance.sELeditDatas.eLC.GetValue(lf, ef, 0) || value.Contains(id))
 									{
 										comboBox_lists.SelectedIndex = lf;
 										dataGridView_elems.ClearSelection();
-										EnableSelectionItem = true;
+										//EnableSelectionItem = true;
 										dataGridView_elems.CurrentCell = dataGridView_elems[0, ef];
 										dataGridView_elems.Rows[ef].Selected = true;
 										dataGridView_elems.FirstDisplayedScrollingRowIndex = ef;
@@ -2932,7 +2563,7 @@ namespace sELedit
 							etmp = 0;
 						}
 					}
-					EnableSelectionItem = true;
+					//EnableSelectionItem = true;
 					MessageBox.Show("Search reached End without Result!");
 				}
 			}
@@ -2956,18 +2587,18 @@ namespace sELedit
 
 		private void textBox_value_enter(object sender, EventArgs e)
 		{
-			if (textBox_SetValue.Text == "Set Value")
-			{
-				textBox_SetValue.Clear();
-			}
+			//if (textBox_SetValue.Text == "Set Value")
+			//{
+			//	textBox_SetValue.Clear();
+			//}
 		}
 
 		private void textBox_value_leave(object sender, EventArgs e)
 		{
-			if (textBox_SetValue.Text == "")
-			{
-				textBox_SetValue.Text = "Set Value";
-			}
+			//if (textBox_SetValue.Text == "")
+			//{
+			//	textBox_SetValue.Text = "Set Value";
+			//}
 		}
 		#endregion
 
@@ -3028,111 +2659,111 @@ namespace sELedit
 
 		private void addItemRecipeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			//DataGridView gridView = new DataGridView();
-			var gridView = dataGridView_elems;
+			////DataGridView gridView = new DataGridView();
+			//var gridView = dataGridView_elems;
 
-			int idItem = int.Parse(gridView.Rows[gridView.SelectedCells[0].RowIndex].Cells[0].Value.ToString());
-			int idListItem = comboBox_lists.SelectedIndex;
+			//int idItem = int.Parse(gridView.Rows[gridView.SelectedCells[0].RowIndex].Cells[0].Value.ToString());
+			//int idListItem = comboBox_lists.SelectedIndex;
 
-			int idListReceipe = 0;
-			for (int i = 0; i < eLC.Lists.Length; i++)
-			{
-				//RECIPE_ESSENCE
-				if (eLC.Lists[i].listName.EndsWith("RECIPE_ESSENCE"))
-				{
-					idListReceipe = i;
-					break;
-				}
-			}
+			//int idListReceipe = 0;
+			//for (int i = 0; i < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; i++)
+			//{
+			//	//RECIPE_ESSENCE
+			//	if (sELeditCache.Instance.sELeditDatas.eLC.Lists[i].listName.EndsWith("RECIPE_ESSENCE"))
+			//	{
+			//		idListReceipe = i;
+			//		break;
+			//	}
+			//}
 
-			int idClone = int.Parse(eLC.GetValue(idListReceipe, eLC.Lists[idListReceipe].elementValues.Length - 1, 0));
+			//int idClone = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(idListReceipe, sELeditCache.Instance.sELeditDatas.eLC.Lists[idListReceipe].elementValues.Length - 1, 0));
 
-			string NameClone = gridView.Rows[gridView.SelectedCells[2].RowIndex].Cells[2].Value.ToString();
+			//string NameClone = gridView.Rows[gridView.SelectedCells[2].RowIndex].Cells[2].Value.ToString();
 
-			Encoding enc = Encoding.GetEncoding("Unicode");
-			string type = "wstring:64";
-			/// Encoding enc = Encoding.GetEncoding("Unicode");
-			byte[] target = new byte[Convert.ToInt32(type.Substring(8))];
-			byte[] source = enc.GetBytes(NameClone);
-			if (target.Length > source.Length)
-			{
-				Array.Copy(source, target, source.Length);
-			}
-			else
-			{
-				Array.Copy(source, target, target.Length);
-			}
+			//Encoding enc = Encoding.GetEncoding("Unicode");
+			//string type = "wstring:64";
+			///// Encoding enc = Encoding.GetEncoding("Unicode");
+			//byte[] target = new byte[Convert.ToInt32(type.Substring(8))];
+			//byte[] source = enc.GetBytes(NameClone);
+			//if (target.Length > source.Length)
+			//{
+			//	Array.Copy(source, target, source.Length);
+			//}
+			//else
+			//{
+			//	Array.Copy(source, target, target.Length);
+			//}
 
-			int IDITEM;
+			//int IDITEM;
 
-			if (idItem != 0)
-			{
-				if (dataGridView_elems.RowCount > 0)
-				{
-					if (idListReceipe != eLC.ConversationListIndex)
-					{
-						int[] selIndices = gridSelectedIndices(dataGridView_elems);
-						EnableSelectionList = false;
-						EnableSelectionItem = false;
+			//if (idItem != 0)
+			//{
+			//	if (dataGridView_elems.RowCount > 0)
+			//	{
+			//		if (idListReceipe != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
+			//		{
+			//			int[] selIndices = gridSelectedIndices(dataGridView_elems);
+			//			EnableSelectionList = false;
+			//			EnableSelectionItem = false;
 
-						IDITEM = int.Parse(dataGridView_elems.Rows[dataGridView_elems.RowCount - 1].Cells[0].Value.ToString());
-						for (int i = 0; i < selIndices.Length; i++)
-						{
-							object[] o = new object[eLC.Lists[idListReceipe].elementValues[0].Length];
-							eLC.Lists[idListReceipe].elementValues[0].CopyTo(o, 0);
+			//			IDITEM = int.Parse(dataGridView_elems.Rows[dataGridView_elems.RowCount - 1].Cells[0].Value.ToString());
+			//			for (int i = 0; i < selIndices.Length; i++)
+			//			{
+			//				object[] o = new object[sELeditCache.Instance.sELeditDatas.eLC.Lists[idListReceipe].elementValues[0].Length];
+			//				sELeditCache.Instance.sELeditDatas.eLC.Lists[idListReceipe].elementValues[0].CopyTo(o, 0);
 
-							o[0] = idClone + 1;
-							o[3] = target;
-							o[8] = idItem;
-							o[9] = float.Parse("1");
-							for (int jj = 10; jj < eLC.Lists[69].elementTypes.Length; jj++)
-							{
-								string ts = eLC.Lists[69].elementTypes[jj].ToString();
-								if (ts == "int32")
-								{
-									o[jj] = int.Parse("0");
-								}
-								if (ts == "float")
-								{
-									o[jj] = float.Parse("0");
-								}
+			//				o[0] = idClone + 1;
+			//				o[3] = target;
+			//				o[8] = idItem;
+			//				o[9] = float.Parse("1");
+			//				for (int jj = 10; jj < sELeditCache.Instance.sELeditDatas.eLC.Lists[69].elementTypes.Length; jj++)
+			//				{
+			//					string ts = sELeditCache.Instance.sELeditDatas.eLC.Lists[69].elementTypes[jj].ToString();
+			//					if (ts == "int32")
+			//					{
+			//						o[jj] = int.Parse("0");
+			//					}
+			//					if (ts == "float")
+			//					{
+			//						o[jj] = float.Parse("0");
+			//					}
 
-							}
-							eLC.Lists[idListReceipe].AddItem(o);
+			//				}
+			//				sELeditCache.Instance.sELeditDatas.eLC.Lists[idListReceipe].AddItem(o);
 
-							break;
-						}
-						EnableSelectionList = true;
-						EnableSelectionItem = true;
+			//				break;
+			//			}
+			//			EnableSelectionList = true;
+			//			EnableSelectionItem = true;
 
-						if (MessageBox.Show("Deseja Ir a " + eLC.Lists[69].listName + " ?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
-						{
-							comboBox_lists.SelectedIndex = 69;
-							dataGridView_elems.CurrentCell = dataGridView_elems.Rows[dataGridView_elems.Rows.Count - 1].Cells[0];
-							change_item(null, null);
-						}
+			//			if (MessageBox.Show("Deseja Ir a " + sELeditCache.Instance.sELeditDatas.eLC.Lists[69].listName + " ?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+			//			{
+			//				comboBox_lists.SelectedIndex = 69;
+			//				dataGridView_elems.CurrentCell = dataGridView_elems.Rows[dataGridView_elems.Rows.Count - 1].Cells[0];
+			//				change_item(null, null);
+			//			}
 
 
-					}
-					else
-					{
-						MessageBox.Show("Operation not supported in List " + eLC.ConversationListIndex.ToString());
-					}
-				}
-			}
+			//		}
+			//		else
+			//		{
+			//			MessageBox.Show("Operation not supported in List " + sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex.ToString());
+			//		}
+			//	}
+			//}
 
-			int idid = 0;
-			try
-			{
-				idid = int.Parse(gridView.Rows[gridView.SelectedCells[0].RowIndex].Cells[0].Value.ToString());
-			}
-			catch (Exception)
-			{
+			//int idid = 0;
+			//try
+			//{
+			//	idid = int.Parse(gridView.Rows[gridView.SelectedCells[0].RowIndex].Cells[0].Value.ToString());
+			//}
+			//catch (Exception)
+			//{
 
-				//throw;
-			}
+			//	//throw;
+			//}
 
-			add_Returne(idid);
+			//add_Returne(idid);
 		}
 
 		private void addItemsToolStripMenuItem_Click(object sender, EventArgs ee)
@@ -3140,7 +2771,7 @@ namespace sELedit
 			int l = comboBox_lists.SelectedIndex;
 			if (dataGridView_elems.RowCount >= 1)
 			{
-				if (l != eLC.ConversationListIndex)
+				if (l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 				{
 					string[] fileNames = null;
 					OpenFileDialog eLoad = new OpenFileDialog();
@@ -3148,23 +2779,23 @@ namespace sELedit
 					eLoad.Multiselect = true;
 					if (eLoad.ShowDialog() == DialogResult.OK && File.Exists(eLoad.FileName))
 					{
-						EnableSelectionList = false;
-						EnableSelectionItem = false;
+						//EnableSelectionList = false;
+						//EnableSelectionItem = false;
 						fileNames = eLoad.FileNames;
 						try
 						{
 							Cursor = Cursors.AppStarting;
 							//progressBar_progress.Style = ProgressBarStyle.Continuous;
-							cpb2.Maximum = fileNames.Length;
+							//cpb2.Maximum = fileNames.Length;
 							int pos = -1;
 							int pos2 = -1;
-							for (int i = 0; i < eLC.Lists[l].elementFields.Length; i++)
+							for (int i = 0; i < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields.Length; i++)
 							{
-								if (eLC.Lists[l].elementFields[i] == "Name")
+								if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[i] == "Name")
 								{
 									pos = i;
 								}
-								if (eLC.Lists[l].elementFields[i] == "file_icon" || eLC.Lists[l].elementFields[i] == "file_icon1")
+								if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[i] == "file_icon" || sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[i] == "file_icon1")
 								{
 									pos2 = i;
 								}
@@ -3176,28 +2807,28 @@ namespace sELedit
 							for (int i = 0; i < fileNames.Length; i++)
 							{
 								int e = dataGridView_elems.RowCount - 1;
-								object[] o = new object[eLC.Lists[l].elementValues[e].Length];
-								eLC.Lists[l].elementValues[e].CopyTo(o, 0);
-								eLC.Lists[l].AddItem(o);
-								eLC.Lists[l].ImportItem(fileNames[i], e + 1);
-								if (eLC.Lists[l].elementFields[0] == "ID")
+								object[] o = new object[sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues[e].Length];
+								sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues[e].CopyTo(o, 0);
+								sELeditCache.Instance.sELeditDatas.eLC.Lists[l].AddItem(o);
+								sELeditCache.Instance.sELeditDatas.eLC.Lists[l].ImportItem(fileNames[i], e + 1);
+								if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[0] == "ID")
 								{
 									Bitmap img = Properties.Resources.blank;
-									string path = Path.GetFileName(eLC.GetValue(l, e, pos2));
-									if (database.sourceBitmap != null && database.ContainsKey(path))
+									string path = Path.GetFileName(sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, pos2));
+									if (sELeditCache.Instance.sELeditDatas.database.sourceBitmap != null && sELeditCache.Instance.sELeditDatas.database.ContainsKey(path))
 									{
-										if (database.ContainsKey(path))
+										if (sELeditCache.Instance.sELeditDatas.database.ContainsKey(path))
 										{
-											img = database.images(path);
+											img = sELeditCache.Instance.sELeditDatas.database.images(path);
 										}
 									}
-									dataGridView_elems.Rows.Add(new object[] { eLC.GetValue(l, e, 0), img, eLC.GetValue(l, e, pos) });
+									dataGridView_elems.Rows.Add(new object[] { sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, 0), img, sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, pos) });
 								}
 								else
 								{
-									dataGridView_elems.Rows.Add(new object[] { 0, Properties.Resources.unknown, eLC.GetValue(l, e, pos) });
+									dataGridView_elems.Rows.Add(new object[] { 0, Properties.Resources.unknown, sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, pos) });
 								}
-								cpb2.Value++;
+								////cpb2.Value++;
 							}
 							Cursor = Cursors.Default;
 						}
@@ -3206,12 +2837,12 @@ namespace sELedit
 							MessageBox.Show("IMPORT ERROR!\nCheck if the item version matches the elements.data version and is imported to the correct list!");
 							Cursor = Cursors.Default;
 						}
-						comboBox_lists.Items[l] = "[" + l + "]: " + eLC.Lists[l].listName + " (" + eLC.Lists[l].elementValues.Length + ")";
-						cpb2.Value = 0;
+						comboBox_lists.Items[l] = "[" + l + "]: " + sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName + " (" + sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length + ")";
+						//cpb2.Value = 0;
 						//progressBar_progress.Style = ProgressBarStyle.Continuous;
 						dataGridView_elems.ClearSelection();
-						EnableSelectionList = true;
-						EnableSelectionItem = true;
+						//EnableSelectionList = true;
+						//EnableSelectionItem = true;
 						dataGridView_elems.Rows[dataGridView_elems.RowCount - 1].Selected = true;
 						dataGridView_elems.FirstDisplayedScrollingRowIndex = dataGridView_elems.RowCount - 1;
 						change_item(null, null);
@@ -3219,7 +2850,7 @@ namespace sELedit
 				}
 				else
 				{
-					MessageBox.Show("Operation not supported in List " + eLC.ConversationListIndex.ToString());
+					MessageBox.Show("Operation not supported in List " + sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex.ToString());
 				}
 			}
 		}
@@ -3231,22 +2862,22 @@ namespace sELedit
 
 			if (dataGridView_elems.RowCount > 0)
 			{
-				if (l != eLC.ConversationListIndex)
+				if (l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 				{
 					int[] selIndices = gridSelectedIndices(dataGridView_elems);
-					EnableSelectionList = false;
-					EnableSelectionItem = false;
+					//EnableSelectionList = false;
+					//EnableSelectionItem = false;
 					int NewSelectedCount = 0;
 
 					IDITEM = int.Parse(dataGridView_elems.Rows[dataGridView_elems.RowCount - 1].Cells[0].Value.ToString());
 					for (int i = 0; i < selIndices.Length; i++)
 					{
-						object[] o = new object[eLC.Lists[l].elementValues[selIndices[i]].Length];
-						eLC.Lists[l].elementValues[selIndices[i]].CopyTo(o, 0);
+						object[] o = new object[sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues[selIndices[i]].Length];
+						sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues[selIndices[i]].CopyTo(o, 0);
 						o[0] = IDITEM + 1;
 
 
-						eLC.Lists[l].AddItem(o);
+						sELeditCache.Instance.sELeditDatas.eLC.Lists[l].AddItem(o);
 						dataGridView_elems.Rows.Add(new object[]
 						{
 							dataGridView_elems.Rows[selIndices[i]].Cells[0].Value,
@@ -3256,15 +2887,15 @@ namespace sELedit
 						NewSelectedCount++;
 					}
 					//change_list(sender, ea);
-					comboBox_lists.Items[l] = "[" + l + "]: " + eLC.Lists[l].listName + " (" + eLC.Lists[l].elementValues.Length + ")";
+					comboBox_lists.Items[l] = "[" + l + "]: " + sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName + " (" + sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length + ")";
 					dataGridView_elems.ClearSelection();
 					for (int i = NewSelectedCount; i > 0; i--)
 					{
 						dataGridView_elems.Rows[dataGridView_elems.RowCount - i].Selected = true;
 						dataGridView_elems.FirstDisplayedScrollingRowIndex = dataGridView_elems.RowCount - 1;
 					}
-					EnableSelectionList = true;
-					EnableSelectionItem = true;
+					//EnableSelectionList = true;
+					//EnableSelectionItem = true;
 					change_item(null, null);
 
 
@@ -3272,7 +2903,7 @@ namespace sELedit
 				}
 				else
 				{
-					MessageBox.Show("Operation not supported in List " + eLC.ConversationListIndex.ToString());
+					MessageBox.Show("Operation not supported in List " + sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex.ToString());
 				}
 			}
 		}
@@ -3286,23 +2917,23 @@ namespace sELedit
 			{
 				if (selIndices.Length < dataGridView_elems.RowCount)
 				{
-					if (l != eLC.ConversationListIndex)
+					if (l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 					{
-						EnableSelectionList = false;
-						EnableSelectionItem = false;
+						//EnableSelectionList = false;
+						//EnableSelectionItem = false;
 						for (int i = selIndices.Length - 1; i > -1; i--)
 						{
-							eLC.Lists[l].RemoveItem(selIndices[i]);
+							sELeditCache.Instance.sELeditDatas.eLC.Lists[l].RemoveItem(selIndices[i]);
 							dataGridView_elems.Rows.RemoveAt(selIndices[i]);
 						}
-						comboBox_lists.Items[l] = "[" + l + "]: " + eLC.Lists[l].listName + " (" + eLC.Lists[l].elementValues.Length + ")";
-						EnableSelectionList = true;
-						EnableSelectionItem = true;
+						comboBox_lists.Items[l] = "[" + l + "]: " + sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName + " (" + sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length + ")";
+						//EnableSelectionList = true;
+						//EnableSelectionItem = true;
 						change_item(null, null);
 					}
 					else
 					{
-						MessageBox.Show("Operation not supported in List " + eLC.ConversationListIndex.ToString());
+						MessageBox.Show("Operation not supported in List " + sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex.ToString());
 					}
 				}
 				else
@@ -3318,7 +2949,7 @@ namespace sELedit
 			{
 				int l = comboBox_lists.SelectedIndex;
 				int[] selIndices = gridSelectedIndices(dataGridView_elems);
-				if (l != eLC.ConversationListIndex)
+				if (l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 				{
 					if (dataGridView_elems.RowCount > 0 && selIndices.Length > 0)
 					{
@@ -3329,11 +2960,11 @@ namespace sELedit
 							{
 								Cursor = Cursors.AppStarting;
 								//progressBar_progress.Style = ProgressBarStyle.Continuous;
-								cpb2.Maximum = selIndices.Length;
+								//cpb2.Maximum = selIndices.Length;
 								for (int i = 0; i < selIndices.Length; i++)
 								{
-									eLC.Lists[l].ExportItem(eSave.SelectedPath + "\\" + selIndices[i], selIndices[i]);
-									cpb2.Value++;
+									sELeditCache.Instance.sELeditDatas.eLC.Lists[l].ExportItem(eSave.SelectedPath + "\\" + selIndices[i], selIndices[i]);
+									//cpb2.Value++;
 								}
 								Cursor = Cursors.Default;
 								MessageBox.Show("Export complete!");
@@ -3343,14 +2974,14 @@ namespace sELedit
 								MessageBox.Show("EXPORT ERROR!\nExporting item to unicode text file failed!");
 								Cursor = Cursors.Default;
 							}
-							cpb2.Value = 0;
+							//cpb2.Value = 0;
 							//progressBar_progress.Style = ProgressBarStyle.Continuous;
 						}
 					}
 				}
 				else
 				{
-					MessageBox.Show("Operation not supported in List " + eLC.ConversationListIndex.ToString());
+					MessageBox.Show("Operation not supported in List " + sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex.ToString());
 				}
 			}
 		}
@@ -3359,7 +2990,7 @@ namespace sELedit
 		{
 			int l = comboBox_lists.SelectedIndex;
 			int e = dataGridView_elems.CurrentRow.Index;
-			if (l != eLC.ConversationListIndex)
+			if (l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 			{
 				if (l > -1 && e > -1)
 				{
@@ -3370,7 +3001,7 @@ namespace sELedit
 						try
 						{
 							Cursor = Cursors.AppStarting;
-							eLC.Lists[l].ImportItem(eLoad.FileName, e);
+							sELeditCache.Instance.sELeditDatas.eLC.Lists[l].ImportItem(eLoad.FileName, e);
 							change_list(null, null);
 							dataGridView_elems.Rows[e].Selected = true;
 							Cursor = Cursors.Default;
@@ -3385,7 +3016,7 @@ namespace sELedit
 			}
 			else
 			{
-				MessageBox.Show("Operation not supported in List " + eLC.ConversationListIndex.ToString());
+				MessageBox.Show("Operation not supported in List " + sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex.ToString());
 			}
 		}
 
@@ -3393,21 +3024,21 @@ namespace sELedit
 		{
 			int l = comboBox_lists.SelectedIndex;
 			int[] selIndices = gridSelectedIndices(dataGridView_elems);
-			if (selIndices[0] > 0 && selIndices.Length > 0 && l != eLC.ConversationListIndex)
+			if (selIndices[0] > 0 && selIndices.Length > 0 && l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 			{
-				EnableSelectionItem = false;
-				object[][] temp = new object[eLC.Lists[l].elementValues.Length][];
+				//EnableSelectionItem = false;
+				object[][] temp = new object[sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length][];
 				for (int i = 0; i < selIndices.Length; i++)
 				{
-					Array.Copy(eLC.Lists[l].elementValues, selIndices[i], temp, i, 1);
+					Array.Copy(sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues, selIndices[i], temp, i, 1);
 				}
-				Array.Copy(eLC.Lists[l].elementValues, 0, temp, selIndices.Length, selIndices[0]);
+				Array.Copy(sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues, 0, temp, selIndices.Length, selIndices[0]);
 				for (int i = selIndices.Length - 1; i > -1; i--)
 				{
-					eLC.Lists[l].RemoveItem(selIndices[i]);
+					sELeditCache.Instance.sELeditDatas.eLC.Lists[l].RemoveItem(selIndices[i]);
 				}
-				Array.Copy(eLC.Lists[l].elementValues, 0, temp, selIndices.Length, eLC.Lists[l].elementValues.Length);
-				eLC.Lists[l].elementValues = temp;
+				Array.Copy(sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues, 0, temp, selIndices.Length, sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length);
+				sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues = temp;
 
 				change_list(null, null);
 
@@ -3417,7 +3048,7 @@ namespace sELedit
 					dataGridView_elems.Rows[i].Selected = true;
 					dataGridView_elems.FirstDisplayedScrollingRowIndex = i;
 				}
-				EnableSelectionItem = true;
+				//EnableSelectionItem = true;
 			}
 		}
 
@@ -3425,21 +3056,21 @@ namespace sELedit
 		{
 			int l = comboBox_lists.SelectedIndex;
 			int[] selIndices = gridSelectedIndices(dataGridView_elems);
-			if (selIndices[0] < dataGridView_elems.RowCount - 1 && selIndices.Length > 0 && l != eLC.ConversationListIndex)
+			if (selIndices[0] < dataGridView_elems.RowCount - 1 && selIndices.Length > 0 && l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 			{
-				EnableSelectionItem = false;
-				object[][] temp = new object[eLC.Lists[l].elementValues.Length][];
+				//EnableSelectionItem = false;
+				object[][] temp = new object[sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length][];
 				for (int i = 0; i < selIndices.Length; i++)
 				{
-					Array.Copy(eLC.Lists[l].elementValues, selIndices[i], temp, dataGridView_elems.RowCount - selIndices.Length + i, 1);
+					Array.Copy(sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues, selIndices[i], temp, dataGridView_elems.RowCount - selIndices.Length + i, 1);
 				}
-				Array.Copy(eLC.Lists[l].elementValues, 0, temp, selIndices.Length, selIndices[0]);
+				Array.Copy(sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues, 0, temp, selIndices.Length, selIndices[0]);
 				for (int i = selIndices.Length - 1; i > -1; i--)
 				{
-					eLC.Lists[l].RemoveItem(selIndices[i]);
+					sELeditCache.Instance.sELeditDatas.eLC.Lists[l].RemoveItem(selIndices[i]);
 				}
-				Array.Copy(eLC.Lists[l].elementValues, 0, temp, 0, eLC.Lists[l].elementValues.Length);
-				eLC.Lists[l].elementValues = temp;
+				Array.Copy(sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues, 0, temp, 0, sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length);
+				sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues = temp;
 
 				change_list(null, null);
 
@@ -3449,7 +3080,7 @@ namespace sELedit
 					dataGridView_elems.Rows[i].Selected = true;
 					dataGridView_elems.FirstDisplayedScrollingRowIndex = i;
 				}
-				EnableSelectionItem = true;
+				//EnableSelectionItem = true;
 			}
 		}
 
@@ -3459,49 +3090,6 @@ namespace sELedit
 		private void numericUpDownEx_ID_ValueChanged(object sender, EventArgs e)
 		{
 			dgp.SetID((int)numericUpDownEx_ID.Value);
-
-			return;
-			if (SetItens)
-			{
-				try
-				{
-					int l = 0;
-					l = dataGridView_elems.CurrentCell.RowIndex;
-					int pos = 0;
-
-					for (int i = 0; i < eLC.Lists[l].elementFields.Length; i++)
-					{
-						if (eLC.Lists[l].elementFields[i].ToUpper() == "ID")
-						{
-							pos = i;
-							eLC.SetValue(comboBox_lists.SelectedIndex, dataGridView_elems.CurrentCell.RowIndex, i, numericUpDownEx_ID.Value.ToString());
-							bool have = false;
-							//foreach (DataGridViewRow item in dataGridView_item.Rows)
-							//{
-							//	string teste = item.Cells[0].Value.ToString();
-							//	if (teste.ToUpper().Contains("ID"))
-							//	{
-							//		item.Cells[2].Value = numericUpDownEx_ID.Value.ToString();
-							//		have = true;
-							//		break;
-							//	}
-							//}
-
-							if (!have)
-							{
-								dataGridView_elems.Rows[dataGridView_elems.CurrentCell.RowIndex].Cells[2].Value = numericUpDownEx_ID.Value.ToString();
-							}
-							break;
-						}
-
-					}
-				}
-				catch { }
-			}
-
-
-
-
 		}
 
 		private void textBox_NAME_TextChanged(object sender, EventArgs e)
@@ -3513,10 +3101,10 @@ namespace sELedit
 		{
 			(new item_ext_desc(int.Parse(dataGridView_elems.Rows[dataGridView_elems.CurrentCell.RowIndex].Cells[0].Value.ToString()))).ShowDialog(this);
 			richTextBox_DESC_POS.Clear();
-			if (database.item_ext_desc.ContainsKey(int.Parse(dataGridView_elems.Rows[dataGridView_elems.CurrentCell.RowIndex].Cells[0].Value.ToString()).ToString()))
+			if (sELeditCache.Instance.sELeditDatas.database.item_ext_desc.ContainsKey(int.Parse(dataGridView_elems.Rows[dataGridView_elems.CurrentCell.RowIndex].Cells[0].Value.ToString()).ToString()))
 			{
 
-				SetText(database.item_ext_desc[dataGridView_elems.Rows[dataGridView_elems.CurrentCell.RowIndex].Cells[0].Value.ToString()].ToString());
+				SetText(sELeditCache.Instance.sELeditDatas.database.item_ext_desc[dataGridView_elems.Rows[dataGridView_elems.CurrentCell.RowIndex].Cells[0].Value.ToString()].ToString());
 			}
 		}
 

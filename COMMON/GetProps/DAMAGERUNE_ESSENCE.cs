@@ -1,4 +1,5 @@
 ﻿
+using sELedit.CORE.BASE;
 using System;
 using System.Globalization;
 
@@ -15,35 +16,35 @@ namespace sELedit
                 string require_weapon_level_min = "0";
                 string require_weapon_level_max = "0";
                 string damage_increased = "0";
-                for (int k = 0; k < MainWindow.eLC.Lists[17].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[17].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[17].elementFields[k] == "damage_type")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[17].elementFields[k] == "damage_type")
                     {
-                        damage_type = MainWindow.eLC.GetValue(17, pos_item, k);
+                        damage_type = sELeditCache.Instance.sELeditDatas.eLC.GetValue(17, pos_item, k);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[17].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[17].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[17].elementFields[k] == "require_weapon_level_min")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[17].elementFields[k] == "require_weapon_level_min")
                     {
-                        require_weapon_level_min = MainWindow.eLC.GetValue(17, pos_item, k);
+                        require_weapon_level_min = sELeditCache.Instance.sELeditDatas.eLC.GetValue(17, pos_item, k);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[17].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[17].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[17].elementFields[k] == "require_weapon_level_max")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[17].elementFields[k] == "require_weapon_level_max")
                     {
-                        require_weapon_level_max = MainWindow.eLC.GetValue(17, pos_item, k);
+                        require_weapon_level_max = sELeditCache.Instance.sELeditDatas.eLC.GetValue(17, pos_item, k);
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[17].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[17].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[17].elementFields[k] == "damage_increased")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[17].elementFields[k] == "damage_increased")
                     {
-                        damage_increased = MainWindow.eLC.GetValue(17, pos_item, k);
+                        damage_increased = sELeditCache.Instance.sELeditDatas.eLC.GetValue(17, pos_item, k);
                         break;
                     }
                 }
@@ -59,11 +60,11 @@ namespace sELedit
                 {
                     line += "\n" + Extensions.GetLocalization(7025) + Extensions.GetLocalization(7005) + " +" + damage_increased;
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[17].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[17].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[17].elementFields[k] == "price")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[17].elementFields[k] == "price")
                     {
-                        string price = MainWindow.eLC.GetValue(17, pos_item, k);
+                        string price = sELeditCache.Instance.sELeditDatas.eLC.GetValue(17, pos_item, k);
                         if (price != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7024) + " " + Convert.ToInt32(price).ToString("N0", CultureInfo.CreateSpecificCulture("zh-CN"));

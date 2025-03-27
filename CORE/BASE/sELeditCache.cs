@@ -18,7 +18,6 @@ namespace sELedit.CORE.BASE
 		public Settings Settings { get; set; }
 
 		public sELeditModel sELeditDatas { get; set; } = new sELeditModel();
-
 		private sELeditCache()
 		{
 
@@ -89,7 +88,7 @@ namespace sELedit.CORE.BASE
 						}
 
 					}
-					MainWindow.eLC = sELeditDatas.eLC;
+					sELeditCache.Instance.sELeditDatas.eLC = sELeditDatas.eLC;
 					EventGlobal.Publish(sELeditDatas.eLC);
 
 					//database.ItemUse = ItemUse;

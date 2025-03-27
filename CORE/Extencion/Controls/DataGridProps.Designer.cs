@@ -28,9 +28,10 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.panel_action = new System.Windows.Forms.Panel();
+			this.numericUpDown_SetValue = new LBLIBRARY.Components.NumericUpDownEx();
 			this.button8 = new System.Windows.Forms.Button();
 			this.button7 = new System.Windows.Forms.Button();
 			this.button4 = new System.Windows.Forms.Button();
@@ -50,7 +51,6 @@
 			this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.textAndImageColumn1 = new sELedit.configs.TextAndImageColumn();
 			this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.numericUpDown_SetValue = new LBLIBRARY.Components.NumericUpDownEx();
 			this.panel_action.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView_itemProps)).BeginInit();
 			this.SuspendLayout();
@@ -75,6 +75,45 @@
 			this.panel_action.Size = new System.Drawing.Size(967, 70);
 			this.panel_action.TabIndex = 337;
 			this.panel_action.Visible = false;
+			// 
+			// numericUpDown_SetValue
+			// 
+			this.numericUpDown_SetValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
+			this.numericUpDown_SetValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.numericUpDown_SetValue.Dock = System.Windows.Forms.DockStyle.Right;
+			this.numericUpDown_SetValue.Font = new System.Drawing.Font("Courier New", 40F, System.Drawing.FontStyle.Bold);
+			this.numericUpDown_SetValue.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numericUpDown_SetValue.Location = new System.Drawing.Point(487, 0);
+			this.numericUpDown_SetValue.MaximalValue = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            0});
+			this.numericUpDown_SetValue.MinimalValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+			this.numericUpDown_SetValue.Name = "numericUpDown_SetValue";
+			this.numericUpDown_SetValue.SetBlack = true;
+			this.numericUpDown_SetValue.SetDecimalPlaces = 0;
+			this.numericUpDown_SetValue.SetThousandsSeparator = false;
+			this.numericUpDown_SetValue.Size = new System.Drawing.Size(159, 68);
+			this.numericUpDown_SetValue.TabIndex = 18;
+			this.numericUpDown_SetValue.TextBoxBackGroundColor = System.Drawing.Color.Black;
+			this.numericUpDown_SetValue.TextBoxFont = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.numericUpDown_SetValue.TextBoxForeColor = System.Drawing.Color.White;
+			this.numericUpDown_SetValue.TextBoxName = "Textbox";
+			this.numericUpDown_SetValue.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+			this.numericUpDown_SetValue.Visible = false;
 			// 
 			// button8
 			// 
@@ -240,19 +279,19 @@
 			this.dataGridView_itemProps.MultiSelect = false;
 			this.dataGridView_itemProps.Name = "dataGridView_itemProps";
 			this.dataGridView_itemProps.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dataGridView_itemProps.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dataGridView_itemProps.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.dataGridView_itemProps.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
-			dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView_itemProps.RowsDefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView_itemProps.RowsDefaultCellStyle = dataGridViewCellStyle2;
 			this.dataGridView_itemProps.RowTemplate.Height = 18;
 			this.dataGridView_itemProps.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.dataGridView_itemProps.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -262,6 +301,7 @@
 			this.dataGridView_itemProps.TabIndex = 340;
 			this.dataGridView_itemProps.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_itemProps_CellMouseClick);
 			this.dataGridView_itemProps.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.change_value);
+			this.dataGridView_itemProps.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridView_item_RowPostPaint);
 			// 
 			// Column1
 			// 
@@ -326,45 +366,6 @@
 			this.dataGridViewTextBoxColumn3.HeaderText = "Index";
 			this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
 			this.dataGridViewTextBoxColumn3.Visible = false;
-			// 
-			// numericUpDown_SetValue
-			// 
-			this.numericUpDown_SetValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-			this.numericUpDown_SetValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.numericUpDown_SetValue.Dock = System.Windows.Forms.DockStyle.Right;
-			this.numericUpDown_SetValue.Font = new System.Drawing.Font("Courier New", 40F, System.Drawing.FontStyle.Bold);
-			this.numericUpDown_SetValue.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.numericUpDown_SetValue.Location = new System.Drawing.Point(487, 0);
-			this.numericUpDown_SetValue.MaximalValue = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            0});
-			this.numericUpDown_SetValue.MinimalValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-			this.numericUpDown_SetValue.Name = "numericUpDown_SetValue";
-			this.numericUpDown_SetValue.SetBlack = true;
-			this.numericUpDown_SetValue.SetDecimalPlaces = 0;
-			this.numericUpDown_SetValue.SetThousandsSeparator = false;
-			this.numericUpDown_SetValue.Size = new System.Drawing.Size(159, 68);
-			this.numericUpDown_SetValue.TabIndex = 18;
-			this.numericUpDown_SetValue.TextBoxBackGroundColor = System.Drawing.Color.Black;
-			this.numericUpDown_SetValue.TextBoxFont = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.numericUpDown_SetValue.TextBoxForeColor = System.Drawing.Color.White;
-			this.numericUpDown_SetValue.TextBoxName = "Textbox";
-			this.numericUpDown_SetValue.Value = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-			this.numericUpDown_SetValue.Visible = false;
 			// 
 			// DataGridProps
 			// 

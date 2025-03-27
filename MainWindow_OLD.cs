@@ -4833,7 +4833,7 @@ namespace sELedit
   //                      {
   //                          if (MainWindow_OLD.eLC.Lists[90].elementFields[t] == "equipments_" + a + "_id")
   //                          {
-  //                              if (Convert.ToInt32(MainWindow_OLD.eLC.GetValue(90, k, t)) == Convert.ToInt32(ID/*MainWindow.eLC.GetValue(3, pos_item, 0)*/))
+  //                              if (Convert.ToInt32(MainWindow_OLD.eLC.GetValue(90, k, t)) == Convert.ToInt32(ID/*sELeditCache.Instance.sELeditDatas.eLC.GetValue(3, pos_item, 0)*/))
   //                              {
 
 

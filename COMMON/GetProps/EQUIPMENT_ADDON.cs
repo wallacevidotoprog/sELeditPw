@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sELedit.CORE.BASE;
+using System;
 using System.Globalization;
 
 namespace sELedit
@@ -7,7 +8,7 @@ namespace sELedit
 	{
 		public static string GetAddon(string id)
 		{
-			if (MainWindow.eLC is null)
+			if (sELeditCache.Instance.sELeditDatas.eLC is null)
 			{
 				return "err";
 			}
@@ -19,45 +20,45 @@ namespace sELedit
 				string param1 = "0";
 				string param2 = "0";
 				string param3 = "0";
-				//for (int k = 0; k < MainWindow.eLC.Lists[0].elementValues.Count; k++)
+				//for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[0].elementValues.Count; k++)
 				//{
 				int key = int.Parse(id);
-				if (!MainWindow.eLC.addonIndex.ContainsKey(key))
+				if (!sELeditCache.Instance.sELeditDatas.eLC.addonIndex.ContainsKey(key))
 				{
 					return "";
 				}
-				int k = MainWindow.eLC.addonIndex[key];
-				if (MainWindow.eLC.GetValue(0, k, 0) == id)
+				int k = sELeditCache.Instance.sELeditDatas.eLC.addonIndex[key];
+				if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(0, k, 0) == id)
 				{
-					for (int t = 0; t < MainWindow.eLC.Lists[0].elementFields.Length; t++)
+					for (int t = 0; t < sELeditCache.Instance.sELeditDatas.eLC.Lists[0].elementFields.Length; t++)
 					{
-						if (MainWindow.eLC.Lists[0].elementFields[t] == "Name")
+						if (sELeditCache.Instance.sELeditDatas.eLC.Lists[0].elementFields[t] == "Name")
 						{
-							name = MainWindow.eLC.GetValue(0, k, t);
+							name = sELeditCache.Instance.sELeditDatas.eLC.GetValue(0, k, t);
 							break;
 						}
 					}
-					for (int t = 0; t < MainWindow.eLC.Lists[0].elementFields.Length; t++)
+					for (int t = 0; t < sELeditCache.Instance.sELeditDatas.eLC.Lists[0].elementFields.Length; t++)
 					{
-						if (MainWindow.eLC.Lists[0].elementFields[t] == "num_params")
+						if (sELeditCache.Instance.sELeditDatas.eLC.Lists[0].elementFields[t] == "num_params")
 						{
-							num_params = MainWindow.eLC.GetValue(0, k, t);
+							num_params = sELeditCache.Instance.sELeditDatas.eLC.GetValue(0, k, t);
 							break;
 						}
 					}
-					for (int t = 0; t < MainWindow.eLC.Lists[0].elementFields.Length; t++)
+					for (int t = 0; t < sELeditCache.Instance.sELeditDatas.eLC.Lists[0].elementFields.Length; t++)
 					{
-						if (MainWindow.eLC.Lists[0].elementFields[t] == "param1")
+						if (sELeditCache.Instance.sELeditDatas.eLC.Lists[0].elementFields[t] == "param1")
 						{
-							param1 = MainWindow.eLC.GetValue(0, k, t);
-							param2 = MainWindow.eLC.GetValue(0, k, t + 1);
-							param3 = MainWindow.eLC.GetValue(0, k, t + 2);
+							param1 = sELeditCache.Instance.sELeditDatas.eLC.GetValue(0, k, t);
+							param2 = sELeditCache.Instance.sELeditDatas.eLC.GetValue(0, k, t + 1);
+							param3 = sELeditCache.Instance.sELeditDatas.eLC.GetValue(0, k, t + 2);
 							break;
 						}
 					}
 					try
 					{
-						int addon_type = Convert.ToInt32(MainWindow.database.addonslist[id].ToString());
+						int addon_type = Convert.ToInt32(sELeditCache.Instance.sELeditDatas.database.addonslist[id].ToString());
 						switch (addon_type)
 						{
 							case 0:

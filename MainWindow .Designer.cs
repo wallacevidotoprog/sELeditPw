@@ -390,7 +390,8 @@
 			this.dataGridView_elems.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 			dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
 			dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.DimGray;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
 			this.dataGridView_elems.RowsDefaultCellStyle = dataGridViewCellStyle1;
 			this.dataGridView_elems.RowTemplate.Height = 32;
 			this.dataGridView_elems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;

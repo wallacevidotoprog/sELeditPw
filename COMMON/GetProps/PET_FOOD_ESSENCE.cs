@@ -1,4 +1,5 @@
 ﻿
+using sELedit.CORE.BASE;
 using System;
 using System.Globalization;
 
@@ -11,19 +12,19 @@ namespace sELedit
             string line = "";
             try
             {
-                for (int k = 0; k < MainWindow.eLC.Lists[96].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[96].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[96].elementFields[k] == "food_type")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[96].elementFields[k] == "food_type")
                     {
-                        line += Extensions.DecodingFoodMask(MainWindow.eLC.GetValue(96, pos_item, k));
+                        line += Extensions.DecodingFoodMask(sELeditCache.Instance.sELeditDatas.eLC.GetValue(96, pos_item, k));
                         break;
                     }
                 }
-                for (int k = 0; k < MainWindow.eLC.Lists[96].elementFields.Length; k++)
+                for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[96].elementFields.Length; k++)
                 {
-                    if (MainWindow.eLC.Lists[96].elementFields[k] == "price")
+                    if (sELeditCache.Instance.sELeditDatas.eLC.Lists[96].elementFields[k] == "price")
                     {
-                        string price = MainWindow.eLC.GetValue(96, pos_item, k);
+                        string price = sELeditCache.Instance.sELeditDatas.eLC.GetValue(96, pos_item, k);
                         if (price != "0")
                         {
                             line += "\n" + Extensions.GetLocalization(7024) + " " + Convert.ToInt32(price).ToString("N0", CultureInfo.CreateSpecificCulture("zh-CN"));

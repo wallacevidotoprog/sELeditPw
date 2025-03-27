@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sELedit.CORE.BASE;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -28,16 +29,16 @@ namespace sELedit.NOVO
             {
                 this.Text = "MAJOR TYPE";
                 bool fini = false;
-                for (int l = 0; l < MainWindow.eLC.Lists.Length; l++)
+                for (int l = 0; l < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; l++)
                 {
-                    string major = MainWindow.eLC.Lists[LIST].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "MAJOR_TYPE");
+                    string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[LIST].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "MAJOR_TYPE");
 
-                    string conf = MainWindow.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
+                    string conf = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
                     if (major == conf)
                     {
-                        for (int m = 0; m < MainWindow.eLC.Lists[l].elementValues.Length; m++)
+                        for (int m = 0; m < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length; m++)
                         {
-                            dataGridView_elems.Rows.Add(new object[] { MainWindow.eLC.GetValue(l, m, 0), MainWindow.eLC.GetValue(l, m, 1) });
+                            dataGridView_elems.Rows.Add(new object[] { sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 0), sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 1) });
 
                         }
                         if (fini)
@@ -52,16 +53,16 @@ namespace sELedit.NOVO
             {
                 this.Text = "SUB TYPE";
                 bool fini = false;
-                for (int l = 0; l < MainWindow.eLC.Lists.Length; l++)
+                for (int l = 0; l < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; l++)
                 {
-                    string major = MainWindow.eLC.Lists[LIST].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "SUB_TYPE");
+                    string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[LIST].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "SUB_TYPE");
 
-                    string conf = MainWindow.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
+                    string conf = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
                     if (major == conf)
                     {
-                        for (int m = 0; m < MainWindow.eLC.Lists[l].elementValues.Length; m++)
+                        for (int m = 0; m < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues.Length; m++)
                         {
-                            dataGridView_elems.Rows.Add(new object[] { MainWindow.eLC.GetValue(l, m, 0), MainWindow.eLC.GetValue(l, m, 1) });
+                            dataGridView_elems.Rows.Add(new object[] { sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 0), sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, m, 1) });
 
                         }
                         if (fini)

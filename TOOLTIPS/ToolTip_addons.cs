@@ -1,21 +1,13 @@
-﻿using sELedit.configs;
-using sELedit.DDSReader.Utils;
+﻿using sELedit.CORE.BASE;
 using sELedit.Properties;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace sELedit.NOVO
 {
-    
-    public partial class ToolTip_addons : Form
+
+	public partial class ToolTip_addons : Form
 	{
 		public ToolTip_addons()
 		{
@@ -29,7 +21,7 @@ namespace sELedit.NOVO
 			}
 		}
 
-        public void ShowToolTip(IntPtr WindowHandle, int IdListRecipe)
+		public void ShowToolTip(IntPtr WindowHandle, int IdListRecipe)
 		{
 			this.ShowToolTip(WindowHandle, IdListRecipe, 0, -1.0, -1.0);
 		}
@@ -37,54 +29,54 @@ namespace sELedit.NOVO
 		{
 
 
-            string line = "";
-            int cont = 0;
-            listBox_adds.Items.Clear();
-            int[] IdCombo = new int[12];
-            bool Suc = false;
-            int a = 1;
-            for (int k = 0; k < MainWindow.eLC.Lists[90].elementValues.Length; k++)
-            {
-                var id_RP = int.Parse(MainWindow.eLC.GetValue(90, k, 0));
+			string line = "";
+			int cont = 0;
+			listBox_adds.Items.Clear();
+			int[] IdCombo = new int[12];
+			bool Suc = false;
+			int a = 1;
+			for (int k = 0; k < sELeditCache.Instance.sELeditDatas.eLC.Lists[90].elementValues.Length; k++)
+			{
+				var id_RP = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 0));
 
-                if (id_RP == IdListRecipe)
-                {
+				if (id_RP == IdListRecipe)
+				{
 
-                    IdCombo[0] = int.Parse(MainWindow.eLC.GetValue(90, k, 15));
-                    IdCombo[1] = int.Parse(MainWindow.eLC.GetValue(90, k, 16));
-                    IdCombo[2] = int.Parse(MainWindow.eLC.GetValue(90, k, 17));
-                    IdCombo[3] = int.Parse(MainWindow.eLC.GetValue(90, k, 18));
-                    IdCombo[4] = int.Parse(MainWindow.eLC.GetValue(90, k, 19));
-                    IdCombo[5] = int.Parse(MainWindow.eLC.GetValue(90, k, 20));
-                    IdCombo[6] = int.Parse(MainWindow.eLC.GetValue(90, k, 21));
-                    IdCombo[7] = int.Parse(MainWindow.eLC.GetValue(90, k, 22));
-                    IdCombo[8] = int.Parse(MainWindow.eLC.GetValue(90, k, 23));
-                    IdCombo[9] = int.Parse(MainWindow.eLC.GetValue(90, k, 24));
-                    IdCombo[10] = int.Parse(MainWindow.eLC.GetValue(90, k, 25));
+					IdCombo[0] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 15));
+					IdCombo[1] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 16));
+					IdCombo[2] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 17));
+					IdCombo[3] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 18));
+					IdCombo[4] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 19));
+					IdCombo[5] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 20));
+					IdCombo[6] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 21));
+					IdCombo[7] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 22));
+					IdCombo[8] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 23));
+					IdCombo[9] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 24));
+					IdCombo[10] = int.Parse(sELeditCache.Instance.sELeditDatas.eLC.GetValue(90, k, 25));
 
-                    int con = 2; 
-                    for (int i = 0; i < IdCombo.Length; i++)
-                    {
-                        if (IdCombo[i] != 0)
-                        {
-                            listBox_adds.Items.Add("(" + con + ") -" + IdCombo[i] + " - " + MainWindow.database._suite[IdCombo[i]]);
-                            cont++;
-                        }
-                        
-                        con++;
-                    }
-                }
+					int con = 2;
+					for (int i = 0; i < IdCombo.Length; i++)
+					{
+						if (IdCombo[i] != 0)
+						{
+							listBox_adds.Items.Add("(" + con + ") -" + IdCombo[i] + " - " + sELeditCache.Instance.sELeditDatas.database._suite[IdCombo[i]]);
+							cont++;
+						}
 
-                
-                  
-            }
-            Height = 15 * cont+6;
-            listBox_adds.Height = 15 * cont + 6;
-            this.BackgroundImage = configs.ImgsFiles.TrueStretchImage(Resources._base, this.Width, this.Height);
+						con++;
+					}
+				}
 
-        }
 
-        [DllImport("user32.dll")]
+
+			}
+			Height = 15 * cont + 6;
+			listBox_adds.Height = 15 * cont + 6;
+			this.BackgroundImage = configs.ImgsFiles.TrueStretchImage(Resources._base, this.Width, this.Height);
+
+		}
+
+		[DllImport("user32.dll")]
 		public static extern bool GetCursorPos(out Point lpPoint);
 		[DllImport("user32.dll")]
 		public static extern IntPtr WindowFromPoint(Point p);
@@ -179,10 +171,10 @@ namespace sELedit.NOVO
 			tmrHideMe.Enabled = false;
 		}
 
-        private void dataGridView1_RowHeightInfoPushed(object sender, DataGridViewRowHeightInfoPushedEventArgs e)
-        {
+		private void dataGridView1_RowHeightInfoPushed(object sender, DataGridViewRowHeightInfoPushedEventArgs e)
+		{
 
-        }
-    }
+		}
+	}
 }
 
