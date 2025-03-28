@@ -113,25 +113,25 @@ namespace sELedit.NOVO
 
 		private void item_ext_desc_Load(object sender, EventArgs e)
 		{
-			if (sELeditCache.Instance.sELeditDatas.database.item_ext_desc.ContainsKey(ID.ToString()))
+			if (sELeditCache.Instance.sELeditDatas.database.item_ext_desc.ContainsKey(ID))
 			{
-				richTextBox_DESC_PRE.AppendText(sELeditCache.Instance.sELeditDatas.database.item_ext_desc[ID.ToString()].ToString());
+				richTextBox_DESC_PRE.AppendText(sELeditCache.Instance.sELeditDatas.database.item_ext_desc[ID].ToString());
 			}
 
 		}
 
 		private void item_ext_desc_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (sELeditCache.Instance.sELeditDatas.database.item_ext_desc.ContainsKey(ID.ToString()))
+			if (sELeditCache.Instance.sELeditDatas.database.item_ext_desc.ContainsKey(ID))
 			{
 				string x = richTextBox_DESC_PRE.Text;
-				sELeditCache.Instance.sELeditDatas.database.item_ext_desc.Remove(ID.ToString());
-				sELeditCache.Instance.sELeditDatas.database.item_ext_desc.Add(ID.ToString(), x);
+				sELeditCache.Instance.sELeditDatas.database.item_ext_desc.Remove(ID);
+				sELeditCache.Instance.sELeditDatas.database.item_ext_desc.Add(ID, x);
 			}
 			else
 			{
 				string x = richTextBox_DESC_PRE.Text;
-				sELeditCache.Instance.sELeditDatas.database.item_ext_desc.Add(ID.ToString(), x);
+				sELeditCache.Instance.sELeditDatas.database.item_ext_desc.Add(ID, x);
 			}
 		}
 

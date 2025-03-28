@@ -1,4 +1,5 @@
 ﻿using sELedit.CORE.BASE;
+using sELedit.CORE.Extencion;
 using sELedit.CORE.MODEL;
 using System;
 using System.IO;
@@ -18,24 +19,26 @@ namespace sELedit.CORE.IO
 		{
 			try
 			{
+				XmlSerializer xmls = new XmlSerializer(typeof(Settings));
 				switch (action)
 				{
 					case IOAction.Read:
 						if (!File.Exists(FileSettings)) return false;
 
-						XmlSerializer deserializer = new XmlSerializer(typeof(Settings));
 						using (StreamReader reader = new StreamReader(FileSettings))
 						{
-							var obj = deserializer.Deserialize(reader);
-							sELeditCache.Instance.Settings = (Settings)obj;
+							var obj = xmls.Deserialize(reader);
+							sELeditCache.Instance.Settings = obj as Settings ?? new Settings();
+							//sELeditCache.Instance.Settings = (Settings)obj;
 						}
 						return true;
 						break;
 					case IOAction.Write:
-						if (!File.Exists(FileData))
+						using (StreamWriter writer = new StreamWriter(FileSettings))
 						{
-							return false;
+							xmls.Serialize(writer, sELeditCache.Instance.Settings);
 						}
+						return true;
 						break;
 
 				}
@@ -43,8 +46,9 @@ namespace sELedit.CORE.IO
 				return false;
 
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
+				e.ErrorGet(false);
 				return false;
 			}
 		}

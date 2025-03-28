@@ -21,6 +21,7 @@ namespace sELedit
 		public string[] elementTypes;// -> length & values from config file
 		public object[][] elementValues;// list.length from elements.data, elements.length from config file
 		public bool itemUse;
+		public bool isIcon;
 
 
         // return a field of an element in string representation

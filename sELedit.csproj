@@ -102,6 +102,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
     <Reference Include="System.Numerics" />
@@ -127,7 +128,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssetManager.cs" />
+    <Compile Include="CORE\Extencion\AssetManager.cs" />
     <Compile Include="configs\AdvancedCursorsFromEmbededResources.cs" />
     <Compile Include="configs\AlphaTextBox.cs">
       <SubType>Component</SubType>
@@ -148,6 +149,7 @@
     <Compile Include="CORE\Extencion\ExCore.cs" />
     <Compile Include="CORE\IO\ReadFile.cs" />
     <Compile Include="CORE\LOGSYSTEM\LogSistem.cs" />
+    <Compile Include="CORE\MODEL\LanguageFiles.cs" />
     <Compile Include="CORE\MODEL\sELeditModel.cs" />
     <Compile Include="CORE\MODEL\Settings.cs" />
     <Compile Include="Previews\Structures\EcmFile.cs" />

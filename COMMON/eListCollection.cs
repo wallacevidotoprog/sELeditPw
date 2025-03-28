@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -181,16 +182,33 @@ namespace sELedit
 				}
 				Li[i].elementFields = sr.ReadLine().Split(new char[] { ';' });
 				Li[i].elementTypes = sr.ReadLine().Split(new char[] { ';' });
-				for (int a = 0; a < Li[i].elementTypes.Length; a++)
-				{
-					//file_icon
 
-					if (Li[i].elementFields[a] == "file_icon" && !Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].StartsWith("FACE_") && !Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].StartsWith("FACE_") && !Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].StartsWith("CUSTOMIZE") && !Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].EndsWith("_CONFIG") && !Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Contains("_SUITE_") && !Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].StartsWith("HOME_"))
-					{
-						Li[i].itemUse = true;
-						break;
-					}
+
+
+
+
+				if (!string.IsNullOrEmpty(Li[i].elementFields.FirstOrDefault(x => x.ToUpper().StartsWith("FILE_ICON"))))
+				{
+					Li[i].isIcon = true;
 				}
+				Li[i].itemUse = Li[i].listName.ToUpper().Contains("ESSENCE") ? true : false;
+				//for (int a = 0; a < Li[i].elementTypes.Length; a++)
+				//{
+				//	//file_icon
+
+				//	if (
+				//		Li[i].elementFields[a] == "file_icon" && 
+				//		!Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].StartsWith("FACE_") &&
+				//		!Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].StartsWith("FACE_") && 
+				//		!Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].StartsWith("CUSTOMIZE") && 
+				//		!Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].EndsWith("_CONFIG") && 
+				//		!Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Contains("_SUITE_") && 
+				//		!Li[i].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].StartsWith("HOME_"))
+				//	{
+				//		Li[i].itemUse = true;
+				//		break;
+				//	}
+				//}
 			}
 			sr.Close();
 

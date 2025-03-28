@@ -1,4 +1,5 @@
 ﻿using sELedit.CORE.BASE;
+using sELedit.CORE.Extencion;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -108,6 +109,8 @@ namespace sELedit
 			Image imgg = Properties.Resources.bloco_a;
 			try
 			{
+
+
 				int pos_icon = 0;
 
 
@@ -584,8 +587,6 @@ namespace sELedit
 
 		public static string ItemDesc(int id)
 		{
-
-			return "";
 			string result;
 			if (id != 0)
 			{
@@ -593,9 +594,10 @@ namespace sELedit
 				{
 
 
-					if (sELeditCache.Instance.sELeditDatas.database.item_ext_desc.ContainsKey(id.ToString()))
+					if (!ExCore.IsNull(sELeditCache.Instance.sELeditDatas.database.item_ext_desc) &&
+						sELeditCache.Instance.sELeditDatas.database.item_ext_desc.ContainsKey(id))
 					{
-						result = sELeditCache.Instance.sELeditDatas.database.item_ext_desc[id.ToString()].ToString();
+						result = sELeditCache.Instance.sELeditDatas.database.item_ext_desc[id].ToString();
 					}
 					else
 					{
@@ -605,7 +607,7 @@ namespace sELedit
 				}
 				catch (Exception ex)
 				{
-					//System.Windows.Forms.MessageBox.Show(ex.ToString());
+					ex.ErrorGet(false);
 					result = "";
 				}
 			}

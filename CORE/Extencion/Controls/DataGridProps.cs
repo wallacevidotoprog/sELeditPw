@@ -13,23 +13,22 @@ namespace sELedit.CORE.Extencion.Controls
 		public event EventHandler<EventDataChanged> DataChanged;
 
 		private bool EnableSelectionItem { get; set; } = true;
-
-		private int listSelectedIndex = -1;
-		private DataGridView dataGridView_elems = null;
+		//int ListIndex, int ElementIndex, int FieldIndex
+		private int ListIndex = -1;
+		private int ElementIndex = -1;
 		private Dictionary<string, List<(int Index, object[] Values, string[] Fields)>> keyValuePairs;
 		private Dictionary<string, bool> tabStatus;
 		public string TabSelect = string.Empty;
 
-		public DataGridProps(int listSelectedIndex, DataGridView dataGridView_elems, Dictionary<string, List<(int Index, object[] Values, string[] Fields)>> keyValuePairs)
+		public DataGridProps(int listSelectedIndex, int ElementIndex, Dictionary<string, List<(int Index, object[] Values, string[] Fields)>> keyValuePairs)
 		{
 			InitializeComponent();
-			EnableSelectionItem = false;
-			this.listSelectedIndex = listSelectedIndex;
-			this.dataGridView_elems = dataGridView_elems;
+
+			this.ListIndex = listSelectedIndex;
+			this.ElementIndex = ElementIndex;
 			this.keyValuePairs = keyValuePairs;
 			StartTabs();
 			SetPropsGrid("default");
-			EnableSelectionItem = true;
 		}
 
 		private void StartTabs()
@@ -48,7 +47,7 @@ namespace sELedit.CORE.Extencion.Controls
 			try
 			{
 
-				if (!EnableSelectionItem)
+				if (EnableSelectionItem)
 				{
 					int indexDG = 0;
 					dataGridView_itemProps.Rows.Clear();
@@ -56,16 +55,16 @@ namespace sELedit.CORE.Extencion.Controls
 					{
 						dataGridView_itemProps.Rows.Add(new object[] {
 							new DisplayValueItem{
-								DisplayText=sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields[tb.Index].Replace("_"," ").ToUpper(),
-								RealValue = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields[tb.Index].Replace("_"," ").ToUpper()},
+								DisplayText=sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementFields[tb.Index].Replace("_"," ").ToUpper(),
+								RealValue = sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementFields[tb.Index].Replace("_"," ").ToUpper()},
 
 							new DisplayValueItem{
-								DisplayText=sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementTypes[tb.Index],
-								RealValue = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementTypes[tb.Index]},
+								DisplayText=sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementTypes[tb.Index],
+								RealValue = sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementTypes[tb.Index]},
 
 							new DisplayValueItem{
-								DisplayText=sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, tb.Index),
-								RealValue = sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, tb.Index) }
+								DisplayText=sELeditCache.Instance.sELeditDatas.eLC.GetValue(ListIndex, ElementIndex, tb.Index),
+								RealValue = sELeditCache.Instance.sELeditDatas.eLC.GetValue(ListIndex, ElementIndex, tb.Index) }
 						});
 
 						dataGridView_itemProps.Rows[indexDG].HeaderCell.Value = tb.Index.ToString();
@@ -85,35 +84,69 @@ namespace sELedit.CORE.Extencion.Controls
 		public void SetID(int value)
 		{
 
-			int indexID = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields, x => x.ToUpper() == "ID");
+			int indexID = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementFields, x => x.ToUpper() == "ID");
+			if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(ListIndex, ElementIndex, indexID).ToString() == indexID.ToString())
+			{
+				return;
+			}
 			if (indexID != -1)
 			{
-				sELeditCache.Instance.sELeditDatas.eLC.SetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, indexID, value.ToString());
+
+				sELeditCache.Instance.sELeditDatas.eLC.SetValue(ListIndex, ElementIndex, indexID, value.ToString());
 				RefreshGrid(Change.ID, value.ToString());
+
+				DataChanged?.Invoke(this, new EventDataChanged
+				{
+					ListIndex = ListIndex,
+					ElementIndex = ElementIndex,
+					FieldIndex = indexID,
+					Value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(ListIndex, ElementIndex, indexID),
+					FieldName = sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementFields[indexID],
+				});
 			}
 		}
+
 		public void SetName(string value)
 		{
-			int indexName = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields, x => x.ToUpper() == "NAME");
-			var tt = sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, indexName, indexName);
-			if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, indexName, indexName) == value)
+			int indexName = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementFields, x => x.ToUpper() == "NAME");
+			if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(ListIndex, ElementIndex, indexName).ToString() == indexName.ToString())
 			{
 				return;
 			}
 			if (indexName != -1)
 			{
-				sELeditCache.Instance.sELeditDatas.eLC.SetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, indexName, value);
+				sELeditCache.Instance.sELeditDatas.eLC.SetValue(ListIndex, ElementIndex, indexName, value);
 				RefreshGrid(Change.NAME, value);
+				DataChanged?.Invoke(this, new EventDataChanged
+				{
+					ListIndex = ListIndex,
+					ElementIndex = ElementIndex,
+					FieldIndex = indexName,
+					Value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(ListIndex, ElementIndex, indexName),
+					FieldName = sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementFields[indexName],
+				});
 			}
 		}
 
 		public void SetIco(string value)
 		{
-			int indexIco = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields, x => x.ToUpper().StartsWith("FILE_ICON"));
+			int indexIco = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementFields, x => x.ToUpper().StartsWith("FILE_ICON"));
+			if (sELeditCache.Instance.sELeditDatas.eLC.GetValue(ListIndex, ElementIndex, indexIco).ToString() == indexIco.ToString())
+			{
+				return;
+			}
 			if (indexIco != -1)
 			{
-				sELeditCache.Instance.sELeditDatas.eLC.SetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, indexIco, value);
+				sELeditCache.Instance.sELeditDatas.eLC.SetValue(ListIndex, ElementIndex, indexIco, value);
 				RefreshGrid(Change.ICO, value);
+				DataChanged?.Invoke(this, new EventDataChanged
+				{
+					ListIndex = ListIndex,
+					ElementIndex = ElementIndex,
+					FieldIndex = indexIco,
+					Value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(ListIndex, ElementIndex, indexIco),
+					FieldName = sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementFields[indexIco],
+				});
 			}
 		}
 
@@ -140,88 +173,91 @@ namespace sELedit.CORE.Extencion.Controls
 			{
 				if (sELeditCache.Instance.sELeditDatas.eLC != null && ea.ColumnIndex > -1 && ea.RowIndex > -1)
 				{
-					int l = listSelectedIndex;
+					int l = ListIndex;
 					int f = ea.RowIndex;
 
-					string _set = string.Empty;
+					string _set = _set = Convert.ToString((dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value as DisplayValueItem)?.RealValue.ToString()) ?? string.Empty;
 
-					if (dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value.ToString().Contains("[") && dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value.ToString().Contains("]"))
-					{
-						var _set_v = Convert.ToString((dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value as DisplayValueItem)?.RealValue.ToString()).Replace("[", "").Replace("] ", "").Split('-');
-						_set = _set_v[0].Replace(" ", "");
+					//if (dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value.ToString().Contains("[") && dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value.ToString().Contains("]"))
+					//{
+					//	var _set_v = Convert.ToString((dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value as DisplayValueItem)?.RealValue.ToString()).Replace("[", "").Replace("] ", "").Split('-');
+					//	_set = _set_v[0].Replace(" ", "");
 
-					}
-					else
-					{
-						_set = Convert.ToString((dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value as DisplayValueItem)?.RealValue.ToString());
-					}
+					//}
+					//else
+					//{
+					//	_set = Convert.ToString((dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value as DisplayValueItem)?.RealValue.ToString());
+					//}
 
 
-					if (l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
+					if (!string.IsNullOrEmpty(_set) && l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 					{
 						EnableSelectionItem = false;
-						int[] selIndices = gridSelectedIndices(dataGridView_elems);
-						for (int e = 0; e < selIndices.Length; e++)
+
+						sELeditCache.Instance.sELeditDatas.eLC.SetValue(l, ElementIndex, f, _set);
+
+
+						DataChanged?.Invoke(this, new EventDataChanged
 						{
-
-							sELeditCache.Instance.sELeditDatas.eLC.SetValue(l, selIndices[e], f, _set);//-------------------------------------------------------set value
-
-
-							DataChanged?.Invoke(this, new EventDataChanged
-							{
-								ListIndex = l,
-								ElementIndex = selIndices[e],
-								FieldIndex = f,
-								Value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, selIndices[e], f),
-								FieldName = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[f],
-							});
-
-							for (int a = 0; a < selIndices.Length; a++)
-							{
-								if (dataGridView_itemProps.Rows[a].Cells[0].Value.ToString() == "ID" || dataGridView_itemProps.Rows[a].Cells[0].Value.ToString() == "Name" || dataGridView_itemProps.Rows[a].Cells[0].Value.ToString() == "file_icon" || dataGridView_itemProps.Rows[a].Cells[0].Value.ToString() == "file_icon1")
-								{
-									// change the values in the listbox depending on new name & id
-
-									// Find Position for Name
-									int pos = -1;
-									int pos2 = -1;
-									for (int i = 0; i < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields.Length; i++)
-									{
-										if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[i] == "Name")
-										{
-											pos = i;
-										}
-										if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[i] == "file_icon" || sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[i] == "file_icon1")
-										{
-											pos2 = i;
-										}
-										if (pos != -1 && pos2 != -1)
-										{
-											break;
-										}
-									}
-
-
-									//Bitmap img = Properties.Resources.blank;
-									//string path = Path.GetFileName(sELeditCache.Instance.sELeditDatas.sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, selIndices[e], pos2));
-									//if (database.sourceBitmap != null && database.ContainsKey(path))
-									//{
-									//	if (database.ContainsKey(path))
-									//	{
-									//		img = database.images(path);
-									//	}
-									//}
-
-									/// -------------- vai enviar um evento
-									//dataGridView_elems.Rows[selIndices[e]].Cells[0].Value = sELeditCache.Instance.sELeditDatas.sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, selIndices[e], 0);
-									//dataGridView_elems.Rows[selIndices[e]].Cells[1].Value = img;
-									//dataGridView_elems.Rows[selIndices[e]].Cells[2].Value = sELeditCache.Instance.sELeditDatas.sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, selIndices[e], pos);
-								}
-
-							}
-
-						}
+							ListIndex = l,
+							ElementIndex = ElementIndex,
+							FieldIndex = f,
+							Value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, ElementIndex, f),
+							FieldName = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[f],
+						});
 						EnableSelectionItem = true;
+						//int[] selIndices = gridSelectedIndices(ElementIndex);
+						//for (int e = 0; e < selIndices.Length; e++)
+						//{
+
+
+
+						//	//for (int a = 0; a < selIndices.Length; a++)
+						//	//{
+						//	//	if (dataGridView_itemProps.Rows[a].Cells[0].Value.ToString() == "ID" || dataGridView_itemProps.Rows[a].Cells[0].Value.ToString() == "Name" || dataGridView_itemProps.Rows[a].Cells[0].Value.ToString() == "file_icon" || dataGridView_itemProps.Rows[a].Cells[0].Value.ToString() == "file_icon1")
+						//	//	{
+						//	//		// change the values in the listbox depending on new name & id
+
+						//	//		// Find Position for Name
+						//	//		int pos = -1;
+						//	//		int pos2 = -1;
+						//	//		for (int i = 0; i < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields.Length; i++)
+						//	//		{
+						//	//			if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[i] == "Name")
+						//	//			{
+						//	//				pos = i;
+						//	//			}
+						//	//			if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[i] == "file_icon" || sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[i] == "file_icon1")
+						//	//			{
+						//	//				pos2 = i;
+						//	//			}
+						//	//			if (pos != -1 && pos2 != -1)
+						//	//			{
+						//	//				break;
+						//	//			}
+						//	//		}
+
+
+						//	//		//Bitmap img = Properties.Resources.blank;
+						//	//		//string path = Path.GetFileName(sELeditCache.Instance.sELeditDatas.sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, selIndices[e], pos2));
+						//	//		//if (database.sourceBitmap != null && database.ContainsKey(path))
+						//	//		//{
+						//	//		//	if (database.ContainsKey(path))
+						//	//		//	{
+						//	//		//		img = database.images(path);
+						//	//		//	}
+						//	//		//}
+
+						//	//		/// -------------- vai enviar um evento
+						//	//		//dataGridView_elems.Rows[selIndices[e]].Cells[0].Value = sELeditCache.Instance.sELeditDatas.sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, selIndices[e], 0);
+						//	//		//dataGridView_elems.Rows[selIndices[e]].Cells[1].Value = img;
+						//	//		//dataGridView_elems.Rows[selIndices[e]].Cells[2].Value = sELeditCache.Instance.sELeditDatas.sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, selIndices[e], pos);
+						//	//	}
+
+						//	//}
+
+						//}
+
 
 					}
 					else
@@ -289,7 +325,8 @@ namespace sELedit.CORE.Extencion.Controls
 			catch (Exception exs)
 			{
 				EnableSelectionItem = true;
-				MessageBox.Show("CHANGING ERROR!\nFailed changing value, this value seems to be invalid.\n" + exs.Message);
+				exs.ErrorGet();
+				//MessageBox.Show("CHANGING ERROR!\nFailed changing value, this value seems to be invalid.\n" + exs.Message);
 			}
 
 
@@ -320,24 +357,24 @@ namespace sELedit.CORE.Extencion.Controls
 			if (string.IsNullOrEmpty(value)) return;
 
 			int ind = Convert.ToInt32(dataGridView_itemProps.Rows[dataGridView_itemProps.CurrentCell.RowIndex].HeaderCell.Value);
-			sELeditCache.Instance.sELeditDatas.eLC.SetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, ind, value);
+			sELeditCache.Instance.sELeditDatas.eLC.SetValue(ListIndex, ElementIndex, ind, value);
 			dataGridView_itemProps.Rows[dataGridView_itemProps.CurrentCell.RowIndex].Cells[2].Value = value;
 
 
 			DataChanged?.Invoke(this, new EventDataChanged
 			{
-				ListIndex = listSelectedIndex,
-				ElementIndex = dataGridView_elems.CurrentCell.RowIndex,
+				ListIndex = ListIndex,
+				ElementIndex = ElementIndex,
 				FieldIndex = ind,
-				Value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, ind),
-				FieldName = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields[ind],
+				Value = sELeditCache.Instance.sELeditDatas.eLC.GetValue(ListIndex, ElementIndex, ind),
+				FieldName = sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementFields[ind],
 			});
 		}
 
 		private void dataGridView_itemProps_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
 
-			string type = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementTypes[Convert.ToInt32(dataGridView_itemProps.Rows[e.RowIndex].HeaderCell.Value)];
+			string type = sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementTypes[Convert.ToInt32(dataGridView_itemProps.Rows[e.RowIndex].HeaderCell.Value)];
 
 
 			switch (type)
@@ -385,8 +422,9 @@ namespace sELedit.CORE.Extencion.Controls
 
 		private void dataGridView_item_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
 		{
+			return;
 			DataGridView dgv = (DataGridView)sender;
-			if (listSelectedIndex != 54 && listSelectedIndex != 40)
+			if (ListIndex != 54 && ListIndex != 40)
 			{
 
 				if (dgv.Rows.Count > 0)
@@ -394,7 +432,7 @@ namespace sELedit.CORE.Extencion.Controls
 
 					try
 					{
-						string ID_ITEM = sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, 0).ToString();
+						string ID_ITEM = sELeditCache.Instance.sELeditDatas.eLC.GetValue(ListIndex, ElementIndex, 0).ToString();
 
 						//int indexName = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].elementFields, x => x.ToUpper() == "NAME");
 						string NAME_ITEM = dgv.Rows[e.RowIndex].Cells[0].Value.ToString().ToLower().Replace(" ", "_");//sELeditCache.Instance.sELeditDatas.eLC.GetValue(listSelectedIndex, dataGridView_elems.CurrentCell.RowIndex, indexName);
@@ -533,7 +571,7 @@ namespace sELedit.CORE.Extencion.Controls
 								case "id_major_type":
 									for (int l = 0; l < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; l++)
 									{
-										string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "MAJOR_TYPE");
+										string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "MAJOR_TYPE");
 										string conf = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
 										if (major == conf)
 										{
@@ -563,7 +601,7 @@ namespace sELedit.CORE.Extencion.Controls
 								case "id_sub_type":
 									for (int l = 0; l < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; l++)
 									{
-										string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "SUB_TYPE");
+										string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "SUB_TYPE");
 										string conf = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
 										if (major == conf)
 										{
@@ -608,7 +646,7 @@ namespace sELedit.CORE.Extencion.Controls
 								case "id_type":
 									for (int l = 0; l < sELeditCache.Instance.sELeditDatas.eLC.Lists.Length; l++)
 									{
-										string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[listSelectedIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "TYPE");
+										string major = sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1].Replace("ESSENCE", "TYPE");
 										string conf = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].listName.Split(new string[] { " - " }, StringSplitOptions.None)[1];
 										if (major == conf)
 										{

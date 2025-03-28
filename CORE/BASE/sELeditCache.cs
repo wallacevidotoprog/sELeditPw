@@ -1,4 +1,5 @@
-﻿using sELedit.CORE.IO;
+﻿using sELedit.CORE.Extencion;
+using sELedit.CORE.IO;
 using sELedit.CORE.MODEL;
 using System;
 using System.Collections;
@@ -11,6 +12,10 @@ namespace sELedit.CORE.BASE
 	{
 		private static readonly Lazy<sELeditCache> _instance = new Lazy<sELeditCache>(() => new sELeditCache());
 
+		private AssetManager assetManager;
+
+
+
 		public static sELeditCache Instance => _instance.Value;
 
 		public ToolStripProgressBar progressBar;
@@ -20,8 +25,11 @@ namespace sELedit.CORE.BASE
 		public sELeditModel sELeditDatas { get; set; } = new sELeditModel();
 		private sELeditCache()
 		{
+		}
 
-
+		public void StartFilesLoads()
+		{
+			assetManager = new AssetManager();
 		}
 
 		public void Start()
