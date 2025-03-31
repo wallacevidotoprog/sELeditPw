@@ -299,7 +299,9 @@
 			this.dataGridView_itemProps.Size = new System.Drawing.Size(967, 483);
 			this.dataGridView_itemProps.StandardTab = true;
 			this.dataGridView_itemProps.TabIndex = 340;
+			this.dataGridView_itemProps.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView_itemProps_CellFormatting);
 			this.dataGridView_itemProps.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_itemProps_CellMouseClick);
+			this.dataGridView_itemProps.CellParsing += new System.Windows.Forms.DataGridViewCellParsingEventHandler(this.dataGridView_itemProps_CellParsing);
 			this.dataGridView_itemProps.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.change_value);
 			this.dataGridView_itemProps.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridView_item_RowPostPaint);
 			// 

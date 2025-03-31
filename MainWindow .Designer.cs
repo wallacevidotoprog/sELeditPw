@@ -21,13 +21,13 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
 			this.contextMenuStrip_items = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.cloneItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,6 +123,7 @@
 			this.saveGshop12ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveTasksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripButton_SaveAs = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton_log = new System.Windows.Forms.ToolStripButton();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.attAddonsItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.attAddonsSuiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -388,11 +389,11 @@
 			this.dataGridView_elems.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView_elems.RowHeadersVisible = false;
 			this.dataGridView_elems.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.DimGray;
-			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
-			this.dataGridView_elems.RowsDefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle8.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.DimGray;
+			dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.White;
+			this.dataGridView_elems.RowsDefaultCellStyle = dataGridViewCellStyle8;
 			this.dataGridView_elems.RowTemplate.Height = 32;
 			this.dataGridView_elems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dataGridView_elems.Size = new System.Drawing.Size(219, 656);
@@ -565,10 +566,10 @@
 			this.dataGridView_npcs.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView_npcs.RowHeadersVisible = false;
 			this.dataGridView_npcs.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView_npcs.RowsDefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView_npcs.RowsDefaultCellStyle = dataGridViewCellStyle1;
 			this.dataGridView_npcs.RowTemplate.Height = 32;
 			this.dataGridView_npcs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dataGridView_npcs.Size = new System.Drawing.Size(361, 140);
@@ -650,10 +651,10 @@
 			this.dataGridView_SUITE.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView_SUITE.RowHeadersVisible = false;
 			this.dataGridView_SUITE.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView_SUITE.RowsDefaultCellStyle = dataGridViewCellStyle3;
+			dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle9.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView_SUITE.RowsDefaultCellStyle = dataGridViewCellStyle9;
 			this.dataGridView_SUITE.RowTemplate.Height = 32;
 			this.dataGridView_SUITE.ScrollBars = System.Windows.Forms.ScrollBars.None;
 			this.dataGridView_SUITE.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -827,10 +828,10 @@
 			this.dataGridView_recipes.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView_recipes.RowHeadersVisible = false;
 			this.dataGridView_recipes.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView_recipes.RowsDefaultCellStyle = dataGridViewCellStyle4;
+			dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle10.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView_recipes.RowsDefaultCellStyle = dataGridViewCellStyle10;
 			this.dataGridView_recipes.RowTemplate.Height = 32;
 			this.dataGridView_recipes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dataGridView_recipes.Size = new System.Drawing.Size(355, 220);
@@ -954,10 +955,10 @@
 			this.dataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView1.RowHeadersVisible = false;
 			this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle11.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle11;
 			this.dataGridView1.RowTemplate.Height = 32;
 			this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dataGridView1.Size = new System.Drawing.Size(367, 168);
@@ -1025,10 +1026,10 @@
 			this.dataGridView_tasks.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView_tasks.RowHeadersVisible = false;
 			this.dataGridView_tasks.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView_tasks.RowsDefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle12.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView_tasks.RowsDefaultCellStyle = dataGridViewCellStyle12;
 			this.dataGridView_tasks.RowTemplate.Height = 32;
 			this.dataGridView_tasks.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dataGridView_tasks.Size = new System.Drawing.Size(367, 129);
@@ -1110,10 +1111,10 @@
 			this.dataGridView_gshop.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			this.dataGridView_gshop.RowHeadersVisible = false;
 			this.dataGridView_gshop.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-			dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
-			dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.DimGray;
-			this.dataGridView_gshop.RowsDefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+			dataGridViewCellStyle13.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.DimGray;
+			this.dataGridView_gshop.RowsDefaultCellStyle = dataGridViewCellStyle13;
 			this.dataGridView_gshop.RowTemplate.Height = 32;
 			this.dataGridView_gshop.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dataGridView_gshop.Size = new System.Drawing.Size(367, 144);
@@ -1302,6 +1303,7 @@
             this.toolStripButton_Config,
             this.toolStripButton_salve,
             this.toolStripButton_SaveAs,
+            this.toolStripButton_log,
             this.toolStripDropDownButton1});
 			this.toolStrip_MENU.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip_MENU.Name = "toolStrip_MENU";
@@ -1384,6 +1386,16 @@
 			this.toolStripButton_SaveAs.Text = "toolStripButton1";
 			this.toolStripButton_SaveAs.ToolTipText = "Salvar Elementa para";
 			this.toolStripButton_SaveAs.Click += new System.EventHandler(this.click_save);
+			// 
+			// toolStripButton_log
+			// 
+			this.toolStripButton_log.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton_log.Image = global::sELedit.Properties.Resources.log;
+			this.toolStripButton_log.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton_log.Name = "toolStripButton_log";
+			this.toolStripButton_log.Size = new System.Drawing.Size(23, 22);
+			this.toolStripButton_log.Text = "Config";
+			this.toolStripButton_log.Click += new System.EventHandler(this.toolStripButton_log_Click);
 			// 
 			// toolStripDropDownButton1
 			// 
@@ -2149,6 +2161,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn col_ID;
 		private System.Windows.Forms.DataGridViewImageColumn col_IMG;
 		private System.Windows.Forms.DataGridViewTextBoxColumn col_NAME;
+		private System.Windows.Forms.ToolStripButton toolStripButton_log;
 	}
 }
 

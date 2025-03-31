@@ -150,6 +150,7 @@
     <Compile Include="CORE\IO\ReadFile.cs" />
     <Compile Include="CORE\LOGSYSTEM\LogSistem.cs" />
     <Compile Include="CORE\MODEL\LanguageFiles.cs" />
+    <Compile Include="CORE\MODEL\LogChanged.cs" />
     <Compile Include="CORE\MODEL\sELeditModel.cs" />
     <Compile Include="CORE\MODEL\Settings.cs" />
     <Compile Include="Previews\Structures\EcmFile.cs" />
@@ -277,6 +278,12 @@
     </Compile>
     <Compile Include="OUTROS\LoasdsProgreces.Designer.cs">
       <DependentUpon>LoasdsProgreces.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SUB_FORM\LogsChangedForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SUB_FORM\LogsChangedForm.Designer.cs">
+      <DependentUpon>LogsChangedForm.cs</DependentUpon>
     </Compile>
     <Compile Include="teste.cs">
       <SubType>Form</SubType>
@@ -691,6 +698,9 @@
     <EmbeddedResource Include="OUTROS\LoasdsProgreces.resx">
       <DependentUpon>LoasdsProgreces.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SUB_FORM\LogsChangedForm.resx">
+      <DependentUpon>LogsChangedForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="teste.resx">
       <DependentUpon>teste.cs</DependentUpon>
     </EmbeddedResource>
@@ -825,6 +835,7 @@
     <None Include="Resources\tab_off.png" />
     <None Include="Resources\边框.png" />
     <None Include="Resources\color-palette.png" />
+    <None Include="Resources\log.png" />
     <Content Include="Updates.txt" />
     <None Include="Resources\location.png" />
     <None Include="Resources\recipe.png" />

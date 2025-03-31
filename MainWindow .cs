@@ -6,6 +6,7 @@ using sELedit.CORE.Extencion.Controls;
 using sELedit.DDSReader.Utils;
 using sELedit.NOVO;
 using sELedit.Properties;
+using sELedit.SUB_FORM;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,11 +23,14 @@ namespace sELedit
 		#region NEW
 
 		private DataGridProps dgp;
+		private bool isLoadedDataGridProps = false;
 
 		public Cursor CursG;
 		public Cursor CursH;
 
 		public Configs configs;
+
+		private bool SetPropsGridLoad = false;
 
 		#endregion
 
@@ -97,10 +101,6 @@ namespace sELedit
 				sELeditCache.Instance.Start();
 				sELeditCache.Instance.StartFilesLoads();
 			}
-
-
-
-
 		}
 
 		#region save
@@ -198,26 +198,22 @@ namespace sELedit
 
 
 
-		private void change_list(object sender, EventArgs ea)
+		private void change_list(object sender, EventArgs ea)// click no dataElement
 		{
 
 			pictureBox_icon.BackgroundImage = sELeditCache.Instance.sELeditDatas?.database?.images("unknown.dds") ?? Resources.unknown;
 			addItemRecipeToolStripMenuItem.Visible = false;
-			//dataGridView_elems.Columns[1].Visible = false;
+			dataGridView_elems.Columns[1].Visible = sELeditCache.Instance.sELeditDatas.eLC.Lists[(int)comboBox_lists.SelectedValue].isIcon;
 
-			//if (sELeditCache.Instance.sELeditDatas.eLC.Lists[(int)comboBox_lists.SelectedValue].itemUse)
-			//{
-			//	addItemRecipeToolStripMenuItem.Visible = true;
-			//}
 
-			if (comboBox_lists.SelectedIndex > -1 /*&& EnableSelectionList*/)
+			if (comboBox_lists.SelectedIndex > -1)
 			{
 				int l = (int)comboBox_lists.SelectedValue;
 				dataGridView_elems.Rows.Clear();
 
 				if (l != sELeditCache.Instance.sELeditDatas.eLC.ConversationListIndex)
 				{
-					// Find Position for Name
+
 					int pos = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields, x => x.ToUpper() == "NAME"); ;
 
 
@@ -233,42 +229,41 @@ namespace sELedit
 								DisplayText=value,
 								RealValue=value
 							}
-							 });
+						});
 
 					}
-					//if (sELeditCache.Instance.sELeditDatas.eLC.Lists[l].itemUse) { dataGridView_elems.Columns[1].Visible = true; }
 				}
-				else
-				{
-					for (int e = 0; e < sELeditCache.Instance.sELeditDatas.conversationList.talk_proc_count; e++)
-					{
-						dataGridView_elems.Rows.Add(new object[] { sELeditCache.Instance.sELeditDatas.conversationList.talk_procs[e].id_talk, Properties.Resources.unknown, sELeditCache.Instance.sELeditDatas.conversationList.talk_procs[e].id_talk + " - Dialog" });
-					}
-				}
-
 				change_item(null, null);
-
-
-
-
 			}
 		}
 
 		private void change_item(object sender, EventArgs ea)
 		{
-
 			try
 			{
 				var groupedValues = CategoryControlManager.GroupElementValuesByCategory(sELeditCache.Instance.sELeditDatas.eLC.Lists[(int)comboBox_lists.SelectedValue]);
 				var controls = CategoryControlManager.CreateControlsFromGroupedValues(groupedValues);
 
+				if (dgp != null)
+				{
+					dgp.DataChanged -= Dgp_DataChanged;
+					dgp.Loaded -= Dgp_Loaded;
+				}
+
+
+				isLoadedDataGridProps = false;
+
 				panel_center.Controls.Clear();
+
 				dgp = new DataGridProps(
 					(int)comboBox_lists.SelectedValue,
 					dataGridView_elems.CurrentCell.RowIndex,
 					groupedValues)
 				{ Dock = DockStyle.Fill };
+
 				dgp.DataChanged += Dgp_DataChanged;
+				dgp.Loaded += Dgp_Loaded;
+
 				panel_center.Controls.Add(dgp);
 
 				panel_buts.Controls.Clear();
@@ -283,8 +278,9 @@ namespace sELedit
 			{
 				ex.ErrorGet();
 			}
-
 		}
+
+		private void Dgp_Loaded(object sender, bool e) => isLoadedDataGridProps = e;
 
 		private void SetTopValues()
 		{
@@ -311,14 +307,32 @@ namespace sELedit
 				numericUpDownEx_ID.Value = id;
 			}
 
-
+			SetPropsGridLoad = true;
 			int indexName = Array.FindIndex(list.elementFields, x => x.ToUpper() == "NAME");
 			if (indexName != -1)
 			{
 				string name = sELeditCache.Instance.sELeditDatas.eLC.GetValue((int)comboBox_lists.SelectedValue, dataGridView_elems.CurrentCell.RowIndex, indexName);
 				textBox_NAME.Text = name;
+				Color colorSelected = Color.Black;
+				try
+				{
+					int ID = int.Parse(dataGridView_elems.Rows[dataGridView_elems.CurrentCell.RowIndex].Cells[0].Value.ToString());
+
+					if (!ExCore.IsNull(sELeditCache.Instance.sELeditDatas?.database?.item_color) && sELeditCache.Instance.sELeditDatas.database.item_color.ContainsKey(ID))
+					{
+						colorSelected = Helper.getByID(sELeditCache.Instance.sELeditDatas.database.item_color[ID]);
+					}
+					else
+					{
+						colorSelected = Color.White;
+					}
+				}
+
+				catch (Exception e)
+				{ e.ErrorGet(false); colorSelected = Color.White; }
 				textBox_NAME.ForeColor = Color.Black;
 			}
+			SetPropsGridLoad = false;
 		}
 
 		private void Dgp_DataChanged(object sender, EventDataChanged e)
@@ -332,7 +346,6 @@ namespace sELedit
 		{
 			if (!string.IsNullOrEmpty(e.FieldName) && e.FieldName.ToUpper() == "ID" || e.FieldName.ToUpper() == "NAME" || e.FieldName.ToUpper().StartsWith("FILE_ICON"))
 			{
-
 				switch (e.FieldName.ToUpper())
 				{
 
@@ -340,8 +353,6 @@ namespace sELedit
 						dataGridView_elems.Rows[dataGridView_elems.CurrentCell.RowIndex].Cells[0].Value = e.Value;
 						break;
 					case "NAME":
-						//DisplayValueItemElem temp = ((DisplayValueItemElem)dataGridView_elems.Rows[dataGridView_elems.CurrentCell.RowIndex].Cells[1].Value);
-
 						dataGridView_elems.Rows[dataGridView_elems.CurrentCell.RowIndex].Cells[2].Value =
 							new DisplayValueItemElem { DisplayText = e.Value, RealValue = e.Value };
 						break;
@@ -362,142 +373,6 @@ namespace sELedit
 
 
 		#region MouseTitle
-
-
-
-		private void MouseClick(object sender, EventArgs et)
-		{
-
-			Button button = (Button)sender;
-
-			int l = comboBox_lists.SelectedIndex;
-			int e = dataGridView_elems.CurrentCell.RowIndex;
-			//bool tabPage_addonsB = false; bool tabPage_randsB = false; bool tabPage_uniquesB = false; bool tabPage_materialsB = false; bool tabPage_PRIMAL = false;
-			int pd = 0;
-			//dataGridView_item.Rows.Clear();
-			string list = button.Name;
-
-
-			if (list == "retorno")
-			{
-				// if (!panel_retorno.Visible == true)
-				//{
-				panel_retorno.Dock = DockStyle.Fill;
-				panel_retorno.Visible = true;
-
-				//dataGridView_item.Dock = DockStyle.None;
-				//dataGridView_item.Visible = false;
-				//}
-
-
-			}
-			else
-			{
-				//if (!dataGridView_item.Visible == true)
-				//{
-				panel_retorno.Dock = DockStyle.None;
-				panel_retorno.Visible = false;
-
-				//dataGridView_item.Dock = DockStyle.Fill;
-				//dataGridView_item.Visible = true;
-				//}
-
-			}
-			for (int f = 0; f < sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementValues[e].Length; f++)
-			{
-				var a = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementFields[f];
-
-
-				if (a.StartsWith("addons_") || a.StartsWith("skills_") || a.StartsWith("after_death") || a.StartsWith("skill_hp"))
-				{
-					if (list.StartsWith("addons_") || list.StartsWith("skills_") || list.StartsWith("after_death") || list.StartsWith("skill_hp"))
-					{
-						var b = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementTypes[f];
-						var c = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, f);
-
-						//dataGridView_item.Rows.Add(new string[] { a, b, c, f.ToString() });
-						//dataGridView_item.Rows[pd].HeaderCell.Value = pd.ToString();
-						pd++;
-					}
-
-
-
-
-				}
-				else if (a.StartsWith("rands_"))
-				{
-					if (list.StartsWith("rands_"))
-					{
-						var b = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementTypes[f];
-						var c = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, f);
-
-						//dataGridView_item.Rows.Add(new string[] { a, b, c, f.ToString() });
-						//dataGridView_item.Rows[pd].HeaderCell.Value = pd.ToString();
-						pd++;
-					}
-
-
-				}
-				else if (a.StartsWith("uniques_"))
-				{
-					if (list.StartsWith("uniques_"))
-					{
-						var b = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementTypes[f];
-						var c = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, f);
-
-						//dataGridView_item.Rows.Add(new string[] { a, b, c, f.ToString() });
-						//dataGridView_item.Rows[pd].HeaderCell.Value = pd.ToString();
-						pd++;
-					}
-
-				}
-				else if (a.StartsWith("materials_") || a.StartsWith("drop_matters"))
-				{
-					if (list.StartsWith("materials_") || list.StartsWith("drop_matters"))
-					{
-						var b = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementTypes[f];
-						var c = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, f);
-
-						//dataGridView_item.Rows.Add(new string[] { a, b, c, f.ToString() });
-						//dataGridView_item.Rows[pd].HeaderCell.Value = pd.ToString();
-						pd++;
-					}
-
-				}
-				else
-				{
-					if (list == "PRIMAL")
-					{
-						var b = sELeditCache.Instance.sELeditDatas.eLC.Lists[l].elementTypes[f];
-						var c = sELeditCache.Instance.sELeditDatas.eLC.GetValue(l, e, f);
-
-						//dataGridView_item.Rows.Add(new string[] { a, b, c, f.ToString() });
-						//dataGridView_item.Rows[pd].HeaderCell.Value = pd.ToString();
-						pd++;
-					}
-					if (list == "retorno")
-					{
-						//AssetManagerLoad = new Thread(delegate () {
-						//    add_Returne(int.Parse(dataGridView_elems.Rows[dataGridView_elems.SelectedCells[0].RowIndex].Cells[0].Value.ToString()));
-						//}); AssetManagerLoad.Start();
-
-
-
-					}
-				}
-
-
-
-
-
-
-
-			}
-
-
-		}
-
-
 
 		private void dataGridView_recipes_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
 		{
@@ -527,7 +402,7 @@ namespace sELedit
 		#endregion
 
 
-		#region cabc
+		#region TOP_PROPS
 		private void pictureBox_icon_Click(object sender, EventArgs e)
 		{
 			int indexIco = Array.FindIndex(sELeditCache.Instance.sELeditDatas.eLC.Lists[(int)comboBox_lists.SelectedValue].elementFields, x => x.ToUpper().StartsWith("FILE_ICON"));
@@ -539,6 +414,11 @@ namespace sELedit
 			_SurfacesChanger.ShowDialog(this);
 
 			string retur = _SurfacesChanger.GET;
+
+			if (!isLoadedDataGridProps)
+			{
+				return;
+			}
 			if (retur != null)
 			{
 				dgp.SetIco(retur);
@@ -550,10 +430,8 @@ namespace sELedit
 
 		private void textBox_NAME_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-
 			if (sELeditCache.Instance.sELeditDatas.eLC.Lists[comboBox_lists.SelectedIndex].itemUse)
 			{
-
 				try
 				{
 					(new _ListNamesColor(textBox_NAME.Text, Color.Black, comboBox_lists.SelectedIndex, textBox_NAME.Width, Cursor.Position, int.Parse(numericUpDownEx_ID.Value.ToString()))).ShowDialog(this);
@@ -609,6 +487,8 @@ namespace sELedit
 		{
 			pictureBox_icon.Image = null;
 		}
+
+		#endregion
 
 		private void pictureBox_BOX_Click(object sender, EventArgs e)
 		{
@@ -799,8 +679,6 @@ namespace sELedit
 
 			#endregion
 		}
-		#endregion
-
 
 		#region Grids
 
@@ -1225,7 +1103,6 @@ namespace sELedit
 
 		private void dataGridView_elems_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs ee)
 		{
-			return;
 			if (!(sELeditCache.Instance.sELeditDatas?.database?.item_color is null))
 			{
 
@@ -1262,14 +1139,17 @@ namespace sELedit
 				dataGridView_elems.Rows[ee.RowIndex].Cells[2].Style.SelectionForeColor = colorSelected;
 
 
-
-				try
+				if (sELeditCache.Instance.sELeditDatas.eLC.Lists[(int)comboBox_lists.SelectedValue].isIcon)
 				{
+					try
+					{
 
-					dataGridView_elems.Rows[ee.RowIndex].Cells[1].Value = ExCore.GetImageItem((int)comboBox_lists.SelectedValue, ee.RowIndex);
+						dataGridView_elems.Rows[ee.RowIndex].Cells[1].Value = ExCore.GetImageItem((int)comboBox_lists.SelectedValue, ee.RowIndex);
 
+					}
+					catch (Exception ex) { ex.ErrorGet(false); }
 				}
-				catch (Exception ex) { ex.ErrorGet(false); }
+
 
 
 
@@ -3099,11 +2979,19 @@ namespace sELedit
 		#region cab
 		private void numericUpDownEx_ID_ValueChanged(object sender, EventArgs e)
 		{
+			if (!isLoadedDataGridProps)
+			{
+				return;
+			}
 			dgp.SetID((int)numericUpDownEx_ID.Value);
 		}
 
 		private void textBox_NAME_TextChanged(object sender, EventArgs e)
 		{
+			if (!isLoadedDataGridProps)
+			{
+				return;
+			}
 			if (!ColorEdit)
 			{
 				dgp.SetName(textBox_NAME.Text);
@@ -3112,6 +3000,7 @@ namespace sELedit
 		#endregion
 		private void richTextBox_DESC_POS_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
+
 			(new item_ext_desc(int.Parse(dataGridView_elems.Rows[dataGridView_elems.CurrentCell.RowIndex].Cells[0].Value.ToString()))).ShowDialog(this);
 			richTextBox_DESC_POS.Clear();
 			if (sELeditCache.Instance.sELeditDatas.database.item_ext_desc.ContainsKey(int.Parse(dataGridView_elems.Rows[dataGridView_elems.CurrentCell.RowIndex].Cells[0].Value.ToString())))
@@ -3121,7 +3010,7 @@ namespace sELedit
 			}
 		}
 
-
+		private void toolStripButton_log_Click(object sender, EventArgs e) => (new LogsChangedForm()).Show();
 	}
 
 }

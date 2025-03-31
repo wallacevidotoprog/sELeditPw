@@ -29,8 +29,10 @@ namespace sELedit.CORE.BASE.CONTROLLERS
 		{ "default", false }
 	};
 
-		public static Dictionary<string, List<(int Index, object[] Values, string[] Fields)>> GroupElementValuesByCategory(eList list)
+		public static Dictionary<string, List<(int Index, object[][] Values, string[] Fields)>> GroupElementValuesByCategory(eList list)
 		{
+			//if (list.elementFields.Length != list.elementValues.Length)
+			//	throw new InvalidOperationException("Inconsistência nos dados: elementFields e elementValues têm tamanhos diferentes.");
 			return list.elementFields
 				.Select((field, index) => new { Field = field, Index = index })
 				.GroupBy(e => GetCategory(e.Field))
@@ -38,7 +40,7 @@ namespace sELedit.CORE.BASE.CONTROLLERS
 					g => g.Key,
 					g => g.Select(e => (
 						e.Index,
-						list.elementValues[e.Index],
+						list.elementValues,
 						list.elementFields
 
 					)).ToList()
@@ -56,7 +58,7 @@ namespace sELedit.CORE.BASE.CONTROLLERS
 			return "default";
 		}
 
-		public static List<Control> CreateControlsFromGroupedValues(Dictionary<string, List<(int Index, object[] Values, string[] Fields)>> groupedValues)
+		public static List<Control> CreateControlsFromGroupedValues(Dictionary<string, List<(int Index, object[][] Values, string[] Fields)>> groupedValues)
 		{
 			var controls = new List<Control>();
 

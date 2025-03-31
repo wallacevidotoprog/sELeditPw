@@ -14,8 +14,6 @@ namespace sELedit.CORE.BASE
 
 		private AssetManager assetManager;
 
-
-
 		public static sELeditCache Instance => _instance.Value;
 
 		public ToolStripProgressBar progressBar;
@@ -23,6 +21,9 @@ namespace sELedit.CORE.BASE
 		public Settings Settings { get; set; }
 
 		public sELeditModel sELeditDatas { get; set; } = new sELeditModel();
+
+		public LogChanged LogChanged { get; set; } = new LogChanged();
+
 		private sELeditCache()
 		{
 		}

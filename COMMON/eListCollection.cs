@@ -1,4 +1,6 @@
-﻿using System;
+﻿using sELedit.CORE.BASE;
+using sELedit.CORE.Extencion;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -27,10 +29,29 @@ namespace sELedit
 		public void RemoveItem(int ListIndex, int ElementIndex)
 		{
 			Lists[ListIndex].RemoveItem(ElementIndex);
+
+			try
+			{
+				sELeditCache.Instance.LogChanged.Add(CORE.MODEL.LogChangedType.REMOVE, ListIndex, ElementIndex, -1, GetValue(ListIndex, ElementIndex, 0));
+			}
+			catch (Exception ex)
+			{
+				ex.ErrorGet(false);
+			}
 		}
 		public void AddItem(int ListIndex, object[] ItemValues)
 		{
 			Lists[ListIndex].AddItem(ItemValues);
+
+			try
+			{
+				sELeditCache.Instance.LogChanged.Add(CORE.MODEL.LogChangedType.ADD, ListIndex, -1, -1, string.Join(" ", ItemValues));
+			}
+			catch (Exception ex)
+			{
+				ex.ErrorGet(false);
+			}
+
 		}
 		public string GetOffset(int ListIndex)
 		{
@@ -63,6 +84,15 @@ namespace sELedit
 		public void SetValue(int ListIndex, int ElementIndex, int FieldIndex, string Value)
 		{
 			Lists[ListIndex].SetValue(ElementIndex, FieldIndex, Value);
+			try
+			{
+				sELeditCache.Instance.LogChanged.Add(CORE.MODEL.LogChangedType.UPDATE, ListIndex, ElementIndex, FieldIndex, Value);
+			}
+			catch (Exception ex)
+			{
+				ex.ErrorGet(false);
+			}
+
 		}
 
 		public string GetType(int ListIndex, int FieldIndex)

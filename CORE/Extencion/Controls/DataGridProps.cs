@@ -11,16 +11,18 @@ namespace sELedit.CORE.Extencion.Controls
 	public partial class DataGridProps : UserControl
 	{
 		public event EventHandler<EventDataChanged> DataChanged;
+		public event EventHandler<bool> Loaded;
 
 		private bool EnableSelectionItem { get; set; } = true;
+		private bool SetPropsGridLoad = false;
 		//int ListIndex, int ElementIndex, int FieldIndex
 		private int ListIndex = -1;
 		private int ElementIndex = -1;
-		private Dictionary<string, List<(int Index, object[] Values, string[] Fields)>> keyValuePairs;
+		private Dictionary<string, List<(int Index, object[][] Values, string[] Fields)>> keyValuePairs;
 		private Dictionary<string, bool> tabStatus;
 		public string TabSelect = string.Empty;
 
-		public DataGridProps(int listSelectedIndex, int ElementIndex, Dictionary<string, List<(int Index, object[] Values, string[] Fields)>> keyValuePairs)
+		public DataGridProps(int listSelectedIndex, int ElementIndex, Dictionary<string, List<(int Index, object[][] Values, string[] Fields)>> keyValuePairs)
 		{
 			InitializeComponent();
 
@@ -28,7 +30,9 @@ namespace sELedit.CORE.Extencion.Controls
 			this.ElementIndex = ElementIndex;
 			this.keyValuePairs = keyValuePairs;
 			StartTabs();
+			SetPropsGridLoad = true;
 			SetPropsGrid("default");
+			SetPropsGridLoad = false;
 		}
 
 		private void StartTabs()
@@ -49,10 +53,12 @@ namespace sELedit.CORE.Extencion.Controls
 
 				if (EnableSelectionItem)
 				{
+					EnableSelectionItem = false;
 					int indexDG = 0;
 					dataGridView_itemProps.Rows.Clear();
 					foreach (var tb in keyValuePairs[tab.ToLower()])
 					{
+
 						dataGridView_itemProps.Rows.Add(new object[] {
 							new DisplayValueItem{
 								DisplayText=sELeditCache.Instance.sELeditDatas.eLC.Lists[ListIndex].elementFields[tb.Index].Replace("_"," ").ToUpper(),
@@ -72,11 +78,14 @@ namespace sELedit.CORE.Extencion.Controls
 					}
 					dataGridView_itemProps.PerformLayout();
 					dataGridView_itemProps.ResumeLayout();
+					EnableSelectionItem = true;
+					Loaded?.Invoke(this, true);
 				}
 			}
 			catch (Exception ex)
 			{
 				ex.ErrorGet();
+				EnableSelectionItem = true;
 			}
 
 		}
@@ -152,7 +161,9 @@ namespace sELedit.CORE.Extencion.Controls
 
 		private void RefreshGrid(Change change, string value)
 		{
-			EnableSelectionItem = false;
+
+			if (SetPropsGridLoad) return;
+			// = false;
 
 			foreach (DataGridViewRow item in dataGridView_itemProps.Rows)
 			{
@@ -161,7 +172,7 @@ namespace sELedit.CORE.Extencion.Controls
 					item.Cells[2].Value = new DisplayValueItem { DisplayText = value, RealValue = value }; break;
 				}
 			}
-			EnableSelectionItem = true;
+			//EnableSelectionItem = true;
 
 			//SetPropsGrid(TabSelect);
 		}
@@ -176,7 +187,10 @@ namespace sELedit.CORE.Extencion.Controls
 					int l = ListIndex;
 					int f = ea.RowIndex;
 
-					string _set = _set = Convert.ToString((dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value as DisplayValueItem)?.RealValue.ToString()) ?? string.Empty;
+
+
+
+					string _set = ((DisplayValueItem)dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value)?.RealValue.ToString() ?? string.Empty;
 
 					//if (dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value.ToString().Contains("[") && dataGridView_itemProps.Rows[ea.RowIndex].Cells[2].Value.ToString().Contains("]"))
 					//{
@@ -899,6 +913,55 @@ namespace sELedit.CORE.Extencion.Controls
 
 			}
 
+		}
+
+		private void dataGridView_itemProps_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+		{
+			if (dataGridView_itemProps.Rows[e.RowIndex].Cells[e.ColumnIndex].Value is string editedText)
+			{
+
+				var currentCell = dataGridView_itemProps.Rows[e.RowIndex].Cells[e.ColumnIndex];
+				var originalValue = currentCell.Tag as DisplayValueItem;
+				if (originalValue != null)
+				{
+					currentCell.Value = new DisplayValueItem
+					{
+						DisplayText = editedText,
+						RealValue = originalValue.RealValue
+					};
+				}
+				else
+				{
+					currentCell.Value = new DisplayValueItem
+					{
+						DisplayText = editedText,
+						RealValue = editedText
+					};
+				}
+			}
+		}
+
+		private void dataGridView_itemProps_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		{
+			if (dataGridView_itemProps.Rows[e.RowIndex].Cells[e.ColumnIndex].Value is DisplayValueItem item)
+			{
+				e.Value = item.DisplayText;
+				e.FormattingApplied = true;
+			}
+		}
+
+		private void dataGridView_itemProps_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+		{
+			if (e.Value is string newText)
+			{
+				var originalItem = dataGridView_itemProps.Rows[e.RowIndex].Cells[e.ColumnIndex].Value as DisplayValueItem;
+				e.Value = new DisplayValueItem
+				{
+					DisplayText = newText,
+					RealValue = newText// originalItem != null ? originalItem.RealValue : newText
+				};//
+				e.ParsingApplied = true;
+			}
 		}
 	}
 

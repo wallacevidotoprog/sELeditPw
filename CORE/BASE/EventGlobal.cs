@@ -26,5 +26,18 @@ namespace sELedit.CORE.BASE
 				}
 			}
 		}
+		public static void Unsubscribe<TEvent>(Action<TEvent> handler)
+		{
+			if (subscriptions.ContainsKey(typeof(TEvent)))
+			{
+				subscriptions[typeof(TEvent)].Remove(handler);
+
+
+				if (!subscriptions[typeof(TEvent)].Any())
+				{
+					subscriptions.Remove(typeof(TEvent));
+				}
+			}
+		}
 	}
 }
